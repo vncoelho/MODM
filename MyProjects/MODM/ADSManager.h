@@ -1,11 +1,10 @@
-#ifndef OPTFRAME_ADSMANAGERMODM_HPP_
-#define OPTFRAME_ADSMANAGERMODM_HPP_
+#ifndef MODM_ADSMANAGER_H_
+#define MODM_ADSMANAGER_H_
+
+#include "ADS.h"
 
 using namespace std;
 using namespace optframe;
-
-#include "ADS.h"
-#include "../../OptFrame/ADSManager.hpp"
 
 namespace MODM
 {
@@ -138,4 +137,4 @@ public:
 };
 
 }
-#endif /* OPTFRAME_ADSMANAGERMODM_HPP_ */
+#endif /* MODM_ADSMANAGER_H_ */

@@ -1,10 +1,8 @@
-#ifndef DMPROBLEM_ADS_H_
-#define DMPROBLEM_ADS_H_
+#ifndef MODM_ADS_H_
+#define MODM_ADS_H_
 
 #include <vector>
 #include "../../OptFrame/Util/printable.h"
-
-#include "../../OptFrame/Util/Matrix.hpp"
 
 using namespace std;
 
@@ -26,5 +24,5 @@ struct AdsMODM
 //#include <ostream>
 //ostream & operator<< (ostream & s, RepHFMVRP){}
 
-#endif /*DMPROBLEM_ADS_H_*/
+#endif /*MODM_ADS_H_*/
 
