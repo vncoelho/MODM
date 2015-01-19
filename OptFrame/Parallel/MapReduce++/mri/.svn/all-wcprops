@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/mri
+END
+printable.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/mri/printable.h
+END
+mapper.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/mri/mapper.h
+END
+mapreduce.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/mri/mapreduce.h
+END
+mri.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/mri/mri.h
+END
+reducer.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/mri/reducer.h
+END

@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN
+END
+ProblemCommand.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/ProblemCommand.cpp
+END
+NSSeqSwap.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/NSSeqSwap.cpp
+END
+NSSeqShift.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN/NSSeqShift.h
+END
+Evaluator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN/Evaluator.cpp
+END
+ConstructiveGreedySum.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN/ConstructiveGreedySum.h
+END
+ProblemCommand.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/ProblemCommand.h
+END
+Representation.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/Representation.h
+END
+NSSeqSwap.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN/NSSeqSwap.h
+END
+Evaluator.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN/Evaluator.h
+END
+ProblemInstance.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/ProblemInstance.cpp
+END
+ConstructiveGreedyHalfSum.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/ConstructiveGreedyHalfSum.cpp
+END
+ProblemInstance.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/ProblemInstance.h
+END
+ConstructiveGreedyHalfSum.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN/ConstructiveGreedyHalfSum.h
+END
+Solution.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/Solution.h
+END
+DeltaStructure.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/DeltaStructure.h
+END
+Evaluation.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/Evaluation.h
+END
+ConstructiveRandomGreedy.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/ConstructiveRandomGreedy.cpp
+END
+ConstructiveRandom.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/ConstructiveRandom.cpp
+END
+NSSeqShift.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/NSSeqShift.cpp
+END
+ConstructiveRandom.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN/ConstructiveRandom.h
+END
+ConstructiveRandomGreedy.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN/ConstructiveRandomGreedy.h
+END
+ConstructiveGreedySum.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/p/optframe/code/!svn/ver/845/trunk/Examples/PN/ConstructiveGreedySum.cpp
+END

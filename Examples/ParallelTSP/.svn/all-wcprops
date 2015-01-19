@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/p/optframe/code/!svn/ver/728/trunk/Examples/ParallelTSP
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/p/optframe/code/!svn/ver/728/trunk/Examples/ParallelTSP/main.cpp
+END
+example.opt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/p/optframe/code/!svn/ver/273/trunk/Examples/ParallelTSP/example.opt
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/p/optframe/code/!svn/ver/273/trunk/Examples/ParallelTSP/README
+END
+makefile
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/p/optframe/code/!svn/ver/273/trunk/Examples/ParallelTSP/makefile
+END

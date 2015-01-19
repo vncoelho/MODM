@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/p/optframe/code/!svn/ver/819/trunk/OptFrame/Util/NeighborhoodStructures/Moves
+END
+MoveTSP2Opt.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/p/optframe/code/!svn/ver/819/trunk/OptFrame/Util/NeighborhoodStructures/Moves/MoveTSP2Opt.hpp
+END
+MoveVectorShift.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/p/optframe/code/!svn/ver/819/trunk/OptFrame/Util/NeighborhoodStructures/Moves/MoveVectorShift.hpp
+END
+MoveTSPSwap.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/p/optframe/code/!svn/ver/572/trunk/OptFrame/Util/NeighborhoodStructures/Moves/MoveTSPSwap.hpp
+END
+MoveNSSeqUnion.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/p/optframe/code/!svn/ver/817/trunk/OptFrame/Util/NeighborhoodStructures/Moves/MoveNSSeqUnion.hpp
+END
+MoveTSPOrOptk.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/p/optframe/code/!svn/ver/819/trunk/OptFrame/Util/NeighborhoodStructures/Moves/MoveTSPOrOptk.hpp
+END

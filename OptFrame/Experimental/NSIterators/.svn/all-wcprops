@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/p/optframe/code/!svn/ver/548/trunk/OptFrame/Experimental/NSIterators
+END
+IteratorNSSeqMultiRoute.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/p/optframe/code/!svn/ver/548/trunk/OptFrame/Experimental/NSIterators/IteratorNSSeqMultiRoute.hpp
+END
+IteratorNSSeqkRoute.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/p/optframe/code/!svn/ver/548/trunk/OptFrame/Experimental/NSIterators/IteratorNSSeqkRoute.hpp
+END
+IteratorVVSwapIntra.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/p/optframe/code/!svn/ver/548/trunk/OptFrame/Experimental/NSIterators/IteratorVVSwapIntra.hpp
+END
+IteratorNSSeqTSPOr1Opt.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/p/optframe/code/!svn/ver/548/trunk/OptFrame/Experimental/NSIterators/IteratorNSSeqTSPOr1Opt.hpp
+END
+IteratorNSSeqPairFirst.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/p/optframe/code/!svn/ver/548/trunk/OptFrame/Experimental/NSIterators/IteratorNSSeqPairFirst.hpp
+END
+IteratorNSSeqPairSecond.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/p/optframe/code/!svn/ver/548/trunk/OptFrame/Experimental/NSIterators/IteratorNSSeqPairSecond.hpp
+END

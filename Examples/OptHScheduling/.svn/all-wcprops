@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/p/optframe/code/!svn/ver/842/trunk/Examples/OptHScheduling
+END
+Evaluation.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/p/optframe/code/!svn/ver/658/trunk/Examples/OptHScheduling/Evaluation.h
+END
+Memory.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/p/optframe/code/!svn/ver/658/trunk/Examples/OptHScheduling/Memory.h
+END
+ConstructiveRandom.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/ConstructiveRandom.h
+END
+ProblemCommand.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/ProblemCommand.cpp
+END
+NSSwap.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/NSSwap.h
+END
+Solution.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/Solution.h
+END
+Evaluator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/Evaluator.cpp
+END
+ProblemCommand.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/p/optframe/code/!svn/ver/842/trunk/Examples/OptHScheduling/ProblemCommand.h
+END
+ProblemInstance.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/ProblemInstance.cpp
+END
+Evaluator.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/p/optframe/code/!svn/ver/840/trunk/Examples/OptHScheduling/Evaluator.h
+END
+Representation.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/p/optframe/code/!svn/ver/658/trunk/Examples/OptHScheduling/Representation.h
+END
+ConstructiveRandom.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/ConstructiveRandom.cpp
+END
+ProblemInstance.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/ProblemInstance.h
+END
+NSSwap.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling/NSSwap.cpp
+END

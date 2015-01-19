@@ -1,0 +1,215 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/p/optframe/code/!svn/ver/842/trunk/Examples/EternityII
+END
+ProblemInstance.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/ProblemInstance.cpp
+END
+DeltaMoveSwapSide.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveSwapSide.h
+END
+InitialSolutionGreedy.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/InitialSolutionGreedy.cpp
+END
+DeltaMoveSwapCorner.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveSwapCorner.h
+END
+NSSeqSwapCenter.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqSwapCenter.h
+END
+DeltaMoveSwapRotateCenter.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveSwapRotateCenter.cpp
+END
+InitialSolutionRandom.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/InitialSolutionRandom.h
+END
+NSSeqSwapSide.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqSwapSide.h
+END
+DeltaMoveRotate.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveRotate.cpp
+END
+NSSeqSwapCorner.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqSwapCorner.h
+END
+Evaluator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/Evaluator.cpp
+END
+ProblemCommand.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/p/optframe/code/!svn/ver/842/trunk/Examples/EternityII/ProblemCommand.h
+END
+NSSeqSwapRotateCenter.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqSwapRotateCenter.cpp
+END
+NSSeqRotate.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqRotate.cpp
+END
+DeltaMoveSwapCenter.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveSwapCenter.cpp
+END
+Evaluation.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/p/optframe/code/!svn/ver/260/trunk/Examples/EternityII/Evaluation.h
+END
+DeltaMoveSwapSide.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveSwapSide.cpp
+END
+Solution.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/Solution.h
+END
+DeltaMoveSwapCorner.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveSwapCorner.cpp
+END
+NSSeqSwapCenter.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqSwapCenter.cpp
+END
+InitialSolutionRandom.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/InitialSolutionRandom.cpp
+END
+NSSeqSwapSide.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqSwapSide.cpp
+END
+Piece.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/p/optframe/code/!svn/ver/466/trunk/Examples/EternityII/Piece.h
+END
+ProblemInstance.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/ProblemInstance.h
+END
+InitialSolutionGreedy.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/InitialSolutionGreedy.h
+END
+NSSeqSwapCorner.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqSwapCorner.cpp
+END
+ProblemCommand.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/ProblemCommand.cpp
+END
+DeltaMoveSwapRotateCenter.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveSwapRotateCenter.h
+END
+DeltaMoveRotate.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveRotate.h
+END
+Evaluator.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/p/optframe/code/!svn/ver/840/trunk/Examples/EternityII/Evaluator.h
+END
+Representation.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/p/optframe/code/!svn/ver/260/trunk/Examples/EternityII/Representation.h
+END
+NSSeqSwapRotateCenter.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqSwapRotateCenter.h
+END
+NSSeqRotate.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/NSSeqRotate.h
+END
+Memory.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/p/optframe/code/!svn/ver/260/trunk/Examples/EternityII/Memory.h
+END
+DeltaMoveSwapCenter.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII/DeltaMoveSwapCenter.h
+END

@@ -1,0 +1,155 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/p/optframe/code/!svn/ver/842/trunk/Examples/TSP
+END
+ProblemInstance.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/ProblemInstance.cpp
+END
+RandomInitialSolution.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/RandomInitialSolution.cpp
+END
+NearestNeighborConstructive.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/NearestNeighborConstructive.cpp
+END
+ProblemInstance.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/ProblemInstance.h
+END
+RandomInitialSolution.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/RandomInitialSolution.h
+END
+NearestNeighborConstructive.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/NearestNeighborConstructive.h
+END
+ProblemCommand.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/ProblemCommand.cpp
+END
+NSEnumSwap.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/NSEnumSwap.cpp
+END
+ConstructiveBestInsertion.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/ConstructiveBestInsertion.cpp
+END
+Evaluator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/Evaluator.cpp
+END
+NSEnumShift.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/NSEnumShift.cpp
+END
+ProblemCommand.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/p/optframe/code/!svn/ver/842/trunk/Examples/TSP/ProblemCommand.h
+END
+NSEnumSwap.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/NSEnumSwap.h
+END
+DeltaMoveTSPOrOptk.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/DeltaMoveTSPOrOptk.cpp
+END
+ConstructiveBestInsertion.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/ConstructiveBestInsertion.h
+END
+Evaluator.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/p/optframe/code/!svn/ver/840/trunk/Examples/TSP/Evaluator.h
+END
+Representation.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/p/optframe/code/!svn/ver/260/trunk/Examples/TSP/Representation.h
+END
+NSEnumShift.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/NSEnumShift.h
+END
+PerturbationTSP.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/p/optframe/code/!svn/ver/260/trunk/Examples/TSP/PerturbationTSP.h
+END
+DeltaMoveTSPOrOptk.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/DeltaMoveTSPOrOptk.h
+END
+Evaluation.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/Evaluation.h
+END
+DeltaMoveTSP2Opt.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/DeltaMoveTSP2Opt.cpp
+END
+Memory.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/p/optframe/code/!svn/ver/552/trunk/Examples/TSP/Memory.h
+END
+DeltaMoveTSP2Opt.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/DeltaMoveTSP2Opt.h
+END
+Solution.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP/Solution.h
+END

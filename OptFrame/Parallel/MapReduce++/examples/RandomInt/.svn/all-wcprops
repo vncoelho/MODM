@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/examples/RandomInt
+END
+MaPIRandomInt.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/examples/RandomInt/MaPIRandomInt.cpp
+END
+SeqRandomInt.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/examples/RandomInt/SeqRandomInt.cpp
+END
+MapMPRandomInt.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/p/optframe/code/!svn/ver/260/trunk/OptFrame/Parallel/MapReduce++/examples/RandomInt/MapMPRandomInt.cpp
+END
+logs-seq
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/p/optframe/code/!svn/ver/164/trunk/OptFrame/Parallel/MapReduce++/examples/RandomInt/logs-seq
+END

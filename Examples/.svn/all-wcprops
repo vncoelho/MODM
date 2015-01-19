@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/p/optframe/code/!svn/ver/848/trunk/Examples
+END
+OptHScheduling.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/p/optframe/code/!svn/ver/825/trunk/Examples/OptHScheduling.h
+END
+makePMedCap.mk
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/p/optframe/code/!svn/ver/822/trunk/Examples/makePMedCap.mk
+END
+etii-definitions.opt
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/p/optframe/code/!svn/ver/753/trunk/Examples/etii-definitions.opt
+END
+makefilePN
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/p/optframe/code/!svn/ver/845/trunk/Examples/makefilePN
+END
+makeTSP.mk
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/p/optframe/code/!svn/ver/819/trunk/Examples/makeTSP.mk
+END
+tsp-definitions.opt
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/p/optframe/code/!svn/ver/753/trunk/Examples/tsp-definitions.opt
+END
+mainEternityII.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/p/optframe/code/!svn/ver/843/trunk/Examples/mainEternityII.cpp
+END
+makefile
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/p/optframe/code/!svn/ver/823/trunk/Examples/makefile
+END
+TSP.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/p/optframe/code/!svn/ver/819/trunk/Examples/TSP.h
+END
+mainPN.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/p/optframe/code/!svn/ver/845/trunk/Examples/mainPN.cpp
+END
+mainTSP.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/p/optframe/code/!svn/ver/843/trunk/Examples/mainTSP.cpp
+END
+makeEtII.mk
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/p/optframe/code/!svn/ver/823/trunk/Examples/makeEtII.mk
+END
+PMedCap.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/p/optframe/code/!svn/ver/822/trunk/Examples/PMedCap.h
+END
+mainPMedCap.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/p/optframe/code/!svn/ver/843/trunk/Examples/mainPMedCap.cpp
+END
+execPN.opt
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/p/optframe/code/!svn/ver/845/trunk/Examples/execPN.opt
+END
+EternityII.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/p/optframe/code/!svn/ver/823/trunk/Examples/EternityII.h
+END
+mainOptHScheduling.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/p/optframe/code/!svn/ver/843/trunk/Examples/mainOptHScheduling.cpp
+END
+PN.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/p/optframe/code/!svn/ver/847/trunk/Examples/PN.h
+END
+TSP2.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/p/optframe/code/!svn/ver/848/trunk/Examples/TSP2.h
+END
+makeOptHS.mk
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/p/optframe/code/!svn/ver/825/trunk/Examples/makeOptHS.mk
+END

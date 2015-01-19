@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/p/optframe/code/!svn/ver/847/trunk/OptFrame/Heuristics/ILS
+END
+IteratedLocalSearchLevels.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/p/optframe/code/!svn/ver/790/trunk/OptFrame/Heuristics/ILS/IteratedLocalSearchLevels.hpp
+END
+IntensifiedIteratedLocalSearchLevels.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/p/optframe/code/!svn/ver/724/trunk/OptFrame/Heuristics/ILS/IntensifiedIteratedLocalSearchLevels.hpp
+END
+IntensifiedIteratedLocalSearch.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/p/optframe/code/!svn/ver/724/trunk/OptFrame/Heuristics/ILS/IntensifiedIteratedLocalSearch.hpp
+END
+BasicILSPerturbation.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/p/optframe/code/!svn/ver/847/trunk/OptFrame/Heuristics/ILS/BasicILSPerturbation.hpp
+END
+IteratedLocalSearch.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/p/optframe/code/!svn/ver/844/trunk/OptFrame/Heuristics/ILS/IteratedLocalSearch.hpp
+END
+BasicIteratedLocalSearch.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/p/optframe/code/!svn/ver/847/trunk/OptFrame/Heuristics/ILS/BasicIteratedLocalSearch.hpp
+END
+ILS.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/p/optframe/code/!svn/ver/754/trunk/OptFrame/Heuristics/ILS/ILS.h
+END
+Intensification.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/p/optframe/code/!svn/ver/724/trunk/OptFrame/Heuristics/ILS/Intensification.hpp
+END
+ILSLPerturbation.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/p/optframe/code/!svn/ver/766/trunk/OptFrame/Heuristics/ILS/ILSLPerturbation.hpp
+END
