@@ -1,7 +1,11 @@
 #ifndef MODM_ADSMANAGER_H_
 #define MODM_ADSMANAGER_H_
 
+#include "../../OptFrame/ADSManager.hpp"
+
+#include "Representation.h"
 #include "ADS.h"
+#include "ProblemInstance.h"
 
 using namespace std;
 using namespace optframe;
@@ -11,6 +15,7 @@ namespace MODM
 
 class MODMADSManager: public ADSManager<RepMODM, AdsMODM>
 {
+private:
 	typedef ADSManager<RepMODM, AdsMODM> super;
 	ProblemInstance& pMODM;
 	int c, n;

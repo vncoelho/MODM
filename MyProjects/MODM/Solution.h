@@ -3,12 +3,15 @@
 
 #include "../../OptFrame/Solution.hpp"
 #include "Representation.h"
+#include "ADS.h"
 
 using namespace optframe;
+using namespace MODM;
 
-typedef int MY_ADS;
+//typedef int MY_ADS;
 
-typedef Solution<RepMODM, MY_ADS> SolutionMODM;
+typedef Solution<RepMODM, AdsMODM> SolutionMODM;
 
 #endif /*MODM_SOLUTION_H_*/
+
 

@@ -13,6 +13,7 @@
 #include "Evaluator.h"
 #include "ConstructiveBasicGreedyRandomized.h"
 #include "NSSeqSWAPInter.h"
+#include "NSSeqSWAP.h"
 
 #include "ProblemInstance.h"
 
@@ -29,7 +30,7 @@ class MODMProblemCommand
 {
 public:
 
-    CheckCommand<RepMODM, MY_ADS >* check;
+    CheckCommand<RepMODM, AdsMODM >* check;
     RandGen& rg;
     vector<Component*> vd;
     

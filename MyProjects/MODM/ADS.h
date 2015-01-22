@@ -20,6 +20,7 @@ struct AdsMODM
 
 	map<string, vector<bool> > neighborhoodStatus; // mapping 'move.id()' to 'NeighborhoodStatus'
 };
+
 }
 //#include <ostream>
 //ostream & operator<< (ostream & s, RepHFMVRP){}

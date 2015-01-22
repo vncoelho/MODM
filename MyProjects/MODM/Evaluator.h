@@ -7,16 +7,19 @@
 
 #include "../../OptFrame/Evaluation.hpp"
 #include "../../OptFrame/Evaluator.hpp"
-
+#include "../../OptFrame/Timer.hpp"
 #include "Representation.h"
+#include "ADS.h"
+
 #include "DeltaStructure.h"
 #include "Solution.h"
 #include "Evaluation.h"
 
 #include "ProblemInstance.h"
 
-#define EPSILON_MODM 0.0001
+#include "ADSManager.h"
 
+#define EPSILON_MODM 0.0001
 
 namespace MODM
 {
@@ -26,13 +29,29 @@ class MODMEvaluator: public Evaluator<RepMODM, AdsMODM>
 private:
 	ProblemInstance& pMODM;
 	MODMADSManager& adsMan;
+	double totalTime;
+	double totalTimeEC;
+	int nEval;
 	// Your private vars
 
 public:
 	MODMEvaluator(ProblemInstance& _pMODM, MODMADSManager& _adsMan) : // If necessary, add more parameters
 			pMODM(_pMODM), adsMan(_adsMan)
 	{
+		totalTime = 0;
+		totalTimeEC = 0;
+		nEval = 0;
 		// Put the rest of your code here
+	}
+
+	double getAverageTime()
+	{
+		return totalTime / nEval;
+	}
+
+	double getAverageTimeEvalComplete()
+	{
+		return totalTimeEC / nEval;
 	}
 
 	virtual ~MODMEvaluator()
@@ -46,9 +65,38 @@ public:
 		return evaluate(rep, ads);
 	}
 
-	EvaluationMODM& evaluate(const RepMODM& rep, const AdsMODM& ads)
+	double evaluateReturnDouble(const RepMODM& rep)
 	{
 
+		Timer tEC;
+		int maxC = pMODM.getNumberOfClients();
+		int maxP = pMODM.getNumberOfProducts();
+		double foRevenue = 0;
+		double foCost = 0;
+		double foFixedCost = 0;
+		for (int p = 0; p < maxP; p++)
+		{
+			int nOffers = 0;
+			for (int c = 0; c < maxC; c++)
+			{
+				bool offer = rep[c][p];
+				if (offer == true)
+				{
+					foCost += pMODM.getCost(c, p);
+					foRevenue += pMODM.getRevenue(c, p);
+					nOffers++;
+				}
+			}
+			if (nOffers > 0)
+				foFixedCost += pMODM.getProductFixedCost(p);
+		}
+		totalTimeEC += tEC.now();
+		return foRevenue - foCost - foFixedCost;
+	}
+
+	EvaluationMODM& evaluate(const RepMODM& rep, const AdsMODM& ads)
+	{
+		Timer t;
 		// 'rep' is the representation of the solution
 		int c = pMODM.getNumberOfClients();
 		int n = pMODM.getNumberOfProducts();
@@ -117,6 +165,19 @@ public:
 		 fclose(arquivo);
 		 }*/
 
+		totalTime += t.now();
+
+
+
+		nEval++;
+/*		double foCheck = evaluateReturnDouble(rep);
+		if (foCheck != foCheck)
+		{
+			cout << foCheck << endl;
+			cout << fo << endl;
+			getchar();
+		}*/
+
 		return *new EvaluationMODM(fo, foInv, *new int);
 	}
 
@@ -139,11 +200,11 @@ public:
 		return (a > (b + EPSILON_MODM));
 	}
 
-	virtual bool isMinimization() {
+	virtual bool isMinimization() const
+	{
 		return false;
 	}
 };
-
 
 }
 

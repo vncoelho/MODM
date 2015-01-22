@@ -2,7 +2,9 @@
 #define MODM_CONSTRUCTIVE_BasicGreedyRandomized_H_
 
 #include "../../OptFrame/Constructive.h"
+#include "../../OptFrame/Heuristics/GRASP/GRConstructive.h"
 #include "../../OptFrame/Util/TestSolution.hpp"
+#include "../../OptFrame/RandGen.hpp"
 
 #include "ProblemInstance.h"
 
@@ -11,7 +13,7 @@
 
 #include "Evaluator.h"
 
-#include <list>
+//#include <list>
 
 #include <algorithm>
 #include <stdlib.h>
@@ -33,12 +35,11 @@ static bool comparacaoClients(int a, int b)
 	return (a > b);
 }
 
-class ConstructiveBasicGreedyRandomized: public Constructive<RepMODM, AdsMODM>
+class ConstructiveBasicGreedyRandomized: public GRConstructive<RepMODM, AdsMODM>
 {
 private:
 	ProblemInstance& pMODM;
 	RandGen& rg;
-	double alpha;
 	MODMADSManager& adsMan;
 	// Your private vars
 
@@ -46,12 +47,9 @@ private:
 
 public:
 
-	ConstructiveBasicGreedyRandomized(ProblemInstance& _pMODM, double _alpha, RandGen& _rg, MODMADSManager& _adsMan) : // If necessary, add more parameters
-			pMODM(_pMODM), alpha(_alpha), rg(_rg), adsMan(_adsMan)
+	ConstructiveBasicGreedyRandomized(ProblemInstance& _pMODM, RandGen& _rg, MODMADSManager& _adsMan) : // If necessary, add more parameters
+			pMODM(_pMODM), rg(_rg), adsMan(_adsMan)
 	{
-		if (alpha == 0)
-			alpha = 0.00001;
-
 		Component::verbose = false;
 	}
 
@@ -61,6 +59,15 @@ public:
 
 	Solution<RepMODM, AdsMODM>& generateSolution()
 	{
+		float alpha = 0.1;
+
+		return generateSolution(alpha);
+	}
+
+	Solution<RepMODM, AdsMODM>& generateSolution(float alpha)
+	{
+		if (alpha == 0)
+			alpha = 0.00001;
 
 		int n = pMODM.getNumberOfProducts();
 		int c = pMODM.getNumberOfClients();
@@ -166,12 +173,12 @@ public:
 				}
 			}
 
-			cout << "Cj: " << endl;
-			cout << Cj << endl;
-			cout << "Pj: " << endl;
-			cout << Pj << endl;
+			/*			cout << "Cj: " << endl;
+			 cout << Cj << endl;
+			 cout << "Pj: " << endl;
+			 cout << Pj << endl;
 
-			getchar();
+			 getchar();*/
 
 			if (Component::verbose)
 			{

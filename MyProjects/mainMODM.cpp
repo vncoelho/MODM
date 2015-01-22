@@ -16,13 +16,87 @@ using namespace MODM;
 
 int main(int argc, char **argv)
 {
-   RandGen rg;
-   
-   Loader<RepMODM, MY_ADS > optframe(rg);
-   
-   MODMProblemCommand pc(rg);
-   cout<<"Olaa"<<endl;
-   cout << "Program ended successfully" << endl;
-   
-   return 0;
+	RandGenMersenneTwister rg;
+	long seed = time(NULL);
+	//long seed = 10;
+	cout << "Seed = " << seed << endl;
+	srand(seed);
+	rg.setSeed(seed);
+
+	Loader<RepMODM, AdsMODM> optframe(rg);
+
+	//MODMProblemCommand pc(rg);
+	cout << "Olaa" << endl;
+	cout << "Program ended successfully" << endl;
+
+	//string filename = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-l.txt";
+	string filename = "./MyProjects/MODM/Instances/L-5/L-10-5-1-l.txt";
+
+	File* file;
+
+	try
+	{
+		file = new File(filename);
+	} catch (FileNotFound& f)
+	{
+		cout << "File '" << filename << "' not found" << endl;
+		return false;
+	}
+
+	Scanner scanner(file);
+
+	ProblemInstance p(scanner);
+
+	// add everything to the HeuristicFactory 'hf'
+
+	MODMADSManager adsMan(p);
+	MODMEvaluator eval(p, adsMan);
+
+	ConstructiveBasicGreedyRandomized grC(p, rg, adsMan);
+
+	NSSeqSWAP nsseq_swap(rg, &p);
+	NSSeqSWAPInter nsseq_swapInter(rg, &p);
+
+
+	FirstImprovement<RepMODM, AdsMODM> fiSwap(eval, nsseq_swap);
+	FirstImprovement<RepMODM, AdsMODM> fiSwapInter(eval, nsseq_swapInter);
+
+	RandomDescentMethod<RepMODM, AdsMODM> rdmSwap(eval, nsseq_swap,1000);
+	RandomDescentMethod<RepMODM, AdsMODM> rdmSwapInter(eval, nsseq_swapInter,1000);
+
+	vector<LocalSearch<RepMODM, AdsMODM>*> vLS;
+	//vLS.push_back(&fiSwap);
+	// vLS.push_back(&fiSwapInter);
+	vLS.push_back(&rdmSwap);
+	vLS.push_back(&rdmSwapInter);
+
+	VariableNeighborhoodDescent<RepMODM, AdsMODM> vnd(eval, vLS);
+
+	ILSLPerturbationLPlus2<RepMODM, AdsMODM> ilsl_pert(eval, 100000, nsseq_swap, rg);
+	ilsl_pert.add_ns(nsseq_swapInter);
+	IteratedLocalSearchLevels<RepMODM, AdsMODM> ils(eval, grC, vnd, ilsl_pert, 1000, 15);
+	ils.setMessageLevel(3);
+
+	pair<Solution<RepMODM, AdsMODM>&, Evaluation<>&>* finalSol;
+
+	EmptyLocalSearch<RepMODM, AdsMODM> emptyLS;
+	BasicGRASP<RepMODM, AdsMODM> g(eval, grC, emptyLS, 0.1, 100000);
+
+	g.setMessageLevel(3);
+
+	//MODMProblemCommand problemCommand(rg);
+
+	int time = 50;
+	double target=999999;
+	finalSol = ils.search(time,target);
+
+	finalSol->second.print();
+	//finalSol = g.search(time,target);
+
+	cout<<eval.getAverageTime()<<endl;
+	cout<<eval.getAverageTimeEvalComplete()<<endl;
+	cout<<"Programa terminado com sucesso!"<<endl;
+	return 0;
 }
+;
+
