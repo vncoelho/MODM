@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 {
 	RandGenMersenneTwister rg;
 	long seed = time(NULL);
-	//long seed = 10;
+	seed = 10;
 	cout << "Seed = " << seed << endl;
 	srand(seed);
 	rg.setSeed(seed);
@@ -56,24 +56,35 @@ int main(int argc, char **argv)
 
 	NSSeqSWAP nsseq_swap(rg, &p);
 	NSSeqSWAPInter nsseq_swapInter(rg, &p);
+	NSSeqInvert nsseq_invert(rg, &p);
+	NSSeqARProduct nsseq_arProduct(rg, &p);
 
 
 	FirstImprovement<RepMODM, AdsMODM> fiSwap(eval, nsseq_swap);
 	FirstImprovement<RepMODM, AdsMODM> fiSwapInter(eval, nsseq_swapInter);
+	FirstImprovement<RepMODM, AdsMODM> fiInvert(eval, nsseq_invert);
 
 	RandomDescentMethod<RepMODM, AdsMODM> rdmSwap(eval, nsseq_swap,1000);
 	RandomDescentMethod<RepMODM, AdsMODM> rdmSwapInter(eval, nsseq_swapInter,1000);
+	RandomDescentMethod<RepMODM, AdsMODM> rdmInvert(eval, nsseq_invert,1000);
 
 	vector<LocalSearch<RepMODM, AdsMODM>*> vLS;
 	//vLS.push_back(&fiSwap);
 	// vLS.push_back(&fiSwapInter);
-	vLS.push_back(&rdmSwap);
-	vLS.push_back(&rdmSwapInter);
+	vLS.push_back(&fiInvert);
+
+	//vLS.push_back(&rdmSwap);
+	//vLS.push_back(&rdmSwapInter);
+	//vLS.push_back(&rdmInvert);
 
 	VariableNeighborhoodDescent<RepMODM, AdsMODM> vnd(eval, vLS);
 
 	ILSLPerturbationLPlus2<RepMODM, AdsMODM> ilsl_pert(eval, 100000, nsseq_swap, rg);
 	ilsl_pert.add_ns(nsseq_swapInter);
+	ilsl_pert.add_ns(nsseq_invert);
+	ilsl_pert.add_ns(nsseq_arProduct);
+
+
 	IteratedLocalSearchLevels<RepMODM, AdsMODM> ils(eval, grC, vnd, ilsl_pert, 1000, 15);
 	ils.setMessageLevel(3);
 
@@ -86,10 +97,11 @@ int main(int argc, char **argv)
 
 	//MODMProblemCommand problemCommand(rg);
 
-	int time = 50;
+	int time = 600;
 	double target=999999;
 	finalSol = ils.search(time,target);
 
+	cout<<"ILS HAS ENDED!"<<endl;
 	finalSol->second.print();
 	//finalSol = g.search(time,target);
 

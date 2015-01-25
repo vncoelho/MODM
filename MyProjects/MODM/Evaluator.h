@@ -98,7 +98,7 @@ public:
 	{
 		Timer t;
 		// 'rep' is the representation of the solution
-		int c = pMODM.getNumberOfClients();
+		int maxC = pMODM.getNumberOfClients();
 		int n = pMODM.getNumberOfProducts();
 
 		double fo = 0; // Evaluation Function Value
@@ -108,6 +108,7 @@ public:
 		double foInvMin = 0;
 		double foInvBud = 0;
 		double foInvHR = 0;
+		double foInvMaxOffersC = 0;
 
 		for (int product = 0; product < n; product++)
 		{
@@ -121,9 +122,9 @@ public:
 				if (ads.productOffers[product] < pMODM.minClients[product])
 				{
 					foInvMin = ads.productOffers[product] - pMODM.minClients[product];
-					cout << "BUG ON EVALUATOR - NUMERO MINIMO CLIENTE NAO FOI RESPEITADO!!!" << endl;
-					cout << "ads.productOffers[product] = " << ads.productOffers[product] << endl;
-					cout << "pMODM.minClients[product] = " << pMODM.minClients[product] << endl;
+					//cout << "BUG ON EVALUATOR - NUMERO MINIMO CLIENTE NAO FOI RESPEITADO!!!" << endl;
+					//cout << "ads.productOffers[product] = " << ads.productOffers[product] << endl;
+					//cout << "pMODM.minClients[product] = " << pMODM.minClients[product] << endl;
 					//getchar();
 				}
 			}
@@ -131,24 +132,36 @@ public:
 			if (ads.totalCost[product] > pMODM.getProductBudget(product))
 			{
 				foInvBud = ads.totalCost[product] - pMODM.getProductBudget(product);
-				cout << "BUG ON EVALUATOR - BUDGET NAO FOI RESPEITADO!!!" << endl;
-				cout << "ads.totalCost[product] = " << ads.totalCost[product] << endl;
-				cout << "pMODM.getProductBudget(product) = " << pMODM.getProductBudget(product) << endl;
+				//cout << "BUG ON EVALUATOR - BUDGET NAO FOI RESPEITADO!!!" << endl;
+				//cout << "ads.totalCost[product] = " << ads.totalCost[product] << endl;
+				//cout << "pMODM.getProductBudget(product) = " << pMODM.getProductBudget(product) << endl;
 				//getchar();
 			}
 
+		}
+
+		for (int c = 0; c < maxC; c++)
+		{
+			if (ads.clientOffers[c] > pMODM.getClientMaxOffers(c))
+			{
+				//cout << "BUG ON EVALUATOR - Cliente MAX NAO FOI RESPEITADO!!!" << endl;
+				//cout << "ads.clientOffers[c] = " << ads.clientOffers[c] << endl;
+				//cout << "pMODM.getClientMaxOffers(c) = " << pMODM.getClientMaxOffers(c) << endl;
+				foInvMaxOffersC += ads.clientOffers[c] - pMODM.getClientMaxOffers(c);
+				//getchar();
+			}
 		}
 
 		//Verificar inviabilidades
 		if (foRevenue < ((1 + pMODM.getHurdleRate()) * (foBudget + foFixedCost)))
 		{
 			foInvHR = 1;
-			cout << "BUG ON EVALUATOR - LUCRO MENOR QUE O ESPERADO!!!" << endl;
+			//cout << "BUG ON EVALUATOR - LUCRO MENOR QUE O ESPERADO!!!" << endl;
 			//getchar();
 		}
 
 		fo = foRevenue - foBudget - foFixedCost;
-		double foInv = (foInvHR + foInvBud + foInvMin) * (-100000);
+		double foInv = foInvHR * (-100) + (foInvBud + foInvMin) * (-100) + foInvMaxOffersC * (-100);
 		//cout << "FO = " << fo << endl;
 
 		/*
@@ -167,16 +180,15 @@ public:
 
 		totalTime += t.now();
 
-
-
 		nEval++;
-/*		double foCheck = evaluateReturnDouble(rep);
+
+		double foCheck = evaluateReturnDouble(rep);
 		if (foCheck != foCheck)
 		{
 			cout << foCheck << endl;
 			cout << fo << endl;
 			getchar();
-		}*/
+		}
 
 		return *new EvaluationMODM(fo, foInv, *new int);
 	}

@@ -2,8 +2,8 @@
 
 all: mctAppMODM
 
-mctAppMODM:      mainMODM.o  MODMProblemInstance.o  MODMADSManager.o MODMEvaluator.o MODMConstructiveBasicGreedyRandomized.o  MODMConstructiveBasicGreedyRandomized2.o MODMNSSeqSWAPInter.o  MODMProblemCommand.o  MODMScanner.o  
-	g++ $(GCC_FLAGS) mainMODM.o  MODMProblemInstance.o  MODMADSManager.o MODMEvaluator.o MODMConstructiveBasicGreedyRandomized.o  MODMConstructiveBasicGreedyRandomized2.o MODMNSSeqSWAPInter.o  MODMProblemCommand.o  MODMScanner.o -o app_MODM
+mctAppMODM:      mainMODM.o  MODMProblemInstance.o  MODMADSManager.o MODMEvaluator.o MODMConstructiveBasicGreedyRandomized.o  MODMNSSeqSWAPInter.o  MODMProblemCommand.o  MODMScanner.o  
+	g++ $(GCC_FLAGS) mainMODM.o  MODMProblemInstance.o  MODMADSManager.o MODMEvaluator.o MODMConstructiveBasicGreedyRandomized.o  MODMNSSeqSWAPInter.o  MODMProblemCommand.o  MODMScanner.o -o app_MODM
 
 mainMODM.o: mainMODM.cpp
 	g++ -c $(GCC_FLAGS) mainMODM.cpp -o mainMODM.o
@@ -20,9 +20,6 @@ MODMEvaluator.o: MODM/Evaluator.cpp
 MODMConstructiveBasicGreedyRandomized.o: MODM/ConstructiveBasicGreedyRandomized.cpp
 	g++ -c $(GCC_FLAGS) MODM/ConstructiveBasicGreedyRandomized.cpp -o MODMConstructiveBasicGreedyRandomized.o
 	
-MODMConstructiveBasicGreedyRandomized2.o: MODM/ConstructiveBasicGreedyRandomized2.cpp
-	g++ -c $(GCC_FLAGS) MODM/ConstructiveBasicGreedyRandomized2.cpp -o MODMConstructiveBasicGreedyRandomized2.o
-
 MODMNSSeqSWAPInter.o: MODM/NSSeqSWAPInter.cpp
 	g++ -c $(GCC_FLAGS) MODM/NSSeqSWAPInter.cpp -o MODMNSSeqSWAPInter.o
 	

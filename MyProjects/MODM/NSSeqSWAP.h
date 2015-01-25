@@ -67,7 +67,8 @@ public:
 		if (ads.totalCost[y] + costDiff > dmproblem->getProductBudget(y))
 			budget = false;
 
-		return ((usedProduct > 0) && budget && differentOffers && !c1Saturado && !c2Saturado);
+		return differentOffers;
+		//return ((usedProduct > 0) && budget && differentOffers && !c1Saturado && !c2Saturado);
 	}
 
 	MoveCost* cost(const Evaluation<>&, const RepMODM& rep, const AdsMODM& ads)

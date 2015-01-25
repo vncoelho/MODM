@@ -10,7 +10,8 @@
 #include "./MODM/Evaluator.h"
 #include "./MODM/NSSeqSWAP.h"
 #include "./MODM/NSSeqSWAPInter.h"
+#include "./MODM/NSSeqInvert.h"
+#include "./MODM/NSSeqARProduct.h"
 #include "./MODM/ConstructiveBasicGreedyRandomized.h"
-#include "./MODM/ConstructiveBasicGreedyRandomized2.h"
 #include "./MODM/ProblemCommand.h"
 #endif /*MODM_H_*/

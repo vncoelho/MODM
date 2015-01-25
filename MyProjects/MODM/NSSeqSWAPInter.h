@@ -40,6 +40,7 @@ public:
 
 	bool canBeApplied(const RepMODM& rep, const AdsMODM& ads)
 	{
+		return true;
 		//cout<<"canBeApplied!"<<endl;
 		//cout<<"y1 = "<<y1<<endl;
 		//cout<<"y2 = "<<y2<<endl;
@@ -95,7 +96,8 @@ public:
 		//	budget = false;
 		bool restr = budget1 && budget2 && pOffers1 && pOffers2;
 
-		return restr && ((usedProduct1 > 0) && (usedProduct2 > 0) && differentProducts && differentOffers && !c1Saturado && !c2Saturado);
+		return differentOffers;
+		//return restr && ((usedProduct1 > 0) && (usedProduct2 > 0) && differentProducts && differentOffers && !c1Saturado && !c2Saturado);
 	}
 
 	MoveCost* cost(const Evaluation<>&, const RepMODM& rep, const AdsMODM& ads)

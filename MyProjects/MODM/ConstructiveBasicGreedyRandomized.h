@@ -59,7 +59,7 @@ public:
 
 	Solution<RepMODM, AdsMODM>& generateSolution()
 	{
-		float alpha = 0.1;
+		float alpha = 0.2;
 
 		return generateSolution(alpha);
 	}
