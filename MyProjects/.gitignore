@@ -3,5 +3,7 @@
 .cproject
 .project
 .settings
+*.o
+*.d
 *.log
 mainHFMVRP
