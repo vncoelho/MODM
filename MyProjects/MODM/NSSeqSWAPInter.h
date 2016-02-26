@@ -40,7 +40,7 @@ public:
 
 	bool canBeApplied(const RepMODM& rep, const AdsMODM& ads)
 	{
-		return true;
+
 		//cout<<"canBeApplied!"<<endl;
 		//cout<<"y1 = "<<y1<<endl;
 		//cout<<"y2 = "<<y2<<endl;
@@ -62,12 +62,12 @@ public:
 
 		bool c1Saturado = true;
 		//Verificar se o cliente c1 vai estourar
-		if (rep[c2][y2] - rep[c1][y1] + ads.clientOffers[c1] < dmproblem->getClientMaxOffers(c1))
+		if (rep[c2][y2] - rep[c1][y1] + ads.clientOffers[c1] <= dmproblem->getClientMaxOffers(c1))
 			c1Saturado = false;
 
 		bool c2Saturado = true;
 		//Verificar se o cliente c1 vai estourar
-		if (rep[c1][y1] - rep[c2][y2] + ads.clientOffers[c2] < dmproblem->getClientMaxOffers(c2))
+		if (rep[c1][y1] - rep[c2][y2] + ads.clientOffers[c2] <= dmproblem->getClientMaxOffers(c2))
 			c2Saturado = false;
 
 		bool pOffers1 = true;
@@ -96,25 +96,74 @@ public:
 		//	budget = false;
 		bool restr = budget1 && budget2 && pOffers1 && pOffers2;
 
-		return differentOffers;
-		//return restr && ((usedProduct1 > 0) && (usedProduct2 > 0) && differentProducts && differentOffers && !c1Saturado && !c2Saturado);
+
+		//cout<<"c1Saturado = "<<!c1Saturado <<endl;
+		//cout<<"c2Saturado = "<<!c2Saturado <<endl <<endl;
+
+		//return differentOffers && differentProducts && (usedProduct1 > 0) && (usedProduct2 > 0);
+		return restr && ((usedProduct1 > 0) && (usedProduct2 > 0) && differentProducts && differentOffers && !c1Saturado && !c2Saturado);
 	}
 
-	MoveCost* cost(const Evaluation<>&, const RepMODM& rep, const AdsMODM& ads)
+	MoveCost* cost(const Evaluation&, const RepMODM& rep, const AdsMODM& ads)
 	{
 		double f = 0;
 
-		double diffCost1 = (rep[c2][y2] - rep[c1][y1]) * dmproblem->getCost(c1, y1);
-		double diffCost2 = (rep[c1][y1] - rep[c2][y2]) * dmproblem->getCost(c2, y2);
-		double diffRev1 = (rep[c2][y2] - rep[c1][y1]) * dmproblem->getRevenue(c1, y1);
-		double diffRev2 = (rep[c1][y1] - rep[c2][y2]) * dmproblem->getRevenue(c2, y2);
+		double diffCostC1Y1 = (rep[c2][y2] - rep[c1][y1]) * dmproblem->getCost(c1, y1);
+		double diffCostC2Y2 = (rep[c1][y1] - rep[c2][y2]) * dmproblem->getCost(c2, y2);
+		double diffRevC1Y1 = (rep[c2][y2] - rep[c1][y1]) * dmproblem->getRevenue(c1, y1);
+		double diffRevC2Y2 = (rep[c1][y1] - rep[c2][y2]) * dmproblem->getRevenue(c2, y2);
 
-		f = (diffRev1 + diffRev2) - (diffCost1 + diffCost2);
+		f = (diffRevC1Y1 + diffRevC2Y2) - (diffCostC1Y1 + diffCostC2Y2);
 
-		return new MoveCost(f, 0);
+		double fInv = 0;
+		double penMaxOffers = 100;
+		int nOffersC1 = ads.clientOffers[c1] + rep[c2][y2] - rep[c1][y1];
+		int nOffersC2 = ads.clientOffers[c2] + rep[c1][y1] - rep[c2][y2];
+
+		if (c1 != c2)
+		{
+			if (nOffersC1 > dmproblem->getClientMaxOffers(c1) & rep[c2][y2] == 1)
+				fInv += -penMaxOffers;
+
+			if (nOffersC1 > dmproblem->getClientMaxOffers(c1) & rep[c2][y2] == 0)
+				fInv += penMaxOffers;
+
+			if (nOffersC2 > dmproblem->getClientMaxOffers(c2) & rep[c1][y1] == 1)
+				fInv += -penMaxOffers;
+
+			if (nOffersC2 > dmproblem->getClientMaxOffers(c2) & rep[c1][y1] == 0)
+				fInv += penMaxOffers;
+		}
+
+		double foInvBud = 0;
+		vector<int> vProducts;
+		vector<int> vCostDiff;
+		vProducts.push_back(y1);
+		vProducts.push_back(y2);
+		vCostDiff.push_back(diffCostC1Y1);
+		vCostDiff.push_back(diffCostC2Y2);
+		for (int i = 0; i <= 1; i++)
+		{
+			int y = vProducts[i];
+			double oldTotalCost = ads.totalCost[y];
+			double newTotalCost = oldTotalCost + vCostDiff[i];
+			double productBudgetLimit = dmproblem->getProductBudget(y);
+
+			if (newTotalCost > productBudgetLimit)
+			{
+				foInvBud += newTotalCost - productBudgetLimit;
+				if (oldTotalCost > productBudgetLimit)
+				{
+					foInvBud -= oldTotalCost - productBudgetLimit;
+				}
+			}
+
+		}
+
+		return new MoveCost(f, fInv + foInvBud * (-100000));
 	}
 
-	Move<RepMODM, AdsMODM>& apply(RepMODM& rep, AdsMODM& ads)
+	Move<RepMODM, AdsMODM>* apply(RepMODM& rep, AdsMODM& ads)
 	{
 		//cout<<rep<<endl;
 		//cout<<ads.clientOffers<<endl;
@@ -129,15 +178,17 @@ public:
 		rep[c2][y2] = oldC1;
 
 		//update ADS
-		ads.totalCost[y1] += (rep[c1][y1] * dmproblem->getCost(c1, y1) - oldC1 * dmproblem->getCost(c1, y1));
-		ads.totalCost[y2] += (rep[c2][y2] * dmproblem->getCost(c2, y2) - oldC2 * dmproblem->getCost(c2, y2));
-		ads.totalRevenue[y1] += (rep[c1][y1] * dmproblem->getRevenue(c1, y1) - oldC1 * dmproblem->getRevenue(c1, y1));
-		ads.totalRevenue[y2] += (rep[c2][y2] * dmproblem->getRevenue(c2, y2) - oldC2 * dmproblem->getRevenue(c2, y2));
+		ads.totalCost[y1] += (rep[c1][y1] - oldC1) * dmproblem->getCost(c1, y1);
+		ads.totalCost[y2] += (rep[c2][y2] - oldC2) * dmproblem->getCost(c2, y2);
+		ads.totalRevenue[y1] += (rep[c1][y1] - oldC1) * dmproblem->getRevenue(c1, y1);
+		ads.totalRevenue[y2] += (rep[c2][y2] - oldC2) * dmproblem->getRevenue(c2, y2);
+		ads.productOffers[y1] += rep[c1][y1] - oldC1;
+		ads.productOffers[y2] += rep[c2][y2] - oldC2;
 
 		ads.clientOffers[c1] += rep[c1][y1] - oldC1;
 		ads.clientOffers[c2] += rep[c2][y2] - oldC2;
 
-		return *new MoveSWAPInter(y1, y2, c1, c2, dmproblem);
+		return new MoveSWAPInter(y1, y2, c1, c2, dmproblem);
 	}
 
 	virtual bool operator==(const Move<RepMODM, AdsMODM>& _m) const
@@ -160,7 +211,6 @@ private:
 	ProblemInstance* dmproblem;
 	int y1, y2, c1, c2;
 	int nClients, nProducts;
-
 
 public:
 	NSIteratorSWAPInter(ProblemInstance* _dmproblem) :
@@ -200,12 +250,13 @@ public:
 				{
 					y1++;
 					y2 = y1 + 1;
+//					cout<<"y1 = "<<y1<<endl;
+//					cout<<"y2 = "<<y2<<endl<<endl;
 				}
 			}
 		}
 
-		//cout<<"c1 = "<<c1<<endl;
-		//cout<<"c2 = "<<c2<<endl;
+
 	}
 
 	bool isDone()
@@ -274,9 +325,18 @@ public:
 		return *new NSIteratorSWAPInter(dmproblem); // return an iterator to the neighbors of 'rep'
 	}
 
-	virtual void print() const
+	static string idComponent()
 	{
+		stringstream ss;
+		ss << NS<RepMODM, AdsMODM>::idComponent() << ":NSSeqSWAPInter";
+		return ss.str();
 	}
+
+	virtual string id() const
+	{
+		return idComponent();
+	}
+
 };
 
 }

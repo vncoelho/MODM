@@ -1,9 +1,9 @@
 10
 
 dir
-850
-http://svn.code.sf.net/p/optframe/code/trunk/Examples/PN/Instances
-http://svn.code.sf.net/p/optframe/code
+851
+svn+ssh://vncoelho@svn.code.sf.net/p/optframe/code/trunk/Examples/PN/Instances
+svn+ssh://vncoelho@svn.code.sf.net/p/optframe/code
 
 
 
@@ -12,7 +12,7 @@ http://svn.code.sf.net/p/optframe/code
 mathaddad
 
 
-svn:special svn:externals svn:needs-lock
+
 
 
 
@@ -38,16 +38,13 @@ dir
 75
 dir
 
-95
-dir
-
 inst.txt
 file
 
 
 
 
-2015-01-16T19:30:50.000000Z
+2015-01-21T18:51:12.766782Z
 1e7fa7d0ed5b94d181317f943f7ccdef
 2014-11-13T14:08:48.781548Z
 845
@@ -74,4 +71,7 @@ mathaddad
 
 
 16590
+
+95
+dir
 

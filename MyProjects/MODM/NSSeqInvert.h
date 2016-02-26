@@ -40,34 +40,71 @@ public:
 
 	bool canBeApplied(const RepMODM& rep, const AdsMODM& ads)
 	{
-		return true;
-
+		bool productOffers = (ads.productOffers[y] > 0);
+		return productOffers;
 	}
 
-	MoveCost* cost(const Evaluation<>&, const RepMODM& rep, const AdsMODM& ads)
+	MoveCost* cost(const Evaluation&, const RepMODM& rep, const AdsMODM& ads)
 	{
 		double f = 0;
 
-		double costDiff = (!rep[c][y] * dmproblem->getCost(c, y)) - (rep[c][y] * dmproblem->getCost(c, y));
-		double revDiff = (!rep[c][y] * dmproblem->getRevenue(c, y)) - (rep[c][y] * dmproblem->getRevenue(c, y));
+		int newValue;
+		if (rep[c][y] == 1)
+			newValue = 0;
+		else
+			newValue = 1;
+
+		double costDiff = (newValue - rep[c][y]) * dmproblem->getCost(c, y);
+		double revDiff = (newValue - rep[c][y]) * dmproblem->getRevenue(c, y);
 
 		f = revDiff - costDiff;
 
-		return new MoveCost(f, 0);
+		double fInv = 0;
+		double penMaxOffers = 100;
+		int nOffers = ads.clientOffers[c] + newValue - rep[c][y];
+		if (nOffers > dmproblem->getClientMaxOffers(c) && rep[c][y] == 0)
+			fInv += -penMaxOffers;
+
+		if (nOffers > dmproblem->getClientMaxOffers(c) && rep[c][y] == 1)
+			fInv += penMaxOffers;
+
+		double foInvBud = 0;
+
+		double oldTotalCost = ads.totalCost[y];
+		double newTotalCost = oldTotalCost + costDiff;
+		double productBudgetLimit = dmproblem->getProductBudget(y);
+
+		if (newTotalCost > productBudgetLimit)
+		{
+			foInvBud += newTotalCost - productBudgetLimit;
+			if (oldTotalCost > productBudgetLimit)
+			{
+				foInvBud -= oldTotalCost - productBudgetLimit;
+			}
+		}
+
+		return new MoveCost(f, fInv + foInvBud * (-1000));
 	}
 
-	Move<RepMODM, AdsMODM>& apply(RepMODM& rep, AdsMODM& ads)
+	Move<RepMODM, AdsMODM>* apply(RepMODM& rep, AdsMODM& ads)
 	{
 		int oldC = rep[c][y];
-		rep[c][y] = !rep[c][y];
+		if (oldC == 1)
+			rep[c][y] = 0;
+		else
+			rep[c][y] = 1;
+		//rep[c][y] = !rep[c][y];
+
 
 		//update ADS
-		ads.totalCost[y] += (rep[c][y] * dmproblem->getCost(c, y)) - (oldC * dmproblem->getCost(c, y));
-		ads.totalRevenue[y] += (rep[c][y] * dmproblem->getRevenue(c, y)) - (oldC * dmproblem->getRevenue(c, y));
 
-		ads.clientOffers[c] += oldC - rep[c][y];
+		ads.totalCost[y] += (rep[c][y] - oldC) * dmproblem->getCost(c, y);
+		ads.totalRevenue[y] += (rep[c][y] - oldC) * dmproblem->getRevenue(c, y);
+		ads.clientOffers[c] += rep[c][y] - oldC;
+		ads.productOffers[y] += rep[c][y] - oldC;
 
-		return *new MoveInvert(y, c, dmproblem);
+
+		return new MoveInvert(y, c, dmproblem);
 	}
 
 	virtual bool operator==(const Move<RepMODM, AdsMODM>& _m) const
@@ -117,13 +154,15 @@ public:
 		if (c >= (nClients))
 		{
 			y++;
-			c=0;
+			if (ads.productOffers[y] == 0)
+				y++;
+			c = 0;
 		}
 	}
 
 	bool isDone()
 	{
-		return (y == nProducts);
+		return (y >= nProducts);
 	}
 
 	Move<RepMODM, AdsMODM>& current()
@@ -180,8 +219,16 @@ public:
 		return *new NSIteratorInvert(ads, dmproblem); // return an iterator to the neighbors of 'rep'
 	}
 
-	virtual void print() const
+	static string idComponent()
 	{
+		stringstream ss;
+		ss << NS<RepMODM, AdsMODM>::idComponent() << ":NSSeqInvert";
+		return ss.str();
+	}
+
+	virtual string id() const
+	{
+		return idComponent();
 	}
 };
 

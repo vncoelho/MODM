@@ -59,7 +59,7 @@ public:
 
 	Solution<RepMODM, AdsMODM>& generateSolution()
 	{
-		float alpha = 0.2;
+		float alpha = 0.1;
 
 		return generateSolution(alpha);
 	}
@@ -103,6 +103,27 @@ public:
 
 				int r = pMODM.getRevenue(client, product);
 				int cost = pMODM.getCost(client, product);
+
+				double clientRisk = 0;
+				if (r >= 0 && r < 3)
+					clientRisk = 0.01;
+
+				if (r >= 3 && r < 5)
+					clientRisk = 0.05;
+
+				if (r >= 5 && r < 8)
+					clientRisk = 0.1;
+
+				if (r >= 8 && r < 11)
+					clientRisk = 0.25;
+
+				if (r >= 11 && r < 14)
+					clientRisk = 0.4;
+
+				if (r >= 14)
+					clientRisk = 0.6;
+
+				//cout << "clientRisk = " << clientRisk << endl;
 
 				double valueNPP = (r - cost) / cost;
 
@@ -159,8 +180,13 @@ public:
 					{
 						int sizeLC = ceil(alpha * NPPj[product].size());
 						int greedyRand = rg.rand(sizeLC);
-
 						int client = NPPj[product][greedyRand].second;
+
+						if (greedyRand > sizeLC)
+						{
+							cout << "BUG!!!! ON CONSTRUTIVE" << endl;
+							getchar();
+						}
 
 						NPPj[product].erase(NPPj[product].begin() + greedyRand);
 
@@ -345,6 +371,17 @@ public:
 		return *new TestSolution<RepMODM, AdsMODM>(newRep, newAds);
 	}
 
+	static string idComponent()
+	{
+		stringstream ss;
+		ss << Component::idComponent() << ":" << GRASP::family() << ":GRConstructive" << ":MODM";
+		return ss.str();
+	}
+
+	virtual string id() const
+	{
+		return idComponent();
+	}
 };
 
 }

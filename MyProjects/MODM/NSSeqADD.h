@@ -9,121 +9,232 @@
 #include "ProblemInstance.h"
 #include "DeltaStructure.h"
 #include "Solution.h"
+#include "ConstructiveBasicGreedyRandomized.h"
 
 using namespace std;
 
 namespace MODM
 {
 
-class MoveADD: public Move< RepMODM , MY_ADS  >
+class MoveADD: public Move<RepMODM, AdsMODM>
 {
 private:
-    // MOVE PARAMETERS
+
+	ProblemInstance* dmproblem;
+	RandGen& rg;
+	bool reverse;
+	vector<int> vecProducts;
+	vector<int> vecClients;
 
 public:
-    using Move< RepMODM , MY_ADS  >::apply; // prevents name hiding
-    using Move< RepMODM , MY_ADS  >::canBeApplied; // prevents name hiding
 
-    MoveADD() // ADD PARAMETERS
-    {
-    }
+	using Move<RepMODM, AdsMODM>::apply; // prevents name hiding
+	using Move<RepMODM, AdsMODM>::canBeApplied; // prevents name hiding
 
-    virtual ~MoveADD()
-    {
-    }
-    
-    void print() const
-    {
-        cout << id() << " with params: '" << "ADD MY PARAMETERS" << "'" << endl;
-    }
-    
-    string id() const
-    {
-        return Move<RepMODM , MY_ADS >::idComponent().append(":MoveADD");
-    }
-    
-    bool operator==(const Move< RepMODM , MY_ADS  >& _m) const
-    {
-        const MoveADD& m = (const MoveADD&) _m;
-        // COMPARE PARAMETERS AND RETURN TRUE IF EQUALS
-        return false;
-    }
-    
-    // Implement these methods in the .cpp file
-    
-    bool canBeApplied(const RepMODM& rep, const MY_ADS&);
+	MoveADD(bool _reverse, vector<int> _products, vector<int> _clients, ProblemInstance* _dmproblem, RandGen& _rg) :
+			reverse(_reverse), vecProducts(_products), vecClients(_clients), dmproblem(_dmproblem), rg(_rg)
+	{
 
-    Move< RepMODM , MY_ADS  >& apply(RepMODM& rep, MY_ADS&);
-    
-    MoveCost* cost(const Evaluation<  >&, const RepMODM& rep, const MY_ADS& ads);
+	}
+
+	virtual ~MoveADD()
+	{
+	}
+
+	bool canBeApplied(const RepMODM& rep, const AdsMODM& ads)
+	{
+		return true;
+	}
+
+	Move<RepMODM, AdsMODM>* apply(RepMODM& rep, AdsMODM& ads)
+	{
+		//cout<<"aplying..."<<endl;
+		//cout<<reverse<<endl;
+		vector<int> revProducts;
+		vector<int> revClients;
+		bool revReverse;
+		int nClients = dmproblem->getNumberOfClients();
+		int nProducts = dmproblem->getNumberOfProducts();
+
+		if (reverse == false)
+		{
+			revReverse = true;
+			vector<bool> whileProducts(nProducts, false);
+
+			for (int rp = 0; rp < nProducts; rp++)
+			{
+				int p = rg.rand(nProducts);
+				while (whileProducts[p] == true)
+					p = rg.rand(nProducts);
+				whileProducts[p] = true;
+
+				vector<bool> whileClients(nClients, false);
+
+				for (int rc = 0; rc < nClients; rc++)
+				{
+					int c = rg.rand(nClients);
+					while (whileClients[c] == true)
+						c = rg.rand(nClients);
+					whileClients[c] = true;
+
+					double rev = dmproblem->getRevenue(c, p);
+					double cost = dmproblem->getCost(c, p);
+					//cout << "(" << newRep[client] << "," << pMODM.getClientMaxOffers(client) << ")" << endl;
+					if ((ads.productOffers[p] > 0) && (rep[c][p] == false))
+						if (ads.clientOffers[c] < dmproblem->getClientMaxOffers(c))	//Verifico se o client pode receber mais algum produto
+							if ((rev > cost) && (cost + ads.totalCost[p]) <= dmproblem->getProductBudget(p))
+							{
+								rep[c][p] = true;
+								revProducts.push_back(p);
+								revClients.push_back(c);
+
+								//update ADS
+								ads.clientOffers[c]++;
+								ads.productOffers[p]++;
+								ads.totalCost[p] += cost;
+								ads.totalRevenue[p] += rev;
+
+							}
+				}
+			}
+		}
+		else
+		{
+			revReverse = false;
+
+			for (int i = 0; i < vecProducts.size(); i++)
+			{
+				int c = vecClients[i];
+				int p = vecProducts[i];
+				rep[c][p] = false;
+				ads.clientOffers[c]--;
+				ads.productOffers[p]--;
+				ads.totalCost[p] -= dmproblem->getCost(c, p);
+				ads.totalRevenue[p] -= dmproblem->getRevenue(c, p);
+			}
+
+		}
+
+		//cout<<"applied..."<<endl;
+		//getchar();
+		return new MoveADD(revReverse, revProducts, revClients, dmproblem, rg);
+	}
+
+	virtual bool operator==(const Move<RepMODM, AdsMODM>& _m) const
+	{
+		const MoveADD& m = (const MoveADD&) _m;
+		return (m.reverse == reverse);
+	}
+
+	void print() const
+	{
+		cout << "MoveADD( ";
+		cout << reverse << " )";
+		cout << endl;
+	}
+
+	void toString()
+	{
+		cout << "MoveADD" << endl;
+	}
 };
 
-
-
-class NSIteratorADD: public NSIterator< RepMODM , MY_ADS  >
+class NSIteratorADD: public NSIterator<RepMODM, AdsMODM>
 {
 private:
-    // ITERATOR PARAMETERS
+	ProblemInstance* dmproblem;
+	RandGen& rg;
+	int i;
 
 public:
-    NSIteratorADD() // ADD ITERATOR PARAMETERS
-    {
-    }
+	NSIteratorADD(ProblemInstance* _dmproblem, RandGen& _rg) :
+			dmproblem(_dmproblem), rg(_rg)
+	{
 
-    virtual ~NSIteratorADD()
-    {
-    }
-    
-    // Implement these methods in the .cpp file
+	}
 
-    void first();
-    void next();
-    bool isDone();
-    Move< RepMODM , MY_ADS  >& current();
+	virtual ~NSIteratorADD()
+	{
+	}
+
+	void first()
+	{
+		i = 1;
+	}
+
+	void next()
+	{
+		i++;
+		//cout << i << endl;
+	}
+
+	bool isDone()
+	{
+		return (i == 2);
+	}
+
+	Move<RepMODM, AdsMODM>& current()
+	{
+		if (isDone())
+		{
+			cout << "There isnt any current element!" << endl;
+			cout << "NSSeqADD. Aborting." << endl;
+			exit(1);
+		}
+		vector<int> vazioP;
+		vector<int> vazioC;
+
+		return *new MoveADD(false, vazioP, vazioC, dmproblem, rg); // return a random move
+	}
+
 };
 
-
-
-class NSSeqADD: public NSSeq< RepMODM , MY_ADS  >
+class NSSeqADD: public NSSeq<RepMODM, AdsMODM>
 {
 private:
-    // YOU MAY REMOVE THESE PARAMETERS IF YOU DON'T NEED (BUT PROBABLY WILL...)
-    ProblemInstance& pMODM; // problem instance data
-    RandGen& rg;                // random number generator
+	ProblemInstance* dmproblem;
+	RandGen& rg;
 
 public:
 
-    using NSSeq< RepMODM , MY_ADS  >::move; // prevents name hiding
+	using NSSeq<RepMODM, AdsMODM>::move; // prevents name hiding
 
-    // YOU MAY REMOVE THESE PARAMETERS IF YOU DON'T NEED (BUT PROBABLY WILL...)
-    NSSeqADD(ProblemInstance& _pMODM, RandGen& _rg):
-        pMODM(_pMODM), rg(_rg)
-    {
-    }
+	NSSeqADD(RandGen& _rg, ProblemInstance* _dmproblem) :
+			rg(_rg), dmproblem(_dmproblem)
+	{
 
-    virtual ~NSSeqADD()
-    {
-    }
-    
-    void print() const
-    {
-        cout << "NSSeqADD" << endl;
-    }
-    
-    string id() const
-    {
-        return NSSeq<RepMODM , MY_ADS >::idComponent().append(":NSSeqADD");
-    }
-    
-    NSIterator<RepMODM , MY_ADS >& getIterator(const RepMODM& rep, const MY_ADS&)
-    {
-        // return an iterator to the neighbors of 'rep' 
-        return * new NSIteratorADD;  // ADD POSSIBLE ITERATOR PARAMETERS
-    }
-        
-    // Implement this method in the .cpp file
+	}
 
-    Move<RepMODM , MY_ADS >& move(const RepMODM& rep, const MY_ADS&);
+	virtual ~NSSeqADD()
+	{
+	}
+
+	virtual NSIterator<RepMODM, AdsMODM>& getIterator(const RepMODM& rep, const AdsMODM& ads)
+	{
+		return *new NSIteratorADD(dmproblem, rg); // return an iterator to the neighbors of 'rep'
+	}
+
+	virtual Move<RepMODM, AdsMODM>& move(const RepMODM& rep, const AdsMODM& ads)
+	{
+		vector<int> vazioP;
+		vector<int> vazioC;
+		/*cout<<"oi ADD NS"<<endl;
+		 getchar();*/
+		return *new MoveADD(false, vazioP, vazioC, dmproblem, rg); // return a random move
+	}
+
+	static string idComponent()
+	{
+		stringstream ss;
+		ss << NS<RepMODM, AdsMODM>::idComponent() << ":NSSeqADD";
+		return ss.str();
+	}
+
+	virtual string id() const
+	{
+		return idComponent();
+	}
+
 };
 
 }

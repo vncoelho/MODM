@@ -1,6 +1,6 @@
 // OptFrame - Optimization Framework
 
-// Copyright (C) 2009, 2010, 2011
+// Copyright (C) 2009-2015
 // http://optframe.sourceforge.net/
 //
 // This file is part of the OptFrame optimization framework. This framework
@@ -31,22 +31,23 @@
 #include "ComponentBuilder.h"
 
 #include<vector>
+#include <tr1/random>
 
 namespace optframe
 {
 
 /*
-// reuse of function 'rand()' by using function 'randgen_sys_rand()'
-unsigned int randgen_sys_rand()
-{
-	return rand();
-}
+ // reuse of function 'rand()' by using function 'randgen_sys_rand()'
+ unsigned int randgen_sys_rand()
+ {
+ return rand();
+ }
 
-float system_log(float v)
-{
-	return log(v);
-}
-*/
+ float system_log(float v)
+ {
+ return log(v);
+ }
+ */
 
 class RandGen: public Component
 {
@@ -139,6 +140,31 @@ public:
 		return (double) ::rand() / RAND_MAX;
 	}
 
+	virtual int randBinomial(double p, int tries)
+	{
+		std::tr1::variate_generator<std::tr1::mt19937,
+				std::tr1::binomial_distribution<> > rngB(std::tr1::mt19937(123),
+				std::tr1::binomial_distribution<>(tries, p));
+		return rngB();
+	}
+
+	virtual int randBinomialWithNegative(double p, int tries)
+	{
+		std::tr1::variate_generator<std::tr1::mt19937,
+				std::tr1::binomial_distribution<> > rngB(std::tr1::mt19937(123),
+				std::tr1::binomial_distribution<>(tries, p));
+		int y = rngB();
+		int sign = this->rand(2);
+		if (sign == 1)
+			y *= -1;
+		return y;
+	}
+
+	virtual double randG(double mean, double stdev)
+	{
+		return randG() * stdev + mean;
+	}
+
 	// random gaussian mean 0.0 stdev 1.0
 	virtual double randG()
 	{
@@ -161,8 +187,7 @@ public:
 				x1 = 2.0 * rand01() - 1.0;
 				x2 = 2.0 * rand01() - 1.0;
 				w = x1 * x1 + x2 * x2;
-			}
-			while (w >= 1.0);
+			} while (w >= 1.0);
 
 			w = sqrt((-2.0 * ::log(w)) / w);
 			y1 = x1 * w;
@@ -215,188 +240,19 @@ public:
 	}
 };
 
-template<class R, class ADS = OPTFRAME_DEFAULT_ADS, class DS = OPTFRAME_DEFAULT_DS>
-class RandGenAction: public Action<R, ADS, DS>
-{
-public:
-
-	virtual ~RandGenAction()
-	{
-	}
-
-	virtual string usage()
-	{
-		string u;
-		u.append("OptFrame:RandGen idx   setSeed   value\n");
-		u.append("OptFrame:RandGen idx   getSeed   output_variable => long\n");
-		u.append("OptFrame:RandGen idx   rand   output_variable => long\n");
-		u.append("OptFrame:RandGen idx   rand_n   output_variable => long\n");
-		u.append("OptFrame:RandGen idx   rand01   output_variable => double\n");
-		u.append("OptFrame:RandGen idx   randG   output_variable => double");
-		return u;
-	}
-
-	virtual bool handleComponent(string type)
-	{
-		return Component::compareBase(RandGen::idComponent(), type);
-	}
-
-	virtual bool handleComponent(Component& component)
-	{
-		return component.compatible(RandGen::idComponent());
-	}
-
-	virtual bool handleAction(string action)
-	{
-		return (action == "getSeed") || (action == "setSeed") || (action == "rand") || (action == "rand_n") || (action == "rand01") || (action == "randG");
-	}
-
-	virtual bool doCast(string component, int id, string type, string variable, HeuristicFactory<R, ADS, DS>& hf, map<string, string>& d)
-	{
-		if (!handleComponent(type))
-		{
-			cout << "RandGenAction::doCast error: can't handle component type '" << type << " " << id << "'" << endl;
-			return false;
-		}
-
-		Component* comp = hf.components[component].at(id);
-
-		if (!comp)
-		{
-			cout << "RandGenAction::doCast error: NULL component '" << component << " " << id << "'" << endl;
-			return false;
-		}
-
-		if (!Component::compareBase(comp->id(), type))
-		{
-			cout << "RandGenAction::doCast error: component '" << comp->id() << " is not base of " << type << "'" << endl;
-			return false;
-		}
-
-		// remove old component from factory
-		hf.components[component].at(id) = NULL;
-
-		// cast object to lower type
-		Component* final = NULL;
-
-		if (type == RandGen::idComponent())
-		{
-			final = (RandGen*) comp;
-		}
-		else
-		{
-			cout << "RandGenAction::doCast error: no cast for type '" << type << "'" << endl;
-			return false;
-		}
-
-		// add new component
-		Scanner scanner(variable);
-		return ComponentAction<R, ADS, DS>::addAndRegister(scanner, *final, hf, d);
-	}
-
-	virtual bool doAction(string content, HeuristicFactory<R, ADS, DS>& hf, map<string, string>& dictionary, map<string, vector<string> >& ldictionary)
-	{
-		//cout << "RandGen::doAction '" << content << "'" << endl;
-
-		Scanner scanner(content);
-
-		if (!scanner.hasNext())
-			return false;
-
-		RandGen* rg;
-		hf.assign(rg, scanner.nextInt(), scanner.next());
-
-		if (!rg)
-			return false;
-
-		if (!scanner.hasNext())
-			return false;
-
-		string action = scanner.next();
-
-		if (!handleAction(action))
-			return false;
-
-		if (action == "setSeed")
-		{
-			if (!scanner.hasNext())
-				return false;
-
-			long seed = scanner.nextLong();
-			rg->setSeed(seed);
-
-			return true;
-		}
-
-		if (action == "getSeed")
-		{
-			long seed = rg->getSeed();
-			stringstream ss;
-			ss << seed;
-
-			return Action<R, ADS, DS>::registerText(scanner, ss.str(), dictionary);
-		}
-
-		if (action == "rand")
-		{
-			int v = rg->rand();
-			stringstream ss;
-			ss << v;
-
-			return Action<R, ADS, DS>::registerText(scanner, ss.str(), dictionary);
-		}
-
-		if (action == "rand_n")
-		{
-			if (!scanner.hasNext())
-				return false;
-
-			int limit = scanner.nextInt();
-
-			int v = rg->rand(limit);
-			stringstream ss;
-			ss << v;
-
-			return Action<R, ADS, DS>::registerText(scanner, ss.str(), dictionary);
-		}
-
-		if (action == "rand01")
-		{
-			double v = rg->rand01();
-			stringstream ss;
-			ss << v;
-
-			return Action<R, ADS, DS>::registerText(scanner, ss.str(), dictionary);
-		}
-
-		if (action == "randG")
-		{
-			double v = rg->randG();
-			stringstream ss;
-			ss << v;
-
-			return Action<R, ADS, DS>::registerText(scanner, ss.str(), dictionary);
-		}
-
-		// no action found!
-		return false;
-	}
-
-};
-
-
-
-template<class R, class ADS = OPTFRAME_DEFAULT_ADS, class DS = OPTFRAME_DEFAULT_DS>
-class RandGenBuilder : public ComponentBuilder<R, ADS, DS>
+template<class R, class ADS = OPTFRAME_DEFAULT_ADS>
+class RandGenBuilder: public ComponentBuilder<R, ADS>
 {
 public:
 	virtual ~RandGenBuilder()
 	{
 	}
 
-	virtual Component* buildComponent(Scanner& scanner, HeuristicFactory<R, ADS, DS>& hf, string family = "")
+	virtual Component*
+	buildComponent(Scanner& scanner, HeuristicFactory<R, ADS>& hf,
+			string family = "")
 	{
-		if(!scanner.hasNext())
+		if (!scanner.hasNext())
 			return NULL;
 
 		long seed = scanner.nextLong();
@@ -419,7 +275,7 @@ public:
 	static string idComponent()
 	{
 		stringstream ss;
-		ss << ComponentBuilder<R, ADS, DS>::idComponent() << "RandGen";
+		ss << ComponentBuilder<R, ADS>::idComponent() << "RandGen";
 		return ss.str();
 	}
 

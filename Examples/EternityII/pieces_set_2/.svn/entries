@@ -1,9 +1,9 @@
 10
 
 dir
-850
-http://svn.code.sf.net/p/optframe/code/trunk/Examples/EternityII/pieces_set_2
-http://svn.code.sf.net/p/optframe/code
+851
+svn+ssh://vncoelho@svn.code.sf.net/p/optframe/code/trunk/Examples/EternityII/pieces_set_2
+svn+ssh://vncoelho@svn.code.sf.net/p/optframe/code
 
 
 
@@ -32,7 +32,7 @@ file
 
 
 
-2014-08-19T13:13:32.086175Z
+2015-01-21T18:51:12.458782Z
 b53fefdf9d6160f34439df0500b2e6e6
 2011-04-19T17:48:13.374593Z
 218
@@ -66,7 +66,7 @@ file
 
 
 
-2014-08-19T13:13:32.086175Z
+2015-01-21T18:51:12.458782Z
 7d4336c3cf4b552176e48f717747dfbd
 2011-04-19T17:48:13.374593Z
 218
@@ -94,47 +94,13 @@ has-props
 
 204
 
-pieces_10x10.txt
-file
-
-
-
-
-2014-08-19T13:13:32.086175Z
-c6fcecff8cb8179f560829a35a108376
-2011-04-19T17:48:13.374593Z
-218
-pablomunhoz
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-946
-
 pieces_16x16.txt
 file
 
 
 
 
-2014-08-19T13:13:32.086175Z
+2015-01-21T18:51:12.458782Z
 77e646e3c1e7f2c4edff93109d4666b8
 2011-04-19T17:48:13.374593Z
 218
@@ -162,13 +128,47 @@ has-props
 
 2694
 
+pieces_10x10.txt
+file
+
+
+
+
+2015-01-21T18:51:12.458782Z
+c6fcecff8cb8179f560829a35a108376
+2011-04-19T17:48:13.374593Z
+218
+pablomunhoz
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+946
+
 pieces_20x20.txt
 file
 
 
 
 
-2014-08-19T13:13:32.086175Z
+2015-01-21T18:51:12.458782Z
 7e55d84454c234f68763244c9cd843d2
 2011-04-19T17:48:13.374593Z
 218

@@ -40,7 +40,6 @@ public:
 
 	bool canBeApplied(const RepMODM& rep, const AdsMODM& ads)
 	{
-
 		bool usedProduct = ads.productOffers[y];
 
 		bool differentOffers = false;
@@ -52,12 +51,12 @@ public:
 
 		bool c1Saturado = true;
 		//Verificar se o cliente c1 vai estourar
-		if (rep[c2][y] - rep[c1][y] + ads.clientOffers[c1] < dmproblem->getClientMaxOffers(c1))
+		if (rep[c2][y] - rep[c1][y] + ads.clientOffers[c1] <= dmproblem->getClientMaxOffers(c1))
 			c1Saturado = false;
 
 		bool c2Saturado = true;
 		//Verificar se o cliente c1 vai estourar
-		if (rep[c1][y] - rep[c2][y] + ads.clientOffers[c2] < dmproblem->getClientMaxOffers(c2))
+		if (rep[c1][y] - rep[c2][y] + ads.clientOffers[c2] <= dmproblem->getClientMaxOffers(c2))
 			c2Saturado = false;
 
 		double costDiff = (rep[c2][y] * dmproblem->getCost(c1, y) + rep[c1][y] * dmproblem->getCost(c2, y)) - (rep[c1][y] * dmproblem->getCost(c1, y) + rep[c2][y] * dmproblem->getCost(c2, y));
@@ -67,11 +66,22 @@ public:
 		if (ads.totalCost[y] + costDiff > dmproblem->getProductBudget(y))
 			budget = false;
 
-		return differentOffers;
-		//return ((usedProduct > 0) && budget && differentOffers && !c1Saturado && !c2Saturado);
+		//return differentOffers && (usedProduct > 0);
+
+//		print();
+//		cout<<usedProduct<<endl;
+//		cout<<budget<<endl;
+//		cout<<differentOffers<<endl;
+//		cout<<c1Saturado<<endl;
+//		cout<<c2Saturado<<endl;
+//		cout<<rep<<endl;
+//		cout<<rep[c1][y]<<endl;
+//		cout<<rep[c2][y]<<endl;
+//		getchar();
+		return ((usedProduct > 0) && budget && differentOffers && !c1Saturado && !c2Saturado);
 	}
 
-	MoveCost* cost(const Evaluation<>&, const RepMODM& rep, const AdsMODM& ads)
+	MoveCost* cost(const Evaluation&, const RepMODM& rep, const AdsMODM& ads)
 	{
 		double f = 0;
 
@@ -80,17 +90,47 @@ public:
 
 		f = revDiff - costDiff;
 
-		return new MoveCost(f, 0);
+		double fInv = 0;
+		double penMaxOffers = 100;
+		int nOffersC1 = ads.clientOffers[c1] + rep[c2][y] - rep[c1][y];
+		int nOffersC2 = ads.clientOffers[c2] + rep[c1][y] - rep[c2][y];
+
+		if (nOffersC1 > dmproblem->getClientMaxOffers(c1) & rep[c2][y] == 1)
+			fInv += -penMaxOffers;
+
+		if (nOffersC1 > dmproblem->getClientMaxOffers(c1) & rep[c2][y] == 0)
+			fInv += penMaxOffers;
+
+		if (nOffersC2 > dmproblem->getClientMaxOffers(c2) & rep[c1][y] == 1)
+			fInv += -penMaxOffers;
+
+		if (nOffersC2 > dmproblem->getClientMaxOffers(c2) & rep[c1][y] == 0)
+			fInv += penMaxOffers;
+
+		double foInvBud = 0;
+		double oldTotalCost = ads.totalCost[y];
+		double newTotalCost = oldTotalCost + costDiff;
+		double productBudgetLimit = dmproblem->getProductBudget(y);
+		if (newTotalCost > productBudgetLimit)
+		{
+			foInvBud += newTotalCost - productBudgetLimit;
+			if (oldTotalCost > productBudgetLimit)
+			{
+				foInvBud -= oldTotalCost - productBudgetLimit;
+			}
+		}
+
+		return new MoveCost(f, fInv + foInvBud * (-100000));
 	}
 
-	Move<RepMODM, AdsMODM>& apply(RepMODM& rep, AdsMODM& ads)
+	Move<RepMODM, AdsMODM>* apply(RepMODM& rep, AdsMODM& ads)
 	{
-		//cout<<rep<<endl;
-		//cout<<ads.clientOffers<<endl;
-		//cout<<ads.productOffers<<endl;
-		//cout<<ads.totalCost<<endl;
-		//cout<<ads.totalRevenue<<endl;
-		//getchar();
+		cout<<rep<<endl;
+		cout<<ads.clientOffers<<endl;
+		cout<<ads.productOffers<<endl;
+		cout<<ads.totalCost<<endl;
+		cout<<ads.totalRevenue<<endl;
+		getchar();
 
 		int oldC1 = rep[c1][y];
 		int oldC2 = rep[c2][y];
@@ -98,13 +138,13 @@ public:
 		rep[c2][y] = oldC1;
 
 		//update ADS
-		ads.totalCost[y] += (rep[c1][y] * dmproblem->getCost(c1, y) + rep[c2][y] * dmproblem->getCost(c2, y)) - (oldC1 * dmproblem->getCost(c1, y) + oldC2 * dmproblem->getCost(c2, y));
-		ads.totalRevenue[y] += (rep[c1][y] * dmproblem->getRevenue(c1, y) + rep[c2][y] * dmproblem->getRevenue(c2, y)) - (oldC1 * dmproblem->getRevenue(c1, y) + oldC2 * dmproblem->getRevenue(c2, y));
+		ads.totalCost[y] += (rep[c1][y] - oldC1) * dmproblem->getCost(c1, y) + (rep[c2][y] - oldC2) * dmproblem->getCost(c2, y);
+		ads.totalRevenue[y] += (rep[c1][y] - oldC1) * dmproblem->getRevenue(c1, y) + (rep[c2][y] - oldC2) * dmproblem->getRevenue(c2, y);
 
 		ads.clientOffers[c1] += oldC2 - oldC1;
 		ads.clientOffers[c2] += oldC1 - oldC2;
 
-		return *new MoveSWAP(y, c1, c2, dmproblem);
+		return new MoveSWAP(y, c1, c2, dmproblem);
 	}
 
 	virtual bool operator==(const Move<RepMODM, AdsMODM>& _m) const
@@ -222,10 +262,13 @@ public:
 		int c1 = rg.rand(nClients);
 		int c2 = rg.rand(nClients);
 
-		while (c1 == c2)
+		while ((c1 == c2) && (rep[c1][y] + rep[c2][y]) == 1)
 		{
+			y = rg.rand(nProduts);
+			c1 = rg.rand(nClients);
 			c2 = rg.rand(nClients);
 		}
+
 
 		return *new MoveSWAP(y, c1, c2, dmproblem); // return a random move
 	}
@@ -235,8 +278,16 @@ public:
 		return *new NSIteratorSWAP(ads, dmproblem); // return an iterator to the neighbors of 'rep'
 	}
 
-	virtual void print() const
+	static string idComponent()
 	{
+		stringstream ss;
+		ss << NS<RepMODM, AdsMODM>::idComponent() << ":NSSeqSWAP";
+		return ss.str();
+	}
+
+	virtual string id() const
+	{
+		return idComponent();
 	}
 };
 

@@ -29,30 +29,30 @@ class MODMEvaluator: public Evaluator<RepMODM, AdsMODM>
 private:
 	ProblemInstance& pMODM;
 	MODMADSManager& adsMan;
-	double totalTime;
-	double totalTimeEC;
-	int nEval;
+//	double totalTime;
+//	double totalTimeEC;
+//	int nEval;
 	// Your private vars
 
 public:
 	MODMEvaluator(ProblemInstance& _pMODM, MODMADSManager& _adsMan) : // If necessary, add more parameters
 			pMODM(_pMODM), adsMan(_adsMan)
 	{
-		totalTime = 0;
-		totalTimeEC = 0;
-		nEval = 0;
+//		totalTime = 0;
+//		totalTimeEC = 0;
+//		nEval = 0;
 		// Put the rest of your code here
 	}
 
-	double getAverageTime()
-	{
-		return totalTime / nEval;
-	}
-
-	double getAverageTimeEvalComplete()
-	{
-		return totalTimeEC / nEval;
-	}
+//	double getAverageTime()
+//	{
+//		return totalTime / nEval;
+//	}
+//
+//	double getAverageTimeEvalComplete()
+//	{
+//		return totalTimeEC / nEval;
+//	}
 
 	virtual ~MODMEvaluator()
 	{
@@ -65,22 +65,36 @@ public:
 		return evaluate(rep, ads);
 	}
 
-	double evaluateReturnDouble(const RepMODM& rep)
+	void evaluatorCheck(const RepMODM& rep, const AdsMODM& ads, double fo, double foInv)
 	{
-
-		Timer tEC;
 		int maxC = pMODM.getNumberOfClients();
 		int maxP = pMODM.getNumberOfProducts();
-		double foRevenue = 0;
-		double foCost = 0;
-		double foFixedCost = 0;
+		AdsMODM adsCheck;
+		adsMan.initializeADS(rep, adsCheck);
+		bool comp = adsMan.compareADS(adsCheck, ads);
+		double foRevenueAds = 0;
+		double foBudgetAds = 0;
+		double foFixedCostAds = 0;
+
+		if (comp == false)
+		{
+			cout << "bug on ADS compare!" << endl;
+			getchar();
+		}
+
+		Timer tEC;
+
+		int foRevenue = 0;
+		int foCost = 0;
+		int foFixedCost = 0;
+		int foInvMin;
 		for (int p = 0; p < maxP; p++)
 		{
 			int nOffers = 0;
 			for (int c = 0; c < maxC; c++)
 			{
-				bool offer = rep[c][p];
-				if (offer == true)
+				int offer = rep[c][p];
+				if (offer == 1)
 				{
 					foCost += pMODM.getCost(c, p);
 					foRevenue += pMODM.getRevenue(c, p);
@@ -89,9 +103,42 @@ public:
 			}
 			if (nOffers > 0)
 				foFixedCost += pMODM.getProductFixedCost(p);
+
+			if (nOffers < pMODM.getProductMinClients(p))
+				foInvMin = pMODM.getProductMinClients(p) - nOffers;
 		}
-		totalTimeEC += tEC.now();
-		return foRevenue - foCost - foFixedCost;
+
+//		totalTimeEC += tEC.now();
+
+		for (int p = 0; p < maxP; p++)
+		{
+			foRevenueAds += adsCheck.totalRevenue[p];
+			foBudgetAds += adsCheck.totalCost[p];
+
+			if (ads.productOffers[p] > 0)
+			{
+				foFixedCostAds += pMODM.getProductFixedCost(p);
+			}
+
+		}
+
+		double foCheck = foRevenue - foCost - foFixedCost;
+		double foCheckADS = foRevenueAds - foBudgetAds - foFixedCostAds;
+
+		if (foCheck != fo || foCheck != foCheckADS)
+		{
+			cout << "Bug on evaluator ! Diff evals" << endl;
+			cout << "foCheck = " << foCheck << endl;
+			cout << "foCheckADS = " << foCheckADS << endl;
+			cout << "fo = " << fo << endl;
+			/*			cout << "foRevenue = " << foRevenue << endl;
+			 cout << "foRevenueAds = " << foRevenueAds << endl;
+			 cout << "foCost = " << foCost << endl;
+			 cout << "foCostAds = " << foBudgetAds << endl;
+			 cout << "foFixedCost = " << foFixedCost << endl;
+			 cout << "foFixedCostAds = " << foFixedCostAds << endl;*/
+			getchar();
+		}
 	}
 
 	EvaluationMODM& evaluate(const RepMODM& rep, const AdsMODM& ads)
@@ -119,9 +166,9 @@ public:
 			{
 				foFixedCost += pMODM.getProductFixedCost(product);
 
-				if (ads.productOffers[product] < pMODM.minClients[product])
+				if (pMODM.getProductMinClients(product) > ads.productOffers[product])
 				{
-					foInvMin = ads.productOffers[product] - pMODM.minClients[product];
+					foInvMin += pMODM.getProductMinClients(product) - ads.productOffers[product];
 					//cout << "BUG ON EVALUATOR - NUMERO MINIMO CLIENTE NAO FOI RESPEITADO!!!" << endl;
 					//cout << "ads.productOffers[product] = " << ads.productOffers[product] << endl;
 					//cout << "pMODM.minClients[product] = " << pMODM.minClients[product] << endl;
@@ -131,7 +178,7 @@ public:
 
 			if (ads.totalCost[product] > pMODM.getProductBudget(product))
 			{
-				foInvBud = ads.totalCost[product] - pMODM.getProductBudget(product);
+				foInvBud += ads.totalCost[product] - pMODM.getProductBudget(product);
 				//cout << "BUG ON EVALUATOR - BUDGET NAO FOI RESPEITADO!!!" << endl;
 				//cout << "ads.totalCost[product] = " << ads.totalCost[product] << endl;
 				//cout << "pMODM.getProductBudget(product) = " << pMODM.getProductBudget(product) << endl;
@@ -161,7 +208,17 @@ public:
 		}
 
 		fo = foRevenue - foBudget - foFixedCost;
-		double foInv = foInvHR * (-100) + (foInvBud + foInvMin) * (-100) + foInvMaxOffersC * (-100);
+		//double foInv = foInvHR * (-100000) + foInvBud * (-100000) + foInvMin * (-20000) + foInvMaxOffersC * (-10000);
+		double foInv = foInvHR * (-100000) + foInvBud * (-100000) + foInvMin * (-20000) + foInvMaxOffersC * (-1000);
+
+//		if(foInv != 0)
+//		{
+//			cout<<foInvHR<<endl;
+//			cout<<foInvBud<<endl;
+//			cout<<foInvMin<<endl;
+//			cout<<foInvMaxOffersC<<endl;
+//			getchar();
+//		}
 		//cout << "FO = " << fo << endl;
 
 		/*
@@ -178,19 +235,20 @@ public:
 		 fclose(arquivo);
 		 }*/
 
-		totalTime += t.now();
+//		totalTime += t.now();
+//
+//		nEval++;
 
-		nEval++;
+		//evaluatorCheck(rep, ads, fo, foInv);
 
-		double foCheck = evaluateReturnDouble(rep);
-		if (foCheck != foCheck)
-		{
-			cout << foCheck << endl;
-			cout << fo << endl;
-			getchar();
-		}
 
-		return *new EvaluationMODM(fo, foInv, *new int);
+
+
+//		cout<<fo<<endl;
+//						adsMan.printADS(ads);
+//				getchar();
+//		getchar();
+		return *new EvaluationMODM(fo, foInv);
 	}
 
 	void exportEvaluation(const RepMODM& rep, const AdsMODM& ads, string filename, string outFile)
