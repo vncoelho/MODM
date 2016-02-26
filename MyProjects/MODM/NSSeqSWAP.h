@@ -125,12 +125,12 @@ public:
 
 	Move<RepMODM, AdsMODM>* apply(RepMODM& rep, AdsMODM& ads)
 	{
-		cout<<rep<<endl;
-		cout<<ads.clientOffers<<endl;
-		cout<<ads.productOffers<<endl;
-		cout<<ads.totalCost<<endl;
-		cout<<ads.totalRevenue<<endl;
-		getchar();
+//		cout<<rep<<endl;
+//		cout<<ads.clientOffers<<endl;
+//		cout<<ads.productOffers<<endl;
+//		cout<<ads.totalCost<<endl;
+//		cout<<ads.totalRevenue<<endl;
+//		getchar();
 
 		int oldC1 = rep[c1][y];
 		int oldC2 = rep[c2][y];

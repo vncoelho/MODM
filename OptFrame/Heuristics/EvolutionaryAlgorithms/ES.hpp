@@ -103,6 +103,7 @@ private:
 	int gAtual;
 	int selectionMethod;
 	double mutationRate;
+    bool isMinimization;
 
 	typedef vector<IndividuoES<R, ADS> > Populacao;
 
@@ -110,7 +111,13 @@ private:
 	{
 		double eP1 = p1.e->evaluation();
 		double eP2 = p2.e->evaluation();
-		return eP1 > eP2;
+
+
+//		if(isMinimization == true)
+//			return eP1 < eP2;
+//		else
+			return eP1 > eP2;
+
 	}
 
 
@@ -129,6 +136,9 @@ public:
 
 		iterWithoutImprovement = 0;
 		gAtual = 0;
+
+
+		isMinimization = eval.betterThan(1,2);
 
 		// selectionMethod == 0 low selection pressure (mi,lambda)
 		// selectionMethod == 1 selection pressure (mi+lambda)
@@ -508,7 +518,7 @@ public:
 			}
 
 //			cout << "Offspring mean FO, iter " << gAtual << ":\t" << fo_filhos / lambda << endl;
-			//getchar();
+//			getchar();
 
 			//APLICA B.L VND EM 'nb' INDIVIDUOS DA POP_FILHOS
 			//aplicaBuscaLocalBests(pop_filhos, 2);

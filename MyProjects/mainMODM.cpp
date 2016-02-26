@@ -260,10 +260,10 @@ int main(int argc, char **argv)
 	NSSeqADD* nsseq_addPonteiro = new NSSeqADD(rg, &p);
 	vector<NSSeq<RepMODM, AdsMODM>*> vNSeq;
 	vNSeq.push_back(nsseq_swapInterPonteiro);
-	vNSeq.push_back(nsseq_addPonteiro);
-	vNSeq.push_back(nsseq_invertPonteiro);
-	vNSeq.push_back(nsseq_arProductPonteiro);
-	vNSeq.push_back(nsseq_addPonteiro);
+	vNSeq.push_back(nsseq_swapPonteiro);
+	//vNSeq.push_back(nsseq_invertPonteiro);
+	//vNSeq.push_back(nsseq_arProductPonteiro);
+	//vNSeq.push_back(nsseq_addPonteiro);
 	vector<int> vNSeqMax(vNSeq.size(), 20);
 	double mutationRate = 0.1;
 	int selectionType = 1;
@@ -272,13 +272,16 @@ int main(int argc, char **argv)
 	int lambda = mu * 6;
 	int esMaxG = 1000000;
 
+//  mu = 20;
+//  lambda = 60;
+
 	ES<RepMODM, AdsMODM> es(eval, grC, vNSeq, vNSeqMax, emptyLS, selectionType, mutationRate, rg, mu, lambda, esMaxG, outputFile, 0);
 	es.setMessageLevel(3);
 
 	//MODMProblemCommand problemCommand(rg);
 
 	//finalSol = ils.search(120, target);
-	finalSol = es.search(10, target);
+	finalSol = es.search(1200, target);
 
 	cout << finalSol->second.evaluation() << endl;
 	cout << "ES FINISHED WITH SUCCESS!" << endl;
