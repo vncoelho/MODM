@@ -103,7 +103,7 @@ private:
 	int gAtual;
 	int selectionMethod;
 	double mutationRate;
-    bool isMinimization;
+	static bool isMinESSearch;
 
 	typedef vector<IndividuoES<R, ADS> > Populacao;
 
@@ -113,13 +113,13 @@ private:
 		double eP2 = p2.e->evaluation();
 
 
-//		if(isMinimization == true)
-//			return eP1 < eP2;
-//		else
+		if (isMinESSearch == true)
+			return eP1 < eP2;
+		else
 			return eP1 > eP2;
 
-	}
 
+	}
 
 	//TODO FIX THIS BECAUSE IT DOES NOT WORK FOR MAXIMAZATION PROBLEM
 public:
@@ -137,11 +137,7 @@ public:
 		iterWithoutImprovement = 0;
 		gAtual = 0;
 
-
-		isMinimization = eval.betterThan(1,2);
-
-		// selectionMethod == 0 low selection pressure (mi,lambda)
-		// selectionMethod == 1 selection pressure (mi+lambda)
+		isMinESSearch = false;
 	}
 
 	virtual ~ES()
