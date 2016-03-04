@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 	RandGenMersenneTwister rg;
 	long seed = time(NULL);
 
-	seed = 10;
+	//seed = 10;
 	srand(seed);
 	rg.setSeed(seed);
 
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 	int alphaBuilderInt = atoi(argv[5]);
 	int alphaNSInt = atoi(argv[6]);
 	int pop = atoi(argv[7]);
-	int argvMU = atoi(argv[7]);
+	int argvMU = atoi(argv[8]);
 
 	double alphaBuilder = alphaBuilderInt / 10.0;
 	double alphaNeighARProduct = alphaNSInt / 10.0;
@@ -140,9 +140,9 @@ int main(int argc, char **argv)
 
 
 	//filename = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
-	//filename = "./MyProjects/MODM/Instances/L-5/L-10-5-1-l.txt";
+	//filename = "./MyProjects/MODM/Instances/L-10/L-10-10-1-l.txt";
 
-	//string filename = "./MyProjects/MODM/Instances/L-5/L-15-5-2-s.txt";
+	filename = "./MyProjects/MODM/Instances/L-5/L-15-5-2-s.txt";
 
 	File* file;
 
@@ -190,12 +190,13 @@ int main(int argc, char **argv)
 	FirstImprovement<RepMODM, AdsMODM> fiSwap(eval, nsseq_swap);
 	FirstImprovement<RepMODM, AdsMODM> fiSwapInter(eval, nsseq_swapInter);
 	FirstImprovement<RepMODM, AdsMODM> fiInvert(eval, nsseq_invert);
+	FirstImprovement<RepMODM, AdsMODM> fiAR(eval, nsseq_arProduct);
 
-	int nMovesRDM = 500000;
+	int nMovesRDM = 5000;
 	RandomDescentMethod<RepMODM, AdsMODM> rdmSwap(eval, nsseq_swap, nMovesRDM);
 	RandomDescentMethod<RepMODM, AdsMODM> rdmSwapInter(eval, nsseq_swapInter, nMovesRDM);
 	RandomDescentMethod<RepMODM, AdsMODM> rdmInvert(eval, nsseq_invert, nMovesRDM);
-	RandomDescentMethod<RepMODM, AdsMODM> rdmARProduct(eval, nsseq_arProduct, nMovesRDM);
+	RandomDescentMethod<RepMODM, AdsMODM> rdmARProduct(eval, nsseq_arProduct, 100);
 	RandomDescentMethod<RepMODM, AdsMODM> rdmADD(eval, nsseq_add, 1);
 
 	vector<LocalSearch<RepMODM, AdsMODM>*> vLS;
@@ -203,12 +204,15 @@ int main(int argc, char **argv)
 	// vLS.push_back(&fiSwapInter);
 	//vLS.push_back(&fiInvert);
 
-	vLS.push_back(&rdmSwap);
-	vLS.push_back(&rdmSwapInter);
-	//vLS.push_back(&rdmInvert);
-	vLS.push_back(&rdmADD);
 
+	vLS.push_back(&rdmSwapInter);
+	vLS.push_back(&rdmSwap);
+	//vLS.push_back(&fiAR);
 	//vLS.push_back(&rdmARProduct);
+	vLS.push_back(&rdmADD);
+	//vLS.push_back(&rdmInvert);
+
+
 
 	VariableNeighborhoodDescent<RepMODM, AdsMODM> vnd(eval, vLS);
 
@@ -259,28 +263,34 @@ int main(int argc, char **argv)
 	NSSeqARProduct* nsseq_arProductPonteiro = new NSSeqARProduct(rg, &p, alphaNeighARProduct);
 	NSSeqADD* nsseq_addPonteiro = new NSSeqADD(rg, &p);
 	vector<NSSeq<RepMODM, AdsMODM>*> vNSeq;
+
+
 	vNSeq.push_back(nsseq_swapInterPonteiro);
 	vNSeq.push_back(nsseq_swapPonteiro);
-	//vNSeq.push_back(nsseq_invertPonteiro);
-	//vNSeq.push_back(nsseq_arProductPonteiro);
-	//vNSeq.push_back(nsseq_addPonteiro);
-	vector<int> vNSeqMax(vNSeq.size(), 20);
+	vNSeq.push_back(nsseq_invertPonteiro);
+	vNSeq.push_back(nsseq_arProductPonteiro);
+	vNSeq.push_back(nsseq_addPonteiro);
+
+	vector<int> vNSeqMax(vNSeq.size(), 5);
+	vNSeqMax[vNSeqMax.size()] = 1; // onlyIf Add is on, because its is a single move.
+
 	double mutationRate = 0.1;
 	int selectionType = 1;
-	string outputFile = "LogPopFOPlus";
+	string outputFile = "./ESResults/LogMIT-ES-10-COMPLETE-VND-RDM-5000-LongRun2-L5";
 	int mu = argvMU;
+	mu = 10;
 	int lambda = mu * 6;
 	int esMaxG = 1000000;
 
 //  mu = 20;
 //  lambda = 60;
 
-	ES<RepMODM, AdsMODM> es(eval, grC, vNSeq, vNSeqMax, emptyLS, selectionType, mutationRate, rg, mu, lambda, esMaxG, outputFile, 0);
+	ES<RepMODM, AdsMODM> es(eval, grC, vNSeq, vNSeqMax, vnd, selectionType, mutationRate, rg, mu, lambda, esMaxG, outputFile, 0);
 	es.setMessageLevel(3);
 
 	//MODMProblemCommand problemCommand(rg);
 
-	//finalSol = ils.search(120, target);
+	//finalSol = ils.search(1200, target);
 	finalSol = es.search(1200, target);
 
 	cout << finalSol->second.evaluation() << endl;

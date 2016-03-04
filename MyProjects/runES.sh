@@ -61,7 +61,7 @@ do
   echo "Resolvendo o problema $probl"
   for i in `seq 1`
   do 
-    ./app_MODM ./MODM/Instances/$probl ./teste ./testeES 120 1 1 5 10
+    ./app_MODM ./MODM/Instances/$probl ./teste ./testeES 120 0 0 5 10
   done
 done
 

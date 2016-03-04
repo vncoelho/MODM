@@ -66,6 +66,8 @@ public:
 
 	Move<RepMODM, AdsMODM>* apply(RepMODM& rep, AdsMODM& ads)
 	{
+
+		//Timer tnow;
 		int nClients = dmproblem->getNumberOfClients();
 
 		vector<int> revOldC;
@@ -192,6 +194,7 @@ public:
 			revReverse = false;
 		}
 
+		//cout<<"NSFinished:"<<tnow.now()<<endl;
 		return new MoveARProduct(yRemove, yNew, revOldC, revTCost, revTRevenue, revProductOffers, revReverse, dmproblem, rg, alpha);
 	}
 

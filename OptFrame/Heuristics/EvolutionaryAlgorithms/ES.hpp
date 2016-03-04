@@ -103,7 +103,7 @@ private:
 	int gAtual;
 	int selectionMethod;
 	double mutationRate;
-	static bool isMinESSearch;
+//	static bool isMinESSearch;
 
 	typedef vector<IndividuoES<R, ADS> > Populacao;
 
@@ -112,13 +112,10 @@ private:
 		double eP1 = p1.e->evaluation();
 		double eP2 = p2.e->evaluation();
 
-
-		if (isMinESSearch == true)
-			return eP1 < eP2;
-		else
-			return eP1 > eP2;
-
-
+//		if (isMinESSearch == true)
+//			return eP1 < eP2;
+//		else
+		return eP1 > eP2;
 	}
 
 	//TODO FIX THIS BECAUSE IT DOES NOT WORK FOR MAXIMAZATION PROBLEM
@@ -131,13 +128,14 @@ public:
 			eval(_eval), constructive(_constructive), vNS(_vNS), vNSeqMaxApplication(_vNSeqMaxApplication), ls(_ls), selectionMethod(_selectionMethod), mutationRate(_mutationRate), rg(_rg), mi(_mi), lambda(_lambda), gMaxWithoutImprovement(_gMaxWithoutImprovement), outputFile(_outputFile), batch(_batch)
 	{
 		nNS = vNS.size();
+
 		sStar = NULL;
 		eStar = NULL;
 
 		iterWithoutImprovement = 0;
 		gAtual = 0;
 
-		isMinESSearch = false;
+//		isMinESSearch = false;
 	}
 
 	virtual ~ES()
@@ -229,32 +227,32 @@ public:
 
 	}
 
-	/*
-	 void applyLocalSearch(Populacao& p, int nBuscas, int lambda)
-	 {
+	void applyLocalSearch(Populacao& p, int nBuscas, int lambda)
+	{
 
-	 bool aux[lambda];
-	 for (int i = 0; i++; i < lambda)
-	 aux[i] = false;
-	 int n = 0;
+		bool aux[lambda];
+		for (int i = 0; i++; i < lambda)
+			aux[i] = false;
+		int n = 0;
 
-	 while (n < nBuscas)
-	 {
-	 int ind;
-	 ind = rand() % lambda;
+		while (n < nBuscas)
+		{
+			int ind;
+			ind = rand() % lambda;
 
-	 if (aux[ind] == false)
-	 {
+			if (aux[ind] == false)
+			{
 
-	 Solution<R, ADS>* filhoo = vnd.search(p[ind].first);
-	 delete p[ind].first;
-	 p[ind].first = filhoo;
+//				Solution<R, ADS>* filhoo = &ls.search(*p[ind].sInd);
+//				delete p[ind].sInd;
+//				p[ind].sInd = filhoo;
+				ls.exec(*p[ind].sInd, *p[ind].e, 120, 10000000);
 
-	 aux[ind] = true;
-	 n++;
-	 }
-	 }
-	 }*/
+				aux[ind] = true;
+				n++;
+			}
+		}
+	}
 
 	void aplicaBuscaLocalBests(Populacao& p, int nBuscas)
 	{
@@ -287,9 +285,10 @@ public:
 
 				//cout << "VALOR DA FO ANTES DA BL= " << e->evaluation() << endl;
 
-				Solution<R, ADS>* filhoo = &ls.search(*p[ind].first);
-				delete p[ind].first;
-				p[ind].first = filhoo;
+//				Solution<R, ADS>* filhoo = &ls.search(*p[ind].sInd);
+//				delete p[ind].sInd;
+//				p[ind].sInd = filhoo;
+				ls.exec(p[ind].sInd, p[ind].e, 120, 10000000);
 
 				//EvaluationOPM* ee = eval.evaluate(p[ind].first);
 				//cout << "VALOR DA FO DPS DA BL= " << ee->evaluation() << endl;
@@ -380,6 +379,7 @@ public:
 						double prNap = pr * nap;
 						fprintf(arquivo, "%f\t%d\t%f\t", pr, nap, prNap);
 					}
+					fprintf(arquivo, "%f\t", eStar->evaluation());
 					fprintf(arquivo, "\n");
 					fclose(arquivo);
 				}
@@ -437,6 +437,7 @@ public:
 		{
 			//PartialGreedyInitialSolutionOPM is(opm, 0.4, 0.4, 0.4); // waste, ore, shovel
 			Solution<R, ADS>* s = &constructive.generateSolution();
+
 			vector<EsStructure<R, ADS> >* m = new vector<EsStructure<R, ADS> >;
 
 			for (int aux = 0; aux < nNS; aux++)
@@ -446,7 +447,12 @@ public:
 			}
 
 			Evaluation* e = &eval.evaluate(*s);
+
+			ls.exec(*s, *e, timelimit, target_f);
+
 			IndividuoES<R, ADS> ind(s, e, m, nNS);
+
+
 			pop.push_back(ind);
 
 			fo_inicial += e->evaluation();
@@ -517,10 +523,10 @@ public:
 //			getchar();
 
 			//APLICA B.L VND EM 'nb' INDIVIDUOS DA POP_FILHOS
-			//aplicaBuscaLocalBests(pop_filhos, 2);
+			//aplicaBuscaLocalBests(pop_filhos, 5);
 			//cout<<"Applying local Search ..."<<endl;
 
-			//applyLocalSearch(pop_filhos, nb, lambda);
+			applyLocalSearch(pop_filhos, 3, lambda);
 
 			//cout<<" local search finished!"<<endl;
 			//getchar();
@@ -607,6 +613,7 @@ public:
 						double prNap = meanParams[param].second * meanParams[param].first;
 						fprintf(arquivo, "%f\t%f\t%f\t", pr, nap, prNap);
 					}
+					fprintf(arquivo, "%f\t", eStar->evaluation());
 					fprintf(arquivo, "\n");
 					fclose(arquivo);
 				}

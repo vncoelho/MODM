@@ -59,23 +59,40 @@ public:
 		if (reverse == false)
 		{
 			revReverse = true;
-			vector<bool> whileProducts(nProducts, false);
+//			vector<bool> whileProducts(nProducts, false);
+			vector<int> orderProducts(nProducts);
+			for (int rp = 0; rp < nProducts; rp++)
+											orderProducts[rp] = rp;
+
+			std::random_shuffle(orderProducts.begin(), orderProducts.end());
 
 			for (int rp = 0; rp < nProducts; rp++)
 			{
-				int p = rg.rand(nProducts);
-				while (whileProducts[p] == true)
-					p = rg.rand(nProducts);
-				whileProducts[p] = true;
+				int p  = orderProducts[rp];
+//				int p = rg.rand(nProducts);
+//				while (whileProducts[p] == true)
+//					p = rg.rand(nProducts);
+//				whileProducts[p] = true;
 
-				vector<bool> whileClients(nClients, false);
+//				vector<bool> whileClients(nClients, false);
+				vector<int> order(nClients);
+				for (int rc = 0; rc < nClients; rc++)
+				{
+					order[rc] = rc;
+				}
+
+				std::random_shuffle(order.begin(), order.end());
 
 				for (int rc = 0; rc < nClients; rc++)
 				{
-					int c = rg.rand(nClients);
-					while (whileClients[c] == true)
-						c = rg.rand(nClients);
-					whileClients[c] = true;
+
+					int c = order[rc];
+//					c = rg.rand(nClients);
+//
+//					while (whileClients[c] == true)
+//						c = rg.rand(nClients);
+//
+//					whileClients[c] = true;
 
 					double rev = dmproblem->getRevenue(c, p);
 					double cost = dmproblem->getCost(c, p);

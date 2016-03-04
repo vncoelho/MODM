@@ -275,7 +275,7 @@ public:
 						bugs++;
 					newRep[client][bestj] = true;
 					offers[client]++;
-					if (offers[client] == pMODM.getClientMaxOffers(client))
+					if (offers[client] >= pMODM.getClientMaxOffers(client))
 					{
 						availableClients[client] = false;
 						notAvailable++;
