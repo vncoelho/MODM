@@ -148,12 +148,12 @@ MODM/ConstructiveBasicGreedyRandomized.o: \
  /usr/include/c++/4.8/tr1/random.h /usr/include/c++/4.8/tr1/random.tcc \
  MODM/ProblemInstance.h MODM/../../OptFrame/Scanner++/Scanner.h \
  MODM/../../OptFrame/Component.hpp MODM/../../OptFrame/Util/Matrix.hpp \
- MODM/Representation.h MODM/../../OptFrame/Util/printable.h \
+ MODM/../../OptFrame/Util/printable.h MODM/Representation.h \
  MODM/Solution.h MODM/../../OptFrame/Solution.hpp MODM/ADS.h \
- MODM/Evaluator.h MODM/../../OptFrame/Evaluation.hpp \
- MODM/../../OptFrame/Evaluator.hpp MODM/../../OptFrame/ADSManager.hpp \
- MODM/../../OptFrame/Move.hpp MODM/../../OptFrame/MoveCost.hpp \
- MODM/../../OptFrame/Direction.hpp \
+ /usr/include/assert.h MODM/Evaluator.h \
+ MODM/../../OptFrame/Evaluation.hpp MODM/../../OptFrame/Evaluator.hpp \
+ MODM/../../OptFrame/ADSManager.hpp MODM/../../OptFrame/Move.hpp \
+ MODM/../../OptFrame/MoveCost.hpp MODM/../../OptFrame/Direction.hpp \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include/float.h \
  MODM/../../OptFrame/Timer.hpp /usr/include/x86_64-linux-gnu/sys/time.h \
  MODM/DeltaStructure.h MODM/Evaluation.h MODM/ADSManager.h \
@@ -539,15 +539,17 @@ MODM/../../OptFrame/Component.hpp:
 
 MODM/../../OptFrame/Util/Matrix.hpp:
 
-MODM/Representation.h:
-
 MODM/../../OptFrame/Util/printable.h:
+
+MODM/Representation.h:
 
 MODM/Solution.h:
 
 MODM/../../OptFrame/Solution.hpp:
 
 MODM/ADS.h:
+
+/usr/include/assert.h:
 
 MODM/Evaluator.h:
 

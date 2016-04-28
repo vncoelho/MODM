@@ -142,7 +142,7 @@ MODM/NSSeqADD.o: MODM/NSSeqADD.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8/tr1/random.h /usr/include/c++/4.8/tr1/random.tcc \
  MODM/ProblemInstance.h MODM/../../OptFrame/Scanner++/Scanner.h \
  MODM/../../OptFrame/Component.hpp MODM/../../OptFrame/Util/Matrix.hpp \
- MODM/DeltaStructure.h MODM/../../OptFrame/Util/printable.h \
+ MODM/../../OptFrame/Util/printable.h MODM/DeltaStructure.h \
  MODM/Solution.h MODM/../../OptFrame/Solution.hpp MODM/Representation.h \
  MODM/ADS.h MODM/ConstructiveBasicGreedyRandomized.h \
  MODM/../../OptFrame/Constructive.h \
@@ -152,9 +152,10 @@ MODM/NSSeqADD.o: MODM/NSSeqADD.cpp /usr/include/stdc-predef.h \
  MODM/../../OptFrame/Heuristics/GRASP/GRASPFamily.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/string3.h \
  MODM/../../OptFrame/Util/TestSolution.hpp \
- MODM/../../OptFrame/Util/../Solution.hpp MODM/Evaluator.h \
- MODM/../../OptFrame/Evaluation.hpp MODM/../../OptFrame/Evaluator.hpp \
- MODM/../../OptFrame/ADSManager.hpp MODM/../../OptFrame/Direction.hpp \
+ MODM/../../OptFrame/Util/../Solution.hpp /usr/include/assert.h \
+ MODM/Evaluator.h MODM/../../OptFrame/Evaluation.hpp \
+ MODM/../../OptFrame/Evaluator.hpp MODM/../../OptFrame/ADSManager.hpp \
+ MODM/../../OptFrame/Direction.hpp \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include/float.h \
  MODM/../../OptFrame/Timer.hpp /usr/include/x86_64-linux-gnu/sys/time.h \
  MODM/Evaluation.h MODM/ADSManager.h MODM/../../OptFrame/ADSManager.hpp
@@ -533,9 +534,9 @@ MODM/../../OptFrame/Component.hpp:
 
 MODM/../../OptFrame/Util/Matrix.hpp:
 
-MODM/DeltaStructure.h:
-
 MODM/../../OptFrame/Util/printable.h:
+
+MODM/DeltaStructure.h:
 
 MODM/Solution.h:
 
@@ -564,6 +565,8 @@ MODM/../../OptFrame/Heuristics/GRASP/GRASPFamily.h:
 MODM/../../OptFrame/Util/TestSolution.hpp:
 
 MODM/../../OptFrame/Util/../Solution.hpp:
+
+/usr/include/assert.h:
 
 MODM/Evaluator.h:
 

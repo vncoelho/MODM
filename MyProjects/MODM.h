@@ -15,5 +15,4 @@
 #include "./MODM/NSSeqADD.h"
 #include "./MODM/NSSeqARProduct.h"
 #include "./MODM/ConstructiveBasicGreedyRandomized.h"
-#include "./MODM/ProblemCommand.h"
 #endif /*MODM_H_*/

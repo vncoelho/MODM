@@ -246,6 +246,57 @@ public:
 		return v[bestC].first;
 	}
 
+//	bool addSolution(Population<R, ADS>& p, Solution<R, ADS>& s)
+//		{
+//			vector<Evaluator<R, ADS>*>* _v_e = mev.getEvaluators();
+//			if (!_v_e)
+//			{
+//				cout << "2PPLS::addSolution (2) error: not using separated evaluators!" << endl;
+//				exit(1);
+//			}
+//			vector<Evaluator<R, ADS>*> v_e(*_v_e);
+//			delete _v_e;
+//
+//			vector<double> fitnessNewInd;
+//
+//			for (int evalIndex = 0; evalIndex < v_e.size(); evalIndex++)
+//			{
+//				Evaluation &e = v_e[evalIndex]->evaluate(s);
+//
+//				if (!e.isFeasible())
+//				{
+//					delete &e;
+//					return false;
+//				}
+//
+//				fitnessNewInd.push_back(e.evaluation());
+//				delete &e;
+//			}
+//
+//			bool added = true;
+//			for (int ind = 0; ind < p.size(); ind++)
+//			{
+//
+//				vector<double> popIndFitness = p.getFitness(ind);
+//				if (pDominanceWeak.dominates(popIndFitness, fitnessNewInd))
+//					return false;
+//
+//				if (pDominance.dominates(fitnessNewInd, popIndFitness))
+//					delete &p.remove(ind);
+//
+//	//			if (pDominanceWeak.dominates(p.at(ind), s))
+//	//				return false;
+//	//
+//	//			if (pDominance.dominates(s, p.at(ind)))
+//	//				delete &p.remove(ind);
+//
+//			}
+//			if (added == true)
+//				p.push_back(s, fitnessNewInd);
+//
+//			return added;
+//		}
+
 };
 
 }

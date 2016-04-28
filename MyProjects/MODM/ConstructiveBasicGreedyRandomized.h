@@ -10,7 +10,7 @@
 
 #include "Representation.h"
 #include "Solution.h"
-
+#include <assert.h>
 #include "Evaluator.h"
 
 //#include <list>
@@ -125,6 +125,7 @@ public:
 
 				//cout << "clientRisk = " << clientRisk << endl;
 
+				assert(cost>0);
 				double valueNPP = (r - cost) / cost;
 
 				NPP[product].push_back(make_pair(valueNPP, client));
@@ -365,6 +366,8 @@ public:
 
 		if (Component::verbose)
 			cout << "Fim Constructive!";
+
+//		cout << "Fim Constructive!";
 
 		//cout << "Tempo Atual: " << t.now() << endl;
 		//getchar();

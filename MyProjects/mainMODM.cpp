@@ -122,7 +122,6 @@ int main(int argc, char **argv)
 	double alphaBuilder = alphaBuilderInt / 10.0;
 	double alphaNeighARProduct = alphaNSInt / 10.0;
 
-
 	string filename = instancia;
 	string output = saida;
 	string outputGeral = saidaGeral;
@@ -135,14 +134,13 @@ int main(int argc, char **argv)
 	cout << "initial population size = " << pop << endl;
 	cout << "Seed = " << seed << endl;
 
-
-	filename = filename +".txt";
-
+	filename = filename + ".txt";
 
 	//filename = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
-	//filename = "./MyProjects/MODM/Instances/L-10/L-10-10-1-l.txt";
+	filename = "./MyProjects/MODM/Instances/L-10/L-10-10-1-l.txt";
 
-	filename = "./MyProjects/MODM/Instances/L-5/L-15-5-2-s.txt";
+	filename = "testInstanceBookOfferCampaing.txt";
+	//filename = "./MyProjects/MODM/Instances/L-5/L-15-5-2-s.txt";
 
 	File* file;
 
@@ -157,7 +155,18 @@ int main(int argc, char **argv)
 
 	Scanner scanner(file);
 
-	ProblemInstance p(scanner);
+	ProblemInstance p(scanner, rg);
+
+	int nClients = 100;//10;
+	int nBooks = 10;//20;
+
+	//p.generateExample();
+	//getchar();
+
+//		p.generateBicliqueProblem(nClients, nBooks);
+//
+//		getchar();
+//		getchar();
 
 	// add everything to the HeuristicFactory 'hf'
 
@@ -166,6 +175,7 @@ int main(int argc, char **argv)
 	MODMRobustnessEvaluator evalRobustness(p, adsMan, rg);
 
 	ConstructiveBasicGreedyRandomized grC(p, rg, adsMan);
+//	grC.setMessageLevel(4);
 
 	NSSeqSWAP nsseq_swap(rg, &p);
 	NSSeqSWAPInter nsseq_swapInter(rg, &p);
@@ -192,7 +202,7 @@ int main(int argc, char **argv)
 	FirstImprovement<RepMODM, AdsMODM> fiInvert(eval, nsseq_invert);
 	FirstImprovement<RepMODM, AdsMODM> fiAR(eval, nsseq_arProduct);
 
-	int nMovesRDM = 5000;
+	int nMovesRDM = 50000;
 	RandomDescentMethod<RepMODM, AdsMODM> rdmSwap(eval, nsseq_swap, nMovesRDM);
 	RandomDescentMethod<RepMODM, AdsMODM> rdmSwapInter(eval, nsseq_swapInter, nMovesRDM);
 	RandomDescentMethod<RepMODM, AdsMODM> rdmInvert(eval, nsseq_invert, nMovesRDM);
@@ -204,15 +214,12 @@ int main(int argc, char **argv)
 	// vLS.push_back(&fiSwapInter);
 	//vLS.push_back(&fiInvert);
 
-
 	vLS.push_back(&rdmSwapInter);
 	vLS.push_back(&rdmSwap);
 	//vLS.push_back(&fiAR);
 	//vLS.push_back(&rdmARProduct);
 	vLS.push_back(&rdmADD);
 	//vLS.push_back(&rdmInvert);
-
-
 
 	VariableNeighborhoodDescent<RepMODM, AdsMODM> vnd(eval, vLS);
 
@@ -264,15 +271,14 @@ int main(int argc, char **argv)
 	NSSeqADD* nsseq_addPonteiro = new NSSeqADD(rg, &p);
 	vector<NSSeq<RepMODM, AdsMODM>*> vNSeq;
 
-
 	vNSeq.push_back(nsseq_swapInterPonteiro);
 	vNSeq.push_back(nsseq_swapPonteiro);
 	vNSeq.push_back(nsseq_invertPonteiro);
 	vNSeq.push_back(nsseq_arProductPonteiro);
 	vNSeq.push_back(nsseq_addPonteiro);
 
-	vector<int> vNSeqMax(vNSeq.size(), 5);
-	vNSeqMax[vNSeqMax.size()] = 1; // onlyIf Add is on, because its is a single move.
+	vector<int> vNSeqMax(vNSeq.size(), 10);
+	vNSeqMax[vNSeqMax.size() - 1] = 1; // onlyIf Add is on, because its is a single move.
 
 	double mutationRate = 0.1;
 	int selectionType = 1;
@@ -290,24 +296,23 @@ int main(int argc, char **argv)
 
 	//MODMProblemCommand problemCommand(rg);
 
-	//finalSol = ils.search(1200, target);
-	finalSol = es.search(1200, target);
+	finalSol = ils.search(1200, target);
+//	finalSol = es.search(1200, target);
 
 	cout << finalSol->second.evaluation() << endl;
 	cout << "ES FINISHED WITH SUCCESS!" << endl;
-		 double fo = finalSol->second.evaluation();
-		 int isFeasible = finalSol->second.isFeasible();
+	double fo = finalSol->second.evaluation();
+	int isFeasible = finalSol->second.isFeasible();
 	FILE* fGeral = fopen(outputGeral.c_str(), "a");
 
 	size_t pos = filename.find("Instances/");
 	string instName = filename.substr(pos);
 
-	fprintf(fGeral, "%s\t%.7f\t%d \t %f\t%f\t%d\t%ld\n", instName.c_str(), fo, isFeasible, alphaBuilder, alphaNeighARProduct, mu,seed);
+	fprintf(fGeral, "%s\t%.7f\t%d \t %f\t%f\t%d\t%ld\n", instName.c_str(), fo, isFeasible, alphaBuilder, alphaNeighARProduct, mu, seed);
 
 	fclose(fGeral);
 
 	return 0;
-
 
 //	// ================ END MIT PAPER
 //

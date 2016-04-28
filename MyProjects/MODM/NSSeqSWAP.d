@@ -142,7 +142,7 @@ MODM/NSSeqSWAP.o: MODM/NSSeqSWAP.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8/tr1/random.h /usr/include/c++/4.8/tr1/random.tcc \
  MODM/ProblemInstance.h MODM/../../OptFrame/Scanner++/Scanner.h \
  MODM/../../OptFrame/Component.hpp MODM/../../OptFrame/Util/Matrix.hpp \
- MODM/DeltaStructure.h MODM/../../OptFrame/Util/printable.h \
+ MODM/../../OptFrame/Util/printable.h MODM/DeltaStructure.h \
  MODM/Solution.h MODM/../../OptFrame/Solution.hpp MODM/Representation.h \
  MODM/ADS.h
 
@@ -520,9 +520,9 @@ MODM/../../OptFrame/Component.hpp:
 
 MODM/../../OptFrame/Util/Matrix.hpp:
 
-MODM/DeltaStructure.h:
-
 MODM/../../OptFrame/Util/printable.h:
+
+MODM/DeltaStructure.h:
 
 MODM/Solution.h:
 
