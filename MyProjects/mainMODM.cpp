@@ -87,7 +87,7 @@ double hipervolume(vector<vector<double> > v)
 int main(int argc, char **argv)
 {
 
-	int nOfArguments = 8;
+	int nOfArguments = 11;
 	if (argc != (1 + nOfArguments))
 	{
 		cout << "Parametros incorretos!" << endl;
@@ -99,25 +99,32 @@ int main(int argc, char **argv)
 				"5 - alphaBuilderInt\n"
 				"6 - alphaNSInt \n"
 				"7 - initialSol \n"
-				"8 - mu \n" << endl;
+				"8 - mu \n"
+				"9 - pp \n"
+				"10 - nBooks \n"
+				"11 - batch \n \n";
 		exit(1);
 	}
 
 	RandGenMersenneTwister rg;
 	long seed = time(NULL);
 
-	//seed = 10;
+//	seed = 30;
+
 	srand(seed);
 	rg.setSeed(seed);
 
 	const char* instancia = argv[1];
 	const char* saida = argv[2];
 	const char* saidaGeral = argv[3];
-	int timeILS = atoi(argv[4]);
+	int argvTimeILS = atoi(argv[4]);
 	int alphaBuilderInt = atoi(argv[5]);
 	int alphaNSInt = atoi(argv[6]);
 	int pop = atoi(argv[7]);
 	int argvMU = atoi(argv[8]);
+	int argvPP = atoi(argv[9]);
+	int argvNBooks = atoi(argv[10]);
+	int argvNBatch = atoi(argv[11]);
 
 	double alphaBuilder = alphaBuilderInt / 10.0;
 	double alphaNeighARProduct = alphaNSInt / 10.0;
@@ -128,7 +135,7 @@ int main(int argc, char **argv)
 	cout << "filename = " << filename << endl;
 	cout << "output = " << output << endl;
 	cout << "outputGeral = " << outputGeral << endl;
-	cout << "timeILS = " << timeILS << endl;
+	cout << "argvTimeILS = " << argvTimeILS << endl;
 	cout << "alphaBuilder = " << alphaBuilder << endl;
 	cout << "alphaNeighARProduct = " << alphaNeighARProduct << endl;
 	cout << "initial population size = " << pop << endl;
@@ -137,10 +144,17 @@ int main(int argc, char **argv)
 	filename = filename + ".txt";
 
 	//filename = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
-	filename = "./MyProjects/MODM/Instances/L-10/L-10-10-1-l.txt";
+//	filename = "./MyProjects/MODM/Instances/L-10/L-10-10-1-l.txt";
 
-	filename = "testInstanceBookOfferCampaing.txt";
+	//filename = "./MyProjects/MODM/Instances/BooksCampaign/B200-C100-pp1-1";
 	//filename = "./MyProjects/MODM/Instances/L-5/L-15-5-2-s.txt";
+	//filename = "testInstanceBookOfferCampaing.txt";
+
+	//for the booksOffer
+	double profitRate = 1 + (argvPP / 10.0);
+	stringstream ssInstanceName;
+	ssInstanceName << "./MyProjects/MODM/Instances/BooksCampaign/batch" << argvNBatch << "/" << "B" << argvNBooks << "-C" << 100 << "-pp" << profitRate << "-" << argvNBatch;
+	filename = ssInstanceName.str();
 
 	File* file;
 
@@ -157,18 +171,34 @@ int main(int argc, char **argv)
 
 	ProblemInstance p(scanner, rg);
 
-	int nClients = 100;//10;
-	int nBooks = 10;//20;
+//	vector<int> nClientsInstance;
+//	nClientsInstance.push_back(100);
+//	nClientsInstance.push_back(1000);
 
-	//p.generateExample();
-	//getchar();
-
-//		p.generateBicliqueProblem(nClients, nBooks);
+//	int nClients = 100;	//10;
+//	int nBooks = 200;	//20;
+//	double profitRate = 1 + (pp / 10.0);
+//	double hurdleRate = 0.15; // 0.05 and 0.1
+//	double maxPerClients = 3; // 0.05 and 0.1
+//	int nMInstancePerConfiguration = 1;
 //
-//		getchar();
-//		getchar();
+//	for (int batch = 1; batch <= nMInstancePerConfiguration; batch++)
+//	{
+//		p.generateBicliqueProblem(100, 10, profitRate, hurdleRate, maxPerClients, batch);
+//		p.generateBicliqueProblem(100, 20, profitRate, hurdleRate, maxPerClients, batch);
+//		p.generateBicliqueProblem(100, 50, profitRate, hurdleRate, maxPerClients, batch);
+//		p.generateBicliqueProblem(100, 100, profitRate, hurdleRate, maxPerClients, batch);
+//		p.generateBicliqueProblem(100, 200, profitRate, hurdleRate, maxPerClients, batch);
+//	}
 
-	// add everything to the HeuristicFactory 'hf'
+//	p.generateExample();
+//	getchar();
+
+//	p.generateBicliqueProblem(nClients, nBooks, profitRate, hurdleRate, maxPerClients, 1);
+//	cout << "instance generated with success!" << endl;
+//	exit(1);
+
+// add everything to the HeuristicFactory 'hf'
 
 	MODMADSManager adsMan(p);
 	MODMEvaluator eval(p, adsMan);
@@ -183,7 +213,7 @@ int main(int argc, char **argv)
 	NSSeqARProduct nsseq_arProduct(rg, &p, alphaNeighARProduct);
 	NSSeqADD nsseq_add(rg, &p);
 
-	// ================ BEGIN OF CHECK MODULE ================
+// ================ BEGIN OF CHECK MODULE ================
 
 	/*	CheckCommand<RepMODM, AdsMODM> check(false);
 	 check.add(grC);
@@ -196,7 +226,7 @@ int main(int argc, char **argv)
 	 check.run(1, 1);
 	 getchar();*/
 
-	// ================ END OF CHECK MODULE ================
+// ================ END OF CHECK MODULE ================
 	FirstImprovement<RepMODM, AdsMODM> fiSwap(eval, nsseq_swap);
 	FirstImprovement<RepMODM, AdsMODM> fiSwapInter(eval, nsseq_swapInter);
 	FirstImprovement<RepMODM, AdsMODM> fiInvert(eval, nsseq_invert);
@@ -210,22 +240,22 @@ int main(int argc, char **argv)
 	RandomDescentMethod<RepMODM, AdsMODM> rdmADD(eval, nsseq_add, 1);
 
 	vector<LocalSearch<RepMODM, AdsMODM>*> vLS;
-	//vLS.push_back(&fiSwap);
-	// vLS.push_back(&fiSwapInter);
-	//vLS.push_back(&fiInvert);
+//vLS.push_back(&fiSwap);
+// vLS.push_back(&fiSwapInter);
+//vLS.push_back(&fiInvert);
 
 	vLS.push_back(&rdmSwapInter);
 	vLS.push_back(&rdmSwap);
-	//vLS.push_back(&fiAR);
-	//vLS.push_back(&rdmARProduct);
+//vLS.push_back(&fiAR);
+//vLS.push_back(&rdmARProduct);
 	vLS.push_back(&rdmADD);
-	//vLS.push_back(&rdmInvert);
+//vLS.push_back(&rdmInvert);
 
 	VariableNeighborhoodDescent<RepMODM, AdsMODM> vnd(eval, vLS);
 
-	//ILSLPerturbationLPlus2<RepMODM, AdsMODM> ilsl_pert(eval, 100000, nsseq_invert, rg);
+//ILSLPerturbationLPlus2<RepMODM, AdsMODM> ilsl_pert(eval, 100000, nsseq_invert, rg);
 	ILSLPerturbationLPlus2<RepMODM, AdsMODM> ilsl_pert(eval, 100000, nsseq_arProduct, rg);
-	//ILSLPerturbationLPlus2<RepMODM, AdsMODM> ilsl_pert(eval, 100000, nsseq_add, rg);
+//ILSLPerturbationLPlus2<RepMODM, AdsMODM> ilsl_pert(eval, 100000, nsseq_add, rg);
 	ilsl_pert.add_ns(nsseq_add);
 	ilsl_pert.add_ns(nsseq_swapInter);
 	ilsl_pert.add_ns(nsseq_swap);
@@ -242,11 +272,11 @@ int main(int argc, char **argv)
 	g.setMessageLevel(3);
 	int timeGRASP = 100;
 	double target = 9999999;
-	//MODMProblemCommand problemCommand(rg);
-	//finalSol = g.search(timeGRASP,target);
+//MODMProblemCommand problemCommand(rg);
+//finalSol = g.search(timeGRASP,target);
 
-	//===========================================
-	//MO
+//===========================================
+//MO
 	vector<Evaluator<RepMODM, AdsMODM>*> v_e;
 	v_e.push_back(&eval);
 	v_e.push_back(&evalRobustness);
@@ -263,7 +293,7 @@ int main(int argc, char **argv)
 	neighboors.push_back(&nsseq_swapInter);
 	neighboors.push_back(&nsseq_swap);
 
-	//======================= EVolution Strategies for the MIT PAPER ==============
+//======================= EVolution Strategies for the MIT PAPER ==============
 	NSSeqSWAP* nsseq_swapPonteiro = new NSSeqSWAP(rg, &p);
 	NSSeqSWAPInter* nsseq_swapInterPonteiro = new NSSeqSWAPInter(rg, &p);
 	NSSeqInvert* nsseq_invertPonteiro = new NSSeqInvert(rg, &p);
@@ -294,9 +324,9 @@ int main(int argc, char **argv)
 	ES<RepMODM, AdsMODM> es(eval, grC, vNSeq, vNSeqMax, vnd, selectionType, mutationRate, rg, mu, lambda, esMaxG, outputFile, 0);
 	es.setMessageLevel(3);
 
-	//MODMProblemCommand problemCommand(rg);
+//MODMProblemCommand problemCommand(rg);
 
-	finalSol = ils.search(1200, target);
+	finalSol = ils.search(argvTimeILS, target);
 //	finalSol = es.search(1200, target);
 
 	cout << finalSol->second.evaluation() << endl;
@@ -308,7 +338,10 @@ int main(int argc, char **argv)
 	size_t pos = filename.find("Instances/");
 	string instName = filename.substr(pos);
 
-	fprintf(fGeral, "%s\t%.7f\t%d \t %f\t%f\t%d\t%ld\n", instName.c_str(), fo, isFeasible, alphaBuilder, alphaNeighARProduct, mu, seed);
+//print books
+	fprintf(fGeral, "%d\t%d\t%d\t%d\t%ld\t\n", argvNBooks, argvPP, argvNBatch, argvTimeILS, seed);
+
+	//fprintf(fGeral, "%s\t%.7f\t%d \t %f\t%f\t%d\t%ld\n", instName.c_str(), fo, isFeasible, alphaBuilder, alphaNeighARProduct, mu, seed);
 
 	fclose(fGeral);
 

@@ -170,14 +170,13 @@ public:
 	{
 	}
 
-	void generateInstance(int nClients, int nBooks, Matrix<vector<double> >& prob)
+	void generateInstance(int nClients, int nBooks, Matrix<vector<double> >& prob, double profitRate, double hurdleRate, int maxPerClients, int batch)
 	{
 		//generate book prices
 		vector<int> booksProfit(nBooks);
 		vector<int> booksCost(nBooks);
 		vector<int> booksDeliverCost(nClients);
 
-		double profitRate = 1.7;
 		for (int i = 0; i < nClients; i++)
 		{
 			booksDeliverCost[i] = rg.rand(20) + 5;
@@ -199,16 +198,13 @@ public:
 				double revenue = 0;
 				for (unsigned w = 0; w < nBooks; w++)
 				{
-					revenue += prob(c, b)[w] * booksProfit[w];
+					revenue += prob(c, b)[w] * (booksProfit[w] - booksCost[b]);
 				}
 				instanceTODMCProfit(c, b) = revenue;
 				instanceTODMCCosts(c, b) = booksCost[b] + booksDeliverCost[c];
 			}
 		}
 
-		double hurdleRate = 0.15; // 0.05 and 0.1
-
-		double maxPerClients = 3; // 0.05 and 0.1
 		vector<int> maxOffersPerClient;
 		int sumMOffers = 0;
 		for (unsigned c = 0; c < nClients; c++)
@@ -237,7 +233,10 @@ public:
 			availableBudget[b] = rg.rand(minProducts[b] * maxCostBooks[b] / nClients, 2 * maxCostBooks[b] / nClients);
 		}
 
-		FILE* out = fopen("testInstanceBookOfferCampaing.txt", "w");
+		stringstream ssInstanceName;
+		ssInstanceName << "./MyProjects/MODM/Instances/BooksCampaign/"
+				"B" << nBooks << "-C" << nClients << "-pp" << profitRate << "-" << batch;
+		FILE* out = fopen(ssInstanceName.str().c_str(), "w");
 		fprintf(out, "%d\t%d\t%.2f\n", nClients, nBooks, hurdleRate);
 
 		for (unsigned c = 0; c < nClients; c++)
@@ -374,7 +373,7 @@ public:
 		cout << "finish example" << endl;
 	}
 
-	void generateBicliqueProblem(int nClients, int nBooks)
+	void generateBicliqueProblem(int nClients, int nBooks, double profitRate, double hurdleRate, int maxPerClients, int batch)
 	{
 		cout << "generating biclique for nClients=" << nClients << " and nBooks=" << nBooks << endl;
 		Matrix<bool> graph(nClients, nBooks);
@@ -491,7 +490,7 @@ public:
 		}
 
 		printBiclique(bicliques);
-		printGraph(nClients, nBooks, graph);
+		//printGraph(nClients, nBooks, graph);
 		cout << "end while bicliques" << endl;
 		// end while
 
@@ -514,7 +513,7 @@ public:
 
 		computeProb(nClients, nBooks, prob, graph, degC, degB);
 
-		generateInstance(nClients, nBooks, prob);
+		generateInstance(nClients, nBooks, prob, profitRate, hurdleRate, maxPerClients, batch);
 
 		// imprime probabilidades
 
