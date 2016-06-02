@@ -71,6 +71,11 @@ public:
 		v_e = _v_e;
 	}
 
+	vector<Evaluator<R, ADS>*> getEvaluators()
+	{
+		return v_e;
+	}
+
 	// true if 's1' dominates 's2'
 	virtual bool dominates(const Solution<R, ADS>& s1, const Solution<R, ADS>& s2)
 	{

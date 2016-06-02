@@ -289,7 +289,10 @@ public:
 			rg(_rg), dmproblem(_dmproblem), alpha(_alpha)
 	{
 		if (alpha == 0)
-			alpha = 0.0001;
+			alpha = 0.00001;
+
+		if (alpha > 1)
+			alpha = 1;
 	}
 
 	virtual ~NSSeqARProduct()

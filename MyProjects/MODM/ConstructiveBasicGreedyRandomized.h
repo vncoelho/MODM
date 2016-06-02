@@ -69,6 +69,9 @@ public:
 		if (alpha == 0)
 			alpha = 0.00001;
 
+		if (alpha > 1)
+			alpha = 1;
+
 		int n = pMODM.getNumberOfProducts();
 		int c = pMODM.getNumberOfClients();
 

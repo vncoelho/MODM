@@ -67,13 +67,56 @@ public:
 		return evaluate(rep, ads);
 	}
 
+	void getClientRiskPerCat(vector<int>& nPerCat, double rev)
+	{
+		if (rev >= 0 && rev < 3)
+			nPerCat[0]++;
+
+		if (rev >= 3 && rev < 5)
+			nPerCat[1]++;
+
+		if (rev >= 5 && rev < 8)
+			nPerCat[2]++;
+
+		if (rev >= 8 && rev < 11)
+			nPerCat[3]++;
+
+		if (rev >= 11 && rev < 14)
+			nPerCat[4]++;
+
+		if (rev >= 14)
+			nPerCat[5]++;
+	}
+
+	double getClientRisk(double rev)
+	{
+		double clientRisk = 0;
+		if (rev >= 0 && rev < 3)
+			clientRisk = 0.01;
+
+		if (rev >= 3 && rev < 5)
+			clientRisk = 0.05;
+
+		if (rev >= 5 && rev < 8)
+			clientRisk = 0.1;
+
+		if (rev >= 8 && rev < 11)
+			clientRisk = 0.25;
+
+		if (rev >= 11 && rev < 14)
+			clientRisk = 0.4;
+
+		if (rev >= 14)
+			clientRisk = 0.6;
+		return clientRisk;
+	}
+
 	vector<int> checkNClientsPerCategory(const RepMODM& rep, const AdsMODM& ads)
 	{
 		vector<int> nPerCat(6, 0); // vector that contains the number of number in each desired category of volatity
 
 		int maxC = pMODM.getNumberOfClients();
 		int maxP = pMODM.getNumberOfProducts();
-
 
 		int nTotalClients = 0;
 		for (int p = 0; p < maxP; p++)
@@ -86,23 +129,7 @@ public:
 					double rev = pMODM.getRevenue(c, p);
 
 					double clientRisk = 0;
-					if (rev >= 0 && rev < 3)
-						nPerCat[0]++;
-
-					if (rev >= 3 && rev < 5)
-						nPerCat[1]++;
-
-					if (rev >= 5 && rev < 8)
-						nPerCat[2]++;
-
-					if (rev >= 8 && rev < 11)
-						nPerCat[3]++;
-
-					if (rev >= 11 && rev < 14)
-						nPerCat[4]++;
-
-					if (rev >= 14)
-						nPerCat[5]++;
+					getClientRiskPerCat(nPerCat, rev);
 
 				}
 		}
@@ -221,26 +248,7 @@ public:
 				if (rep[c][p] == true)
 				{
 					double rev = pMODM.getRevenue(c, p);
-
-					double clientRisk = 0;
-					if (rev >= 0 && rev < 3)
-						clientRisk = 0.01;
-
-					if (rev >= 3 && rev < 5)
-						clientRisk = 0.05;
-
-					if (rev >= 5 && rev < 8)
-						clientRisk = 0.1;
-
-					if (rev >= 8 && rev < 11)
-						clientRisk = 0.25;
-
-					if (rev >= 11 && rev < 14)
-						clientRisk = 0.4;
-
-					if (rev >= 14)
-						clientRisk = 0.6;
-
+					double clientRisk = getClientRisk(rev);
 					totalVolatibility += clientRisk;
 				}
 

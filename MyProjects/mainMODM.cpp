@@ -7,13 +7,13 @@
 #include <math.h>
 #include <iostream>
 
+#include "mainMOMODM.hpp"
 #include "../OptFrame/Loader.hpp"
 #include "MODM/Evaluator.cpp"
 #include "../OptFrame/Heuristics/VNS/MOVNSLevels.hpp"
 #include "../OptFrame/Heuristics/2PPLS.hpp"
 #include "../OptFrame/MultiEvaluator.hpp"
 #include "../OptFrame/MultiObjSearch.hpp"
-#include "../OptFrame/Util/UnionNDSets.hpp"
 #include "../OptFrame/Heuristics/EvolutionaryAlgorithms/ES.hpp"
 #include <string>
 #include "MODM.h"
@@ -22,70 +22,16 @@ using namespace std;
 using namespace optframe;
 using namespace MODM;
 
-char* execCommand(const char* command)
-{
-
-	FILE* fp;
-	char* line = NULL;
-	// Following initialization is equivalent to char* result = ""; and just
-	// initializes result to an empty string, only it works with
-	// -Werror=write-strings and is so much less clear.
-	char* result = (char*) calloc(1, 1);
-	size_t len = 0;
-
-	fflush(NULL);
-	fp = popen(command, "r");
-	if (fp == NULL)
-	{
-		printf("Cannot execute command:\n%s\n", command);
-		return NULL;
-	}
-
-	while (getline(&line, &len, fp) != -1)
-	{
-		// +1 below to allow room for null terminator.
-		result = (char*) realloc(result, strlen(result) + strlen(line) + 1);
-		// +1 below so we copy the final null terminator.
-		strncpy(result + strlen(result), line, strlen(line) + 1);
-		free(line);
-		line = NULL;
-	}
-
-	fflush(fp);
-	if (pclose(fp) != 0)
-	{
-		perror("Cannot close stream.\n");
-	}
-
-	return result;
-}
-
-double hipervolume(vector<vector<double> > v)
-{
-	int nSol = v.size();
-	int nObj = v[0].size();
-	string tempFile = "tempFileHipervolueFunc";
-	FILE* fTempHV = fopen(tempFile.c_str(), "w");
-
-	for (int s = 0; s < nSol; s++)
-	{
-		for (int o = 0; o < nObj; o++)
-		{
-			fprintf(fTempHV, "%.7f\t", v[s][o]);
-		}
-		fprintf(fTempHV, "\n");
-	}
-
-	fclose(fTempHV);
-	stringstream ss;
-	ss << "./hv\t -r \"" << 0 << " " << 0 << "\" \t" << tempFile.c_str();
-	string hvValueString = execCommand(ss.str().c_str());
-	double hvValue = atof(hvValueString.c_str());
-	return hvValue;
-}
-
 int main(int argc, char **argv)
 {
+	// BOOKS EXEC EXAMPLE:
+	// ./MyProjects/MODM/Instances/M1-10/M1-10-10-1-l ./teste ./testeES 120 10 10 5 10
+	int multiObjectiveOPTOn = true;
+	if (multiObjectiveOPTOn)
+	{
+		MOTOPDMC(argc, argv);
+		return(0);
+	}
 
 	int nOfArguments = 11;
 	if (argc != (1 + nOfArguments))
@@ -146,15 +92,16 @@ int main(int argc, char **argv)
 	//filename = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
 //	filename = "./MyProjects/MODM/Instances/L-10/L-10-10-1-l.txt";
 
-	//filename = "./MyProjects/MODM/Instances/BooksCampaign/B200-C100-pp1-1";
-	//filename = "./MyProjects/MODM/Instances/L-5/L-15-5-2-s.txt";
-	//filename = "testInstanceBookOfferCampaing.txt";
+//filename = "./MyProjects/MODM/Instances/BooksCampaign/B200-C100-pp1-1";
+//filename = "./MyProjects/MODM/Instances/L-5/L-15-5-2-s.txt";
+//filename = "testInstanceBookOfferCampaing.txt";
 
-	//for the booksOffer
-	double profitRate = 1 + (argvPP / 10.0);
+//for the booksOffer
+	double profitRate = 1.1 + (argvPP / 10.0);
 	stringstream ssInstanceName;
 	ssInstanceName << "./MyProjects/MODM/Instances/BooksCampaign/batch" << argvNBatch << "/" << "B" << argvNBooks << "-C" << 100 << "-pp" << profitRate << "-" << argvNBatch;
 	filename = ssInstanceName.str();
+	cout << "reading instance " << ssInstanceName.str() << endl;
 
 	File* file;
 
@@ -272,26 +219,7 @@ int main(int argc, char **argv)
 	g.setMessageLevel(3);
 	int timeGRASP = 100;
 	double target = 9999999;
-//MODMProblemCommand problemCommand(rg);
-//finalSol = g.search(timeGRASP,target);
 
-//===========================================
-//MO
-	vector<Evaluator<RepMODM, AdsMODM>*> v_e;
-	v_e.push_back(&eval);
-	v_e.push_back(&evalRobustness);
-
-//	NSSeqSWAP nsseq_swap(rg, &p);
-//	NSSeqSWAPInter nsseq_swapInter(rg, &p);
-//	NSSeqInvert nsseq_invert(rg, &p);
-//	NSSeqARProduct nsseq_arProduct(rg, &p, alphaNeighARProduct);
-//	NSSeqADD nsseq_add(rg, &p);
-//
-	vector<NSSeq<RepMODM, AdsMODM>*> neighboors;
-	neighboors.push_back(&nsseq_arProduct);
-	neighboors.push_back(&nsseq_add);
-	neighboors.push_back(&nsseq_swapInter);
-	neighboors.push_back(&nsseq_swap);
 
 //======================= EVolution Strategies for the MIT PAPER ==============
 	NSSeqSWAP* nsseq_swapPonteiro = new NSSeqSWAP(rg, &p);
@@ -339,168 +267,62 @@ int main(int argc, char **argv)
 	string instName = filename.substr(pos);
 
 //print books
-	fprintf(fGeral, "%d\t%d\t%d\t%d\t%ld\t\n", argvNBooks, argvPP, argvNBatch, argvTimeILS, seed);
+	fprintf(fGeral, "%f\t%d\t%d\t%f\t%d\t%d\t%ld\n", fo, isFeasible, argvNBooks, profitRate, argvNBatch, argvTimeILS, seed);
 
 	//fprintf(fGeral, "%s\t%.7f\t%d \t %f\t%f\t%d\t%ld\n", instName.c_str(), fo, isFeasible, alphaBuilder, alphaNeighARProduct, mu, seed);
 
 	fclose(fGeral);
+	//======================= END MIT PAPER ==============
 
+
+	//===========================================
+
+	/*
+	 //timeILS = 6;
+
+	 finalSol = ils.search(timeILS, target);
+
+	 cout << "ILS HAS ENDED!" << endl;
+	 finalSol->second.print();
+	 //finalSol->first.print();
+
+	 RepMODM repFinal = finalSol->first.getR();
+	 //finalSol = g.search(time,target);
+
+	 //cout << eval.getAverageTime() << endl;
+	 //cout << eval.getAverageTimeEvalComplete() << endl;
+
+	 double fo = finalSol->second.evaluation();
+	 int isFeasible = finalSol->second.isFeasible();
+
+	 FILE* fResults = fopen(output.c_str(), "w");
+
+	 fprintf(fResults, "%.7f \t %d \t%f\t%f\t %ld", fo, isFeasible, alphaBuilder, alphaNeighARProduct, seed);
+	 fprintf(fResults, "\n Solution");
+	 for (int c = 0; c < p.getNumberOfClients(); c++)
+	 {
+	 fprintf(fResults, "\n", fo, isFeasible);
+	 for (int product = 0; product < p.getNumberOfProducts(); product++)
+	 {
+	 fprintf(fResults, "%d\t", repFinal[c][product]);
+	 }
+	 }
+
+	 fprintf(fResults, "\n");
+
+	 fclose(fResults);
+
+	 FILE* fGeral = fopen(outputGeral.c_str(), "a");
+
+	 size_t pos = filename.find("Instances/");
+	 string instName = filename.substr(pos);
+
+	 fprintf(fGeral, "%s\t%.7f\t%d \t %f\t%f\t%ld\n", instName.c_str(), fo, isFeasible, alphaBuilder, alphaNeighARProduct, seed);
+
+	 fclose(fGeral);
+
+	 */
 	return 0;
 
-//	// ================ END MIT PAPER
-//
-//	//alphaBuilder as the limit
-//
-//	GRInitialPopulation<RepMODM, AdsMODM> bip(grC, rg, 0.2);
-//	int initial_population_size = pop;
-//	initial_population_size = 5000;
-//	MultiEvaluator<RepMODM, AdsMODM> mev(v_e);
-//
-//	MOVNSLevels<RepMODM, AdsMODM> multiobjectvns(v_e, bip, initial_population_size, neighboors, rg, 10, 10);
-//	TwoPhaseParetoLocalSearch<RepMODM, AdsMODM> paretoSearch(mev, bip, initial_population_size, neighboors);
-//
-//	UnionNDSets<RepMODM, AdsMODM> US(v_e);
-//	vector<vector<double> > PF1 = US.unionSets("./paretoCorsTesteS3-1", 291);
-//
-//	vector<vector<double> > PF2 = US.unionSets("./paretoCorsTesteS3-2", 262);
-//	vector<vector<double> > ref = US.unionSets(PF1, PF2);
-//	vector<vector<double> > refMin = ref;
-//
-//	cout << PF1.size() << endl;
-//	cout << PF2.size() << endl;
-//	cout << ref.size() << endl;
-////	getchar();
-//	cout << "Reference set" << endl;
-//	for (int p = 0; p < ref.size(); p++)
-//	{
-//		cout << ref[p][0] << "\t" << ref[p][1] << endl;
-//		refMin[p][0] *= -1;
-//		refMin[p][1] *= -1;
-//	}
-//
-////
-////	getchar();
-//	Pareto<RepMODM, AdsMODM>* pf;
-//	int time2PPLS = 60;
-//	for (int exec = 0; exec < 1; exec++)
-//	{
-//		//pf = multiobjectvns.search(30, 0);
-//
-//		pf = paretoSearch.search(time2PPLS, 0);
-//	}
-//
-//	vector<vector<Evaluation*> > vEval = pf->getParetoFront();
-//	vector<Solution<RepMODM, AdsMODM>*> vSolPf = pf->getParetoSet();
-//
-//	int nObtainedParetoSol = vEval.size();
-//	vector<vector<double> > paretoDoubleEval;
-//	vector<vector<double> > paretoDoubleEvalMin;
-//
-//	cout << "MO optimization finished! Printing Pareto Front!" << endl;
-//	for (int i = 0; i < nObtainedParetoSol; i++)
-//	{
-//
-//		Solution<RepMODM, AdsMODM>* sol = vSolPf[i];
-//		const RepMODM& rep = sol->getR();
-//
-//		const AdsMODM& ads = sol->getADS();
-//		vector<double> solEvaluations;
-//		double foProfit = vEval[i][0]->getObjFunction();
-//		double foVolatility = vEval[i][1]->getObjFunction();
-//		solEvaluations.push_back(foProfit);
-//		solEvaluations.push_back(foVolatility);
-//		paretoDoubleEval.push_back(solEvaluations);
-//		solEvaluations[0] *= -1;
-//		solEvaluations[1] *= -1;
-//		paretoDoubleEvalMin.push_back(solEvaluations);
-//
-//		vector<int> nPerCat = evalRobustness.checkNClientsPerCategory(rep, ads);
-//		cout << foProfit << "\t" << foVolatility << "\t";
-//
-//		int nTotalClients = nPerCat[nPerCat.size() - 1];
-//
-//		for (int cat = 0; cat < 6; cat++)
-//			cout << nPerCat[cat] << "\t";
-//		cout << endl;
-//	}
-//
-//	int card = US.cardinalite(paretoDoubleEval, ref);
-//	double sCToRef = US.setCoverage(paretoDoubleEval, ref);
-//	double sCFromRef = US.setCoverage(ref, paretoDoubleEval);
-//	double hv = hipervolume(paretoDoubleEvalMin);
-//
-//	vector<double> utopicSol;
-//	utopicSol.push_back(-5226);
-//	utopicSol.push_back(-10);
-//	double delta = US.deltaMetric(paretoDoubleEvalMin, utopicSol);
-//
-//	//Delta Metric and Hipervolume need to verify min
-//	cout << "Cardinalite = " << card << endl;
-//	cout << "Set Coverage to ref = " << sCToRef << endl;
-//	cout << "Set Coverage from ref  = " << sCFromRef << endl;
-//	cout << "delta  = " << delta << endl;
-//	cout << "deltaRef  = " << US.deltaMetric(refMin, utopicSol) << endl;
-//	cout << "hv  = " << hv << endl;
-//	cout << "ref  = " << hipervolume(refMin) << endl;
-//
-//	FILE* fGeral = fopen(outputGeral.c_str(), "a");
-//
-//	size_t pos = filename.find("Instances/");
-//	string instName = filename.substr(pos);
-//
-//	fprintf(fGeral, "%s \t %d \t %.7f \t %.7f \t %d \t %d \t %.7f \t %.7f \t %.7f \t %.7f \t %ld \n", instName.c_str(), pop, alphaBuilder, alphaNeighARProduct, nObtainedParetoSol, card, sCToRef, sCFromRef, hv, delta, seed);
-//
-//	fclose(fGeral);
-//
-//	//getchar();
-//	//===========================================
-//
-//	/*
-//	 //timeILS = 6;
-//
-//	 finalSol = ils.search(timeILS, target);
-//
-//	 cout << "ILS HAS ENDED!" << endl;
-//	 finalSol->second.print();
-//	 //finalSol->first.print();
-//
-//	 RepMODM repFinal = finalSol->first.getR();
-//	 //finalSol = g.search(time,target);
-//
-//	 //cout << eval.getAverageTime() << endl;
-//	 //cout << eval.getAverageTimeEvalComplete() << endl;
-//
-//	 double fo = finalSol->second.evaluation();
-//	 int isFeasible = finalSol->second.isFeasible();
-//
-//	 FILE* fResults = fopen(output.c_str(), "w");
-//
-//	 fprintf(fResults, "%.7f \t %d \t%f\t%f\t %ld", fo, isFeasible, alphaBuilder, alphaNeighARProduct, seed);
-//	 fprintf(fResults, "\n Solution");
-//	 for (int c = 0; c < p.getNumberOfClients(); c++)
-//	 {
-//	 fprintf(fResults, "\n", fo, isFeasible);
-//	 for (int product = 0; product < p.getNumberOfProducts(); product++)
-//	 {
-//	 fprintf(fResults, "%d\t", repFinal[c][product]);
-//	 }
-//	 }
-//
-//	 fprintf(fResults, "\n");
-//
-//	 fclose(fResults);
-//
-//	 FILE* fGeral = fopen(outputGeral.c_str(), "a");
-//
-//	 size_t pos = filename.find("Instances/");
-//	 string instName = filename.substr(pos);
-//
-//	 fprintf(fGeral, "%s\t%.7f\t%d \t %f\t%f\t%ld\n", instName.c_str(), fo, isFeasible, alphaBuilder, alphaNeighARProduct, seed);
-//
-//	 fclose(fGeral);
-//
-//	 */
-//	cout << "Programa terminado com sucesso!" << endl;
-//	return 0;
 }
 
