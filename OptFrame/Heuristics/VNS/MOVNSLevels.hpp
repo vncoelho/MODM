@@ -83,12 +83,25 @@ public:
 	virtual Pareto<R, ADS>* search(double timelimit = 100000000, double target_f = 0, Pareto<R, ADS>* _pf = NULL)
 	{
 		Timer tnow;
-		cout << "exec: MOVNS " << endl;
+		cout << "exec: MOVNS (tL:" << timelimit << ")" << endl;
 		int r = neighbors.size();
 
-		Population<R, ADS> p_0 = init_pop.generatePopulation(init_pop_size);
+		Population<R, ADS> p_0;
 
-		cout << "population generated" << endl;
+		if (_pf == NULL)
+		{
+			cout << "Creating initial population using a constructive method..." << endl;
+			p_0 = init_pop.generatePopulation(init_pop_size);
+			cout << "Population generated with " << p_0.size() << " individuals" << endl;
+		}
+		else
+		{
+			cout << "Extracting Pareto _pf ..." << endl;
+			vector<Solution<R, ADS>*> tempPop = _pf->getParetoSet();
+			for (int i = 0; i < tempPop.size(); i++)
+				p_0.push_back(tempPop[i]);
+			cout << "Population extracted with " << p_0.size() << " individuals" << endl;
+		}
 
 		Population<R, ADS> D;
 		for (int ind = 0; ind < p_0.size(); ind++)
@@ -98,6 +111,7 @@ public:
 				delete &s;
 		}
 		cout << "Initial efficient set size = " << D.size() << endl;
+
 		vector<bool> visited;
 		for (int ind = 0; ind < D.size(); ind++)
 			visited.push_back(false);
@@ -164,9 +178,8 @@ public:
 				{
 					nMoves++;
 					if ((nMoves % 50000) == 0)
-					{
-						cout << "Iterator Moves = " << nMoves << endl;
-					}
+						cout << "Neigh: " << neigh << " has already generated " << nMoves << " iterator moves " << endl;
+
 					Solution<R, ADS>& s2 = s1.clone();
 					Move<R, ADS>* mov_rev = move->apply(s2);
 					delete mov_rev;

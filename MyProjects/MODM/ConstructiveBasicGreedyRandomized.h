@@ -129,7 +129,7 @@ public:
 				//cout << "clientRisk = " << clientRisk << endl;
 
 				assert(cost>0);
-				double valueNPP = (r - cost) / cost;
+				double valueNPP = (r - cost)*clientRisk / cost;
 
 				NPP[product].push_back(make_pair(valueNPP, client));
 			}

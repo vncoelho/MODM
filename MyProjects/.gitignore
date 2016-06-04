@@ -8,3 +8,4 @@
 *.log
 mainHFMVRP
 app_MODM
+*.d

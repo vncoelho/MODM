@@ -66,7 +66,8 @@ int MOTOPDMC(int argc, char **argv)
 
 	filename = filename + ".txt";
 	filename = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
-	initial_population_size = 5000;
+	//filename = "./MyProjects/MODM/Instances/L-15/L-10-15-1-l.txt";
+	initial_population_size = 1000;
 
 	cout << "filename = " << filename << endl;
 	cout << "output = " << output << endl;
@@ -105,33 +106,17 @@ int MOTOPDMC(int argc, char **argv)
 	NSSeqARProduct nsseq_arProduct(rg, &p, alphaNeighARProduct);
 	NSSeqADD nsseq_add(rg, &p);
 
-	FirstImprovement<RepMODM, AdsMODM> fiSwap(eval, nsseq_swap);
-	FirstImprovement<RepMODM, AdsMODM> fiSwapInter(eval, nsseq_swapInter);
-	FirstImprovement<RepMODM, AdsMODM> fiInvert(eval, nsseq_invert);
-	FirstImprovement<RepMODM, AdsMODM> fiAR(eval, nsseq_arProduct);
-
-	int nMovesRDM = 50000;
-	RandomDescentMethod<RepMODM, AdsMODM> rdmSwap(eval, nsseq_swap, nMovesRDM);
-	RandomDescentMethod<RepMODM, AdsMODM> rdmSwapInter(eval, nsseq_swapInter, nMovesRDM);
-	RandomDescentMethod<RepMODM, AdsMODM> rdmInvert(eval, nsseq_invert, nMovesRDM);
-	RandomDescentMethod<RepMODM, AdsMODM> rdmARProduct(eval, nsseq_arProduct, 100);
-	RandomDescentMethod<RepMODM, AdsMODM> rdmADD(eval, nsseq_add, 1);
-
-	vector<LocalSearch<RepMODM, AdsMODM>*> vLS;
-
 	vector<Evaluator<RepMODM, AdsMODM>*> v_e;
 	v_e.push_back(&eval);
 	v_e.push_back(&evalRobustness);
 
 	vector<NSSeq<RepMODM, AdsMODM>*> neighboors;
-	//neighboors.push_back(&nsseq_arProduct);
-	//neighboors.push_back(&nsseq_add);
-	neighboors.push_back(&nsseq_swapInter);
-	neighboors.push_back(&nsseq_swap);
+	//neighboors.push_back(&nsseq_swapInter);
+//	neighboors.push_back(&nsseq_swap);
+	neighboors.push_back(&nsseq_arProduct);
+	neighboors.push_back(&nsseq_add);
 
-	//alphaBuilder as the limit
-
-	GRInitialPopulation<RepMODM, AdsMODM> bip(grC, rg, 0.2);
+	GRInitialPopulation<RepMODM, AdsMODM> bip(grC, rg, alphaBuilder);
 
 	MultiEvaluator<RepMODM, AdsMODM> mev(v_e);
 
@@ -139,11 +124,11 @@ int MOTOPDMC(int argc, char **argv)
 	TwoPhaseParetoLocalSearch<RepMODM, AdsMODM> paretoSearch(mev, bip, initial_population_size, neighboors);
 
 	Pareto<RepMODM, AdsMODM>* pf;
-	int time2PPLS = 20;
+	int time2PPLS = 5000;
 	for (int exec = 0; exec < 1; exec++)
 	{
-		//pf = multiobjectvns.search(15, 0);
-		pf = paretoSearch.search(time2PPLS, 0);
+		//pf = multiobjectvns.search(20, 0);
+		pf = paretoSearch.search(time2PPLS, 0, pf);
 	}
 
 	vector<vector<Evaluation*> > vEval = pf->getParetoFront();

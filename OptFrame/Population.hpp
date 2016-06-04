@@ -99,6 +99,14 @@ public:
 		}
 	}
 
+	void push_back(population& c)
+	{
+		for (int i = 0; i < c.size(); i++)
+		{
+			push_back(c[i]);
+		}
+	}
+
 	void push_back(const chromossome& c)
 	{
 		p.push_back(&c.clone());
