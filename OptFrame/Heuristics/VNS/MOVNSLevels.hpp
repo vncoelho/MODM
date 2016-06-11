@@ -239,16 +239,20 @@ public:
 		for (unsigned i = 0; i < p_0.size(); i++)
 		{
 			Solution<R, ADS>* s = &p_0.at(i);
-			vector<Evaluation*> e;
+			vector<Evaluation*> vev;
 			for (unsigned ev = 0; ev < v_e.size(); ev++)
 			{
 				Evaluator<R, ADS>* evtr = v_e[ev];
-				//evtr->evaluate(s);
 				Evaluation& e1 = evtr->evaluate(*s);
-				e.push_back(&e1);
+				vev.push_back(&e1);
 			}
+
+			MultiEvaluation* e = new MultiEvaluation(vev);
+
 			pf->push_back(s, e);
+
 		}
+
 		return pf;
 	}
 

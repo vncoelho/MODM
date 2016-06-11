@@ -27,7 +27,6 @@
 using namespace std;
 
 #include "Component.hpp"
-#include "ComponentBuilder.h"
 #include "MultiObjSearch.hpp"
 #include "Solution.hpp"
 #include "Evaluation.hpp"

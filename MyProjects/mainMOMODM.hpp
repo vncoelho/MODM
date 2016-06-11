@@ -220,12 +220,12 @@ int MOTOPDMC(int argc, char **argv)
 	for (int exec = 0; exec < 1; exec++)
 	{
 		pf = multiobjectvns.search(2, 0);
-		generalPLS.search(30, 0, pf);
+		generalPLS.search(10, 0, pf);
 
-		pf = paretoSearch.search(30, 0, pf);
+		pf = paretoSearch.search(10, 0, pf);
 	}
 
-	vector<vector<Evaluation*> > vEval = pf->getParetoFront();
+	vector<MultiEvaluation*> vEval = pf->getParetoFront();
 	vector<Solution<RepMODM, AdsMODM>*> vSolPf = pf->getParetoSet();
 
 	int nObtainedParetoSol = vEval.size();
@@ -241,8 +241,8 @@ int MOTOPDMC(int argc, char **argv)
 
 		const AdsMODM& ads = sol->getADS();
 		vector<double> solEvaluations;
-		double foProfit = vEval[i][0]->getObjFunction();
-		double foVolatility = vEval[i][1]->getObjFunction();
+		double foProfit = vEval[i]->at(0).getObjFunction();
+		double foVolatility = vEval[i]->at(0).getObjFunction();
 		solEvaluations.push_back(foProfit);
 		solEvaluations.push_back(foVolatility);
 		paretoDoubleEval.push_back(solEvaluations);
