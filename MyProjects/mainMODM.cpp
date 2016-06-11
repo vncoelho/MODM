@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 	NSSeqSWAP nsseq_swap(rg, &p);
 	NSSeqSWAPInter nsseq_swapInter(rg, &p);
 	NSSeqInvert nsseq_invert(rg, &p);
-	NSSeqARProduct nsseq_arProduct(rg, &p, alphaNeighARProduct);
+	NSSeqARProduct nsseq_arProduct(rg, &p, alphaNeighARProduct,1);
 	NSSeqADD nsseq_add(rg, &p);
 
 // ================ BEGIN OF CHECK MODULE ================
@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 	NSSeqSWAP* nsseq_swapPonteiro = new NSSeqSWAP(rg, &p);
 	NSSeqSWAPInter* nsseq_swapInterPonteiro = new NSSeqSWAPInter(rg, &p);
 	NSSeqInvert* nsseq_invertPonteiro = new NSSeqInvert(rg, &p);
-	NSSeqARProduct* nsseq_arProductPonteiro = new NSSeqARProduct(rg, &p, alphaNeighARProduct);
+	NSSeqARProduct* nsseq_arProductPonteiro = new NSSeqARProduct(rg, &p, alphaNeighARProduct, 1);
 	NSSeqADD* nsseq_addPonteiro = new NSSeqADD(rg, &p);
 	vector<NSSeq<RepMODM, AdsMODM>*> vNSeq;
 

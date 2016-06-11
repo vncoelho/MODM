@@ -28,7 +28,7 @@ using namespace std;
 
 #include "Component.hpp"
 #include "ComponentBuilder.h"
-
+#include "MultiObjSearch.hpp"
 #include "Solution.hpp"
 #include "Evaluation.hpp"
 
@@ -40,69 +40,67 @@ namespace optframe
 template<class R, class ADS = OPTFRAME_DEFAULT_ADS>
 class LocalSearch: public Component
 {
-   typedef vector<Evaluation*> FitnessValues;
-   typedef const vector<const Evaluation*> ConstFitnessValues;
+	typedef vector<Evaluation*> FitnessValues;
+	typedef const vector<const Evaluation*> ConstFitnessValues;
 
 public:
 
-   LocalSearch()
-   {
-   }
+	LocalSearch()
+	{
+	}
 
-   virtual ~LocalSearch()
-   {
-   }
+	virtual ~LocalSearch()
+	{
+	}
 
-   // core methods
+	// core methods
 
-   // no-optimization
-   Solution<R, ADS>& search(const Solution<R, ADS>& s, double timelimit = 100000000, double target_f = 0)
-   {
-      Solution<R, ADS>& s2 = s.clone();
-      exec(s2, timelimit, target_f);
-      return s2;
-   }
+	// no-optimization
+	Solution<R, ADS>& search(const Solution<R, ADS>& s, double timelimit = 100000000, double target_f = 0)
+	{
+		Solution<R, ADS>& s2 = s.clone();
+		exec(s2, timelimit, target_f);
+		return s2;
+	}
 
-   // optimizated version
-   pair<Solution<R, ADS>&, Evaluation&>& search(const Solution<R, ADS>& s, const Evaluation& e, double timelimit = 100000000, double target_f = 0)
-   {
-      Solution<R, ADS>& s2 = s.clone();
-      Evaluation& e2 = e.clone();
-      exec(s2, e2, timelimit, target_f);
-      return *new pair<Solution<R, ADS>&, Evaluation&> (s2, e2);
-   }
+	// optimizated version
+	pair<Solution<R, ADS>&, Evaluation&>& search(const Solution<R, ADS>& s, const Evaluation& e, double timelimit = 100000000, double target_f = 0)
+	{
+		Solution<R, ADS>& s2 = s.clone();
+		Evaluation& e2 = e.clone();
+		exec(s2, e2, timelimit, target_f);
+		return *new pair<Solution<R, ADS>&, Evaluation&>(s2, e2);
+	}
 
+	// core methods
 
-   // core methods
+	// 1
+	virtual void exec(Solution<R, ADS>& s, double timelimit, double target_f) = 0;
 
-   // 1
-   virtual void exec(Solution<R, ADS>& s, double timelimit, double target_f) = 0;
+	// 2
+	virtual void exec(Solution<R, ADS>& s, Evaluation& e, double timelimit, double target_f) = 0;
 
-   // 2
-   virtual void exec(Solution<R, ADS>& s, Evaluation& e, double timelimit, double target_f) = 0;
+	virtual bool compatible(string s)
+	{
+		return (s == idComponent()) || (Component::compatible(s));
+	}
 
-   virtual bool compatible(string s)
-   {
-	   return ( s == idComponent() ) || ( Component::compatible(s) );
-   }
+	static string idComponent()
+	{
+		stringstream ss;
+		ss << Component::idComponent() << ":LocalSearch";
+		return ss.str();
+	}
 
-   static string idComponent()
-   {
-	   stringstream ss;
-	   ss << Component::idComponent() << ":LocalSearch";
-	   return ss.str();
-   }
-
-   virtual string id() const
-   {
-      return idComponent();
-   }
+	virtual string id() const
+	{
+		return idComponent();
+	}
 
 };
 
-
 template<class R, class ADS = OPTFRAME_DEFAULT_ADS>
-class LocalSearchBuilder : public ComponentBuilder<R, ADS>
+class LocalSearchBuilder: public ComponentBuilder<R, ADS>
 {
 public:
 	virtual ~LocalSearchBuilder()
@@ -134,6 +132,5 @@ public:
 };
 
 }
-
 
 #endif /* OPTFRAME_LOCAL_SEARCH_HPP_ */

@@ -67,7 +67,7 @@ public:
 	Solution<RepMODM, AdsMODM>& generateSolution(float alpha)
 	{
 		if (alpha == 0)
-			alpha = 0.00001;
+			alpha = 0.001;
 
 		if (alpha > 1)
 			alpha = 1;
@@ -129,7 +129,8 @@ public:
 				//cout << "clientRisk = " << clientRisk << endl;
 
 				assert(cost>0);
-				double valueNPP = (r - cost)*clientRisk / cost;
+				double valueNPP = (r*clientRisk - cost) / cost;
+//				valueNPP = (r - cost) / cost;
 
 				NPP[product].push_back(make_pair(valueNPP, client));
 			}

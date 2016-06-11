@@ -62,6 +62,7 @@ public:
 	{
 		AdsMODM ads;
 		adsMan.initializeADS(rep, ads);
+
 		return evaluate(rep, ads);
 	}
 
@@ -248,6 +249,9 @@ public:
 //						adsMan.printADS(ads);
 //				getchar();
 //		getchar();
+
+		if(foBudget == 0)
+			return *new EvaluationMODM(-100000, -1000000000);
 		return *new EvaluationMODM(fo, foInv);
 	}
 

@@ -62,8 +62,10 @@ public:
 
 	EvaluationMODM& evaluate(const RepMODM& rep)
 	{
+
 		AdsMODM ads;
 		adsMan.initializeADS(rep, ads);
+
 		return evaluate(rep, ads);
 	}
 
@@ -272,6 +274,9 @@ public:
 //		getchar();
 //
 //		variableProfit /= nMonteCarlo;
+
+		if(foBudget == 0)
+			return *new EvaluationMODM(-100000, -1000000000);
 
 		return *new EvaluationMODM(sharpeRatio, foInv);
 	}

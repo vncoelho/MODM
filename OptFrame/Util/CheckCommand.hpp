@@ -59,6 +59,13 @@ public:
 	{
 	}
 
+	void add(ADSManager<R, ADS>& adsMan)
+	{
+		lADSManagerComp.push_back(&adsMan);
+		if (verbose)
+			cout << "checkcommand: AdsMan " << lADSManagerComp.size() << " added!" << endl;
+	}
+
 	void add(Constructive<R, ADS>& c)
 	{
 		lConstructive.push_back(&c);
@@ -141,6 +148,7 @@ public:
 		cout << "nsseq=" << lNSSeq.size() << endl;
 		cout << "adsmanager=" << lADSManagerComp.size() << endl;
 		cout << "---------------------------------------" << endl << endl;
+
 
 		// time to clone a solution
 		pair<int, double> timeCloneSolution(0, 0.0);
@@ -902,7 +910,7 @@ public:
 
 						Timer tMovRevApply;
 						Move<R, ADS>* ini = NULL;
-						if(rev)
+						if (rev)
 							ini = rev->apply(s);
 						timeNSApply[id_nsseq].second += tMovRevApply.inMilliSecs();
 						timeNSApply[id_nsseq].first++;

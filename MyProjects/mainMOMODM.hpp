@@ -10,10 +10,14 @@
 #include "../OptFrame/Loader.hpp"
 #include "MODM/Evaluator.cpp"
 #include "../OptFrame/Heuristics/VNS/MOVNSLevels.hpp"
+#include "../OptFrame/Heuristics/VNS/MOVNSLevelsLocalSearch.hpp"
 #include "../OptFrame/Heuristics/2PPLS.hpp"
+#include "../OptFrame/Heuristics/GPLS.hpp"
 #include "../OptFrame/MultiEvaluator.hpp"
 #include "../OptFrame/MultiObjSearch.hpp"
 #include "../OptFrame/Heuristics/EvolutionaryAlgorithms/ES.hpp"
+#include "../OptFrame/Heuristics/MOLocalSearches/MOBestImprovement.hpp"
+#include "../OptFrame/Util/CheckCommand.hpp"
 #include <string>
 #include "MODM.h"
 
@@ -21,13 +25,48 @@ using namespace std;
 using namespace optframe;
 using namespace MODM;
 
+double readUpperBound(string fileToFind)
+{
+	string filename = "./MODM/Instances/solution_EJOR.txt";
+	double upperBound = -1;
+
+	File* file;
+
+	try
+	{
+		file = new File(filename);
+	} catch (FileNotFound& f)
+	{
+		cout << "File '" << filename << "' not found" << endl;
+		return false;
+	}
+
+	Scanner scanner(file);
+	while (scanner.hasNext())
+	{
+		string checkName = scanner.nextLine();
+		size_t findPos = checkName.find("&");
+
+		string sub = checkName.substr(findPos + 1);
+		string singleName = checkName.substr(0, findPos);
+		double upperBoundValue = stod(sub);
+//		cout << singleName<<" : "<<upperBoundValue << endl;
+
+		char* chr = strdup(fileToFind.c_str());
+		if (singleName == fileToFind)
+			return upperBoundValue;
+	}
+
+	return upperBound;
+}
+
 int MOTOPDMC(int argc, char **argv)
 {
 	cout << "Welcome to the Bi-Objective TOPDMC!" << endl;
 	// EXEC EXAMPLE:
 	// .instance ./saidaMOTOPDMC ./saidaGeralMOTOPDMC 120 10 10 5 1
 
-	int nOfArguments = 8;
+	int nOfArguments = 10;
 	if (argc != (1 + nOfArguments))
 	{
 		cout << "Parametros incorretos!" << endl;
@@ -39,14 +78,15 @@ int MOTOPDMC(int argc, char **argv)
 				"5 - alphaBuilderInt\n"
 				"6 - alphaNSInt \n"
 				"7 - popSizeMOVNS \n"
-				"8 - batch \n \n";
+				"8 - batch \n";
+		"9 - purefilename for upperBound \n \n";
 		exit(1);
 	}
 
 	RandGenMersenneTwister rg;
 	long seed = time(NULL);
 
-	seed = 30;
+	seed = 1;
 
 	srand(seed);
 	rg.setSeed(seed);
@@ -54,38 +94,61 @@ int MOTOPDMC(int argc, char **argv)
 	const char* instancia = argv[1];
 	const char* saida = argv[2];
 	const char* saidaGeral = argv[3];
-	int argvTimeILS = atoi(argv[4]);
+	int time2PPLS = atoi(argv[4]);
 	double alphaBuilder = atof(argv[5]);
 	double alphaNeighARProduct = atof(argv[6]);
 	int initial_population_size = atoi(argv[7]);
-	int argvNBatch = atoi(argv[11]);
+	int argvNBatch = atoi(argv[8]);
+	const char* argvInstPureName = argv[9];
+	int argvNSNTries = atoi(argv[10]);
 
-	string filename = instancia;
+	string filepath = instancia;
 	string output = saida;
 	string outputGeral = saidaGeral;
+	string instPureName = argvInstPureName;
 
-	filename = filename + ".txt";
-	filename = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
-	//filename = "./MyProjects/MODM/Instances/L-15/L-10-15-1-l.txt";
-	initial_population_size = 1000;
+//	instPureName = "S3-15/S3-10-15-1-s";
+	//Find pure instance name
+	size_t pureNamePos = instPureName.find("/");
+	instPureName = instPureName.substr(pureNamePos + 1);
 
-	cout << "filename = " << filename << endl;
+	double upperBound = readUpperBound(instPureName);
+
+	filepath = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
+//	filepath = "./MyProjects/MODM/Instances/S3-5/S3-5-5-1-s.txt";
+//	filepath = "./MyProjects/MODM/Instances/L-15/L-10-15-1-l.txt";
+	initial_population_size = 1;
+	alphaNeighARProduct = 0.001;
+//	alphaBuilder = 0.2;
+//	time2PPLS = 60;
+//	alphaBuilder = 1;
+//	initial_population_size = 5;
+//	alphaNeighARProduct =0.05;
+//	argvNSNTries = 100;
+
+	cout << "filepath = " << filepath << endl;
+	cout << "instPureName = " << instPureName << endl;
+	cout << "upperBound = " << upperBound << endl;
 	cout << "output = " << output << endl;
 	cout << "outputGeral = " << outputGeral << endl;
-	cout << "argvTimeILS = " << argvTimeILS << endl;
+	cout << "time2PPLS = " << time2PPLS << endl;
 	cout << "alphaBuilder = " << alphaBuilder << endl;
 	cout << "alphaNeighARProduct = " << alphaNeighARProduct << endl;
 	cout << "initial population size = " << initial_population_size << endl;
+	cout << "argvNSNTries = " << argvNSNTries << endl;
+
+//	getchar();
+
 	cout << "Seed = " << seed << endl;
 
 	File* file;
 
 	try
 	{
-		file = new File(filename);
+		file = new File(filepath);
 	} catch (FileNotFound& f)
 	{
-		cout << "File '" << filename << "' not found" << endl;
+		cout << "File '" << filepath << "' not found" << endl;
 		return false;
 	}
 
@@ -103,7 +166,7 @@ int MOTOPDMC(int argc, char **argv)
 	NSSeqSWAP nsseq_swap(rg, &p);
 	NSSeqSWAPInter nsseq_swapInter(rg, &p);
 	NSSeqInvert nsseq_invert(rg, &p);
-	NSSeqARProduct nsseq_arProduct(rg, &p, alphaNeighARProduct);
+	NSSeqARProduct nsseq_arProduct(rg, &p, alphaNeighARProduct, argvNSNTries);
 	NSSeqADD nsseq_add(rg, &p);
 
 	vector<Evaluator<RepMODM, AdsMODM>*> v_e;
@@ -111,24 +174,55 @@ int MOTOPDMC(int argc, char **argv)
 	v_e.push_back(&evalRobustness);
 
 	vector<NSSeq<RepMODM, AdsMODM>*> neighboors;
-	//neighboors.push_back(&nsseq_swapInter);
-//	neighboors.push_back(&nsseq_swap);
+//	neighboors.push_back(&nsseq_swapInter);
+	//neighboors.push_back(&nsseq_swap);
+
 	neighboors.push_back(&nsseq_arProduct);
 	neighboors.push_back(&nsseq_add);
+	neighboors.push_back(&nsseq_swap);
+
+//	neighboors.push_back(&nsseq_swapInter);
 
 	GRInitialPopulation<RepMODM, AdsMODM> bip(grC, rg, alphaBuilder);
 
 	MultiEvaluator<RepMODM, AdsMODM> mev(v_e);
 
 	MOVNSLevels<RepMODM, AdsMODM> multiobjectvns(v_e, bip, initial_population_size, neighboors, rg, 10, 10);
+
+//	MOVNSLevelsLocalSearch<RepMODM, AdsMODM> multiobjectvns2(v_e, bip, initial_population_size, neighboors, rg, 10, 10);
 	TwoPhaseParetoLocalSearch<RepMODM, AdsMODM> paretoSearch(mev, bip, initial_population_size, neighboors);
 
+//	paretoManager<RepMODM, AdsMODM> addSolClass(mev);
+	MOBestImprovement<RepMODM, AdsMODM> mobi1(mev, nsseq_arProduct);
+	MOBestImprovement<RepMODM, AdsMODM> mobi2(mev, nsseq_add);
+	MOBestImprovement<RepMODM, AdsMODM> mobi3(mev, nsseq_swap);
+	vector<MOLocalSearch<RepMODM, AdsMODM>*> vMOLS;
+	vMOLS.push_back(&mobi1);
+	vMOLS.push_back(&mobi2);
+	vMOLS.push_back(&mobi3);
+
+
+	GeneralParetoLocalSearch<RepMODM, AdsMODM> generalPLS(mev, bip, initial_population_size, vMOLS);
+
+	// Check Module
+	/*	CheckCommand<RepMODM, AdsMODM> cm(true);
+	 cm.add(adsMan);
+	 cm.add(grC);
+	 cm.add(eval);
+	 cm.add(nsseq_swap);
+	 cm.add(nsseq_arProduct);
+	 cm.add(nsseq_swapInter);
+	 cm.run(5, 1);
+	 getchar();*/
+
 	Pareto<RepMODM, AdsMODM>* pf;
-	int time2PPLS = 5000;
+
 	for (int exec = 0; exec < 1; exec++)
 	{
-		//pf = multiobjectvns.search(20, 0);
-		pf = paretoSearch.search(time2PPLS, 0, pf);
+		pf = multiobjectvns.search(2, 0);
+		generalPLS.search(30, 0, pf);
+
+		pf = paretoSearch.search(30, 0, pf);
 	}
 
 	vector<vector<Evaluation*> > vEval = pf->getParetoFront();
@@ -168,53 +262,55 @@ int MOTOPDMC(int argc, char **argv)
 
 	MOMETRICS<RepMODM, AdsMODM> US(v_e);
 	int nOF = 2;
-	cout<<"ReadingPareto..."<<endl;
-	vector<vector<double> > PF1 = US.readPF("./MyProjects/paretoCorsTesteS3-1", 291, nOF);
-	vector<vector<double> > PF2 = US.readPF("./MyProjects/paretoCorsTesteS3-2", 262, nOF);
-	vector<vector<double> > ref = US.unionSets(PF1, PF2);
-	vector<vector<double> > refMin = ref;
-
-	cout << PF1.size() << endl;
-	cout << PF2.size() << endl;
-	cout << ref.size() << endl;
-	//	getchar();
-	cout << "Reference set" << endl;
-	for (int p = 0; p < ref.size(); p++)
-	{
-//		cout << ref[p][0] << "\t" << ref[p][1] << endl;
-		refMin[p][0] *= -1;
-		refMin[p][1] *= -1;
-	}
+//	cout<<"ReadingPareto..."<<endl;
+//	vector<vector<double> > PF1 = US.readPF("./MyProjects/paretoCorsTesteS3-1", 291, nOF);
+//	vector<vector<double> > PF2 = US.readPF("./MyProjects/paretoCorsTesteS3-2", 262, nOF);
+//	vector<vector<double> > ref = US.unionSets(PF1, PF2);
+//	vector<vector<double> > refMin = ref;
+//
+//	cout << PF1.size() << endl;
+//	cout << PF2.size() << endl;
+//	cout << ref.size() << endl;
+//	//	getchar();
+//	cout << "Reference set" << endl;
+//	for (int p = 0; p < ref.size(); p++)
+//	{
+////		cout << ref[p][0] << "\t" << ref[p][1] << endl;
+//		refMin[p][0] *= -1;
+//		refMin[p][1] *= -1;
+//	}
 
 	vector<double> utopicSol;
-	utopicSol.push_back(-5226);
-	utopicSol.push_back(-10);
+	utopicSol.push_back(-upperBound);
+	utopicSol.push_back(-1000);
 	vector<double> objReferences;
-	objReferences.push_back(10000);
-	objReferences.push_back(10);
+	objReferences.push_back(0);
+	objReferences.push_back(0);
 
-	int card = US.cardinalite(paretoDoubleEval, ref);
-	double sCToRef = US.setCoverage(paretoDoubleEval, ref);
-	double sCFromRef = US.setCoverage(ref, paretoDoubleEval);
+//	int card = US.cardinalite(paretoDoubleEval, ref);
+//	double sCToRef = US.setCoverage(paretoDoubleEval, ref);
+//	double sCFromRef = US.setCoverage(ref, paretoDoubleEval);
 	double hv = US.hipervolumeWithExecRequested(paretoDoubleEvalMin, objReferences);
 
 	double delta = US.deltaMetric(paretoDoubleEvalMin, utopicSol);
 
 	//Delta Metric and Hipervolume need to verify min
-	cout << "Cardinalite = " << card << endl;
-	cout << "Set Coverage to ref = " << sCToRef << endl;
-	cout << "Set Coverage from ref  = " << sCFromRef << endl;
+//	cout << "Cardinalite = " << card << endl;
+//	cout << "Set Coverage to ref = " << sCToRef << endl;
+//	cout << "Set Coverage from ref  = " << sCFromRef << endl;
 	cout << "delta  = " << delta << endl;
-	cout << "deltaRef  = " << US.deltaMetric(refMin, utopicSol) << endl;
+//	cout << "deltaRef  = " << US.deltaMetric(refMin, utopicSol) << endl;
 	cout << "hv  = " << hv << endl;
-	cout << "ref  = " << US.hipervolumeWithExecRequested(refMin, objReferences) << endl;
+//	cout << "ref  = " << US.hipervolumeWithExecRequested(refMin, objReferences) << endl;
 
 	FILE* fGeral = fopen(outputGeral.c_str(), "a");
 
-	size_t pos = filename.find("Instances/");
-	string instName = filename.substr(pos);
+	size_t pos = filepath.find("Instances/");
+	string instName = filepath.substr(pos);
 
-	fprintf(fGeral, "%s \t %d \t %.7f \t %.7f \t %d \t %d \t %.7f \t %.7f \t %.7f \t %.7f \t %ld \n", instName.c_str(), initial_population_size, alphaBuilder, alphaNeighARProduct, nObtainedParetoSol, card, sCToRef, sCFromRef, hv, delta, seed);
+	int NSChangeAddOrder = 1;
+	fprintf(fGeral, "%s \t %d \t %.7f \t %.7f \t %d \t %.7f \t %.7f \t %d \t %d  \t %ld \n", instName.c_str(), initial_population_size, alphaBuilder, alphaNeighARProduct, nObtainedParetoSol, hv, delta, NSChangeAddOrder, argvNSNTries, seed);
+//	fprintf(fGeral, "%s \t %d \t %.7f \t %.7f \t %d \t %d \t %.7f \t %.7f \t %.7f \t %.7f \t %ld \n", instName.c_str(), initial_population_size, alphaBuilder, alphaNeighARProduct, nObtainedParetoSol, card, sCToRef, sCFromRef, hv, delta, seed);
 
 	fclose(fGeral);
 

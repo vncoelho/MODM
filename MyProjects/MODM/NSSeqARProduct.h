@@ -226,10 +226,12 @@ private:
 	const AdsMODM& ads;
 	RandGen& rg;
 	double alpha;
+	int nTries;
+	int tries;
 
 public:
-	NSIteratorARProduct(const AdsMODM& _ads, ProblemInstance* _dmproblem, RandGen& _rg, double _alpha) :
-			ads(_ads), dmproblem(_dmproblem), rg(_rg), alpha(_alpha)
+	NSIteratorARProduct(const AdsMODM& _ads, ProblemInstance* _dmproblem, RandGen& _rg, double _alpha, int _nTries) :
+			ads(_ads), dmproblem(_dmproblem), rg(_rg), alpha(_alpha), nTries(_nTries)
 	{
 		nClients = dmproblem->getNumberOfClients();
 		nProducts = dmproblem->getNumberOfProducts();
@@ -244,6 +246,7 @@ public:
 	{
 		yRemove = 0;
 		yNew = 1;
+		tries = 0;
 	}
 
 	void next()
@@ -253,12 +256,18 @@ public:
 		{
 			yRemove++;
 			yNew = 1;
+			if (yRemove == nProducts)
+			{
+				yRemove = 0;
+				yNew = 1;
+				tries++;
+			}
 		}
 	}
 
 	bool isDone()
 	{
-		return (yRemove == nProducts);
+		return (tries == nTries);
 	}
 
 	Move<RepMODM, AdsMODM>& current()
@@ -281,12 +290,13 @@ private:
 	ProblemInstance* dmproblem;
 	RandGen& rg;
 	double alpha;
+	int nTries;
 public:
 
 	using NSSeq<RepMODM, AdsMODM>::move; // prevents name hiding
 
-	NSSeqARProduct(RandGen& _rg, ProblemInstance* _dmproblem, double _alpha) :
-			rg(_rg), dmproblem(_dmproblem), alpha(_alpha)
+	NSSeqARProduct(RandGen& _rg, ProblemInstance* _dmproblem, double _alpha, int _nTries) :
+			rg(_rg), dmproblem(_dmproblem), alpha(_alpha), nTries(_nTries)
 	{
 		if (alpha == 0)
 			alpha = 0.00001;
@@ -316,7 +326,7 @@ public:
 
 	virtual NSIterator<RepMODM, AdsMODM>& getIterator(const RepMODM& rep, const AdsMODM& ads)
 	{
-		return *new NSIteratorARProduct(ads, dmproblem, rg, alpha); // return an iterator to the neighbors of 'rep'
+		return *new NSIteratorARProduct(ads, dmproblem, rg, alpha, nTries); // return an iterator to the neighbors of 'rep'
 	}
 
 	static string idComponent()
