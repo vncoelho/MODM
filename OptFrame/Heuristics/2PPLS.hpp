@@ -115,7 +115,7 @@ public:
 //			vector<Solution<R, ADS>*> tempPop = _pf->getParetoSet();
 //			for (int i = 0; i < tempPop.size(); i++)
 //				p_0.push_back(tempPop[i]);
-			p_0 = *_pf;
+			p_0 = _pf->clone();
 			cout << "Population extracted with " << p_0.size() << " individuals" << endl;
 		}
 
@@ -128,7 +128,7 @@ public:
 			p.addSolution(pDominance, pDominanceWeak, x_e, s, neighbors.size());
 			delete s;
 		}
-		p = x_e.first;
+		p = x_e.first.clone();
 		p_0.clear();
 
 		cout << "Number of Inicial non-dominated solutions = " << x_e.first.size() << endl;
@@ -258,7 +258,7 @@ public:
 			if (p_a.size() != 0)
 			{
 				p.clear();  // verificar se pode-se limpar a populacao p
-				p = p_a;
+				p = p_a.clone();
 				p_a.clear();
 				k = 1;
 			}
@@ -266,7 +266,7 @@ public:
 			{
 				k++;
 				p.clear(); // verificar se pode-se limpar a populacao p
-				p = x_e.first;
+				p = x_e.first.clone();
 
 				//speed-up - Thibauuuut Lust - Nice guy
 				if (k <= r)
@@ -277,7 +277,7 @@ public:
 					{
 						if (x_e.second[i][k - 1] == true)
 						{
-							p.remove(i - removed);
+							p.erase(i - removed);
 							removed++;
 						}
 					}

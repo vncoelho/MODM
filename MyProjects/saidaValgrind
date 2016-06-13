@@ -1,151 +1,192 @@
-==7541== Memcheck, a memory error detector
-==7541== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
-==7541== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
-==7541== Command: ./app_MODM ./MODM/Instances/L-10/L-10-10-1-l.txt ./saidaMODMTeste ./saidaGeral 1200 6 3
-==7541== 
-==7541== 
-==7541== HEAP SUMMARY:
-==7541==     in use at exit: 3,623,963 bytes in 48,217 blocks
-==7541==   total heap usage: 1,009,920 allocs, 961,703 frees, 151,481,273 bytes allocated
-==7541== 
-==7541== 29 bytes in 1 blocks are possibly lost in loss record 22 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4ED0A88: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED2494: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED25E2: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4217CF: scannerpp::Scanner::useDefaultSeparators() (Scanner.cpp:131)
-==7541==    by 0x4221CE: scannerpp::Scanner::Scanner(scannerpp::File*) (Scanner.cpp:30)
-==7541==    by 0x40F8A8: main (mainMODM.cpp:84)
-==7541== 
-==7541== 37 bytes in 1 blocks are possibly lost in loss record 26 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4ED0A88: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED2494: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED25E2: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x40F726: main (mainMODM.cpp:59)
-==7541== 
-==7541== 40 (24 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 27 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x415FA5: optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::getEvaluators() (MultiEvaluator.hpp:71)
-==7541==    by 0x41048E: main (2PPLS.hpp:50)
-==7541== 
-==7541== 40 (24 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 28 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x415FA5: optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::getEvaluators() (MultiEvaluator.hpp:71)
-==7541==    by 0x4104FD: main (2PPLS.hpp:50)
-==7541== 
-==7541== 41 bytes in 1 blocks are possibly lost in loss record 29 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4ED0A88: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED2494: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED25E2: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x40F70E: main (mainMODM.cpp:58)
-==7541== 
-==7541== 41 bytes in 1 blocks are possibly lost in loss record 30 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4ED0A88: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED17FA: std::string::_Rep::_M_clone(std::allocator<char> const&, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED18DF: std::string::reserve(unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4226A5: scannerpp::Scanner::next() (basic_string.h:1047)
-==7541==    by 0x423334: scannerpp::Scanner::nextInt() (Scanner.cpp:259)
-==7541==    by 0x407EDC: MODM::ProblemInstance::ProblemInstance(scannerpp::Scanner&) (ProblemInstance.h:58)
-==7541==    by 0x40F8BD: main (mainMODM.cpp:86)
-==7541== 
-==7541== 99 bytes in 1 blocks are possibly lost in loss record 45 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4ED0A88: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED0C79: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x4ED0E1B: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16)
-==7541==    by 0x40F859: main (basic_string.h:550)
-==7541== 
-==7541== 156 bytes in 39 blocks are definitely lost in loss record 54 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4059D8: MODM::MODMEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (Evaluator.h:244)
-==7541==    by 0x41B949: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (Evaluator.hpp:82)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 156 bytes in 39 blocks are definitely lost in loss record 55 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x41455F: MODM::MODMRobustnessEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (EvaluatorRobustness.h:219)
-==7541==    by 0x41B949: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (Evaluator.hpp:82)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 200 bytes in 50 blocks are definitely lost in loss record 60 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4059D8: MODM::MODMEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (Evaluator.h:244)
-==7541==    by 0x41AD91: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::addSolution(std::pair<optframe::Population<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > >&, optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&) (Evaluator.hpp:82)
-==7541==    by 0x41B424: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:100)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 200 bytes in 50 blocks are definitely lost in loss record 61 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x41455F: MODM::MODMRobustnessEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (EvaluatorRobustness.h:219)
-==7541==    by 0x41AD91: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::addSolution(std::pair<optframe::Population<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > >&, optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&) (Evaluator.hpp:82)
-==7541==    by 0x41B424: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:100)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 596 bytes in 149 blocks are definitely lost in loss record 78 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x41455F: MODM::MODMRobustnessEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (EvaluatorRobustness.h:219)
-==7541==    by 0x41AD91: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::addSolution(std::pair<optframe::Population<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > >&, optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&) (Evaluator.hpp:82)
-==7541==    by 0x41B84B: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:157)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 608 bytes in 152 blocks are definitely lost in loss record 82 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4059D8: MODM::MODMEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (Evaluator.h:244)
-==7541==    by 0x41AD91: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::addSolution(std::pair<optframe::Population<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > >&, optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&) (Evaluator.hpp:82)
-==7541==    by 0x41B84B: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:157)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 6,992 bytes in 1,748 blocks are definitely lost in loss record 105 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4059D8: MODM::MODMEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (Evaluator.h:244)
-==7541==    by 0x4178C2: optframe::ParetoDominance<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::dominates(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&, optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (Evaluator.hpp:82)
-==7541==    by 0x41B831: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:155)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 6,992 bytes in 1,748 blocks are definitely lost in loss record 106 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x4059D8: MODM::MODMEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (Evaluator.h:244)
-==7541==    by 0x4178E0: optframe::ParetoDominance<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::dominates(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&, optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (Evaluator.hpp:82)
-==7541==    by 0x41B831: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:155)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 6,992 bytes in 1,748 blocks are definitely lost in loss record 107 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x41455F: MODM::MODMRobustnessEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (EvaluatorRobustness.h:219)
-==7541==    by 0x4178C2: optframe::ParetoDominance<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::dominates(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&, optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (Evaluator.hpp:82)
-==7541==    by 0x41B831: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:155)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 6,996 bytes in 1,749 blocks are definitely lost in loss record 108 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x41455F: MODM::MODMRobustnessEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (EvaluatorRobustness.h:219)
-==7541==    by 0x4178E0: optframe::ParetoDominance<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::dominates(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&, optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (Evaluator.hpp:82)
-==7541==    by 0x41B831: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:155)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 214,432 (448 direct, 213,984 indirect) bytes in 8 blocks are definitely lost in loss record 129 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x40BC89: optframe::TestSolution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::clone() const (TestSolution.hpp:122)
-==7541==    by 0x41B40F: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:99)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== 1,342,864 (104 direct, 1,342,760 indirect) bytes in 1 blocks are definitely lost in loss record 134 of 134
-==7541==    at 0x4C2B1C7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7541==    by 0x41895F: optframe::BasicInitialPopulation<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::generatePopulation(unsigned int) (InitialPopulation.h:77)
-==7541==    by 0x41B315: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM, int>*) (2PPLS.hpp:94)
-==7541==    by 0x41055A: main (mainMODM.cpp:193)
-==7541== 
-==7541== LEAK SUMMARY:
-==7541==    definitely lost: 30,488 bytes in 7,483 blocks
-==7541==    indirectly lost: 1,556,776 bytes in 17,861 blocks
-==7541==      possibly lost: 247 bytes in 5 blocks
-==7541==    still reachable: 2,036,452 bytes in 22,868 blocks
-==7541==         suppressed: 0 bytes in 0 blocks
-==7541== Reachable blocks (those to which a pointer was found) are not shown.
-==7541== To see them, rerun with: --leak-check=full --show-reachable=yes
-==7541== 
-==7541== For counts of detected and suppressed errors, rerun with: -v
-==7541== ERROR SUMMARY: 19 errors from 19 contexts (suppressed: 2 from 2)
+==31517== Memcheck, a memory error detector
+==31517== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==31517== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==31517== Command: ./app_MODM .instance ./saidaMOTOPDMC ./saidaGeralMOTOPDMC 120 0.8 0.1 5 1 ./a 10
+==31517== 
+==31517== 
+==31517== HEAP SUMMARY:
+==31517==     in use at exit: 3,238,334 bytes in 37,153 blocks
+==31517==   total heap usage: 403,437 allocs, 366,284 frees, 153,415,408 bytes allocated
+==31517== 
+==31517== 18 bytes in 1 blocks are definitely lost in loss record 7 of 72
+==31517==    at 0x4C2CE8E: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x4247C8: optframe::MOMETRICS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::execCommand(char const*) (MultiObjSearch.hpp:960)
+==31517==    by 0x41C07A: optframe::MOMETRICS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::hipervolumeWithExecRequested(std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >, std::vector<double, std::allocator<double> >) (MultiObjSearch.hpp:998)
+==31517==    by 0x405453: MOTOPDMC(int, char**) (mainMOMODM.hpp:301)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 40 (24 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 12 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x422370: optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::getEvaluators() (MultiEvaluator.hpp:89)
+==31517==    by 0x4198F7: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::TwoPhaseParetoLocalSearch(optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, optframe::InitialPopulation<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, int, std::vector<optframe::NSSeq<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, std::allocator<optframe::NSSeq<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*> >) (2PPLS.hpp:50)
+==31517==    by 0x404D50: MOTOPDMC(int, char**) (mainMOMODM.hpp:195)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 40 (24 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 13 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x422370: optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::getEvaluators() (MultiEvaluator.hpp:89)
+==31517==    by 0x419938: TwoPhaseParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::TwoPhaseParetoLocalSearch(optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, optframe::InitialPopulation<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, int, std::vector<optframe::NSSeq<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, std::allocator<optframe::NSSeq<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*> >) (2PPLS.hpp:50)
+==31517==    by 0x404D50: MOTOPDMC(int, char**) (mainMOMODM.hpp:195)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 40 (24 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 14 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x422370: optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::getEvaluators() (MultiEvaluator.hpp:89)
+==31517==    by 0x428D4D: optframe::paretoManager<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::paretoManager(optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&) (MultiObjSearch.hpp:497)
+==31517==    by 0x422712: paretoManager2PPLS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::paretoManager2PPLS(optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, int) (GPLS.hpp:59)
+==31517==    by 0x419E4C: GeneralParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::GeneralParetoLocalSearch(optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, optframe::InitialPopulation<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, int, std::vector<optframe::MOLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, std::allocator<optframe::MOLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*> >) (GPLS.hpp:127)
+==31517==    by 0x404ED4: MOTOPDMC(int, char**) (mainMOMODM.hpp:211)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 40 (24 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 15 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x422370: optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::getEvaluators() (MultiEvaluator.hpp:89)
+==31517==    by 0x428D8E: optframe::paretoManager<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::paretoManager(optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&) (MultiObjSearch.hpp:497)
+==31517==    by 0x422712: paretoManager2PPLS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::paretoManager2PPLS(optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, int) (GPLS.hpp:59)
+==31517==    by 0x419E4C: GeneralParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::GeneralParetoLocalSearch(optframe::MultiEvaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, optframe::InitialPopulation<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, int, std::vector<optframe::MOLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, std::allocator<optframe::MOLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*> >) (GPLS.hpp:127)
+==31517==    by 0x404ED4: MOTOPDMC(int, char**) (mainMOMODM.hpp:211)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 72 (56 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 18 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x41BB4F: optframe::MOMETRICS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::MOMETRICS(std::vector<optframe::Evaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, std::allocator<optframe::Evaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*> >) (MultiObjSearch.hpp:678)
+==31517==    by 0x405321: MOTOPDMC(int, char**) (mainMOMODM.hpp:271)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 72 (56 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 19 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x41BB96: optframe::MOMETRICS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::MOMETRICS(std::vector<optframe::Evaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, std::allocator<optframe::Evaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*> >) (MultiObjSearch.hpp:679)
+==31517==    by 0x405321: MOTOPDMC(int, char**) (mainMOMODM.hpp:271)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 120 bytes in 1 blocks are definitely lost in loss record 22 of 72
+==31517==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x56C6024: getdelim (iogetdelim.c:66)
+==31517==    by 0x42482C: optframe::MOMETRICS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::execCommand(char const*) (MultiObjSearch.hpp:957)
+==31517==    by 0x41C07A: optframe::MOMETRICS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::hipervolumeWithExecRequested(std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >, std::vector<double, std::allocator<double> >) (MultiObjSearch.hpp:998)
+==31517==    by 0x405453: MOTOPDMC(int, char**) (mainMOMODM.hpp:301)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 144 (112 direct, 32 indirect) bytes in 2 blocks are definitely lost in loss record 23 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40ADF4: optframe::MultiEvaluation::clone() const (MultiEvaluation.hpp:167)
+==31517==    by 0x4235B2: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::push_back(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, optframe::MultiEvaluation*) (MultiObjSearch.hpp:83)
+==31517==    by 0x41AD1A: MOVNSLevels<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (MOVNSLevels.hpp:253)
+==31517==    by 0x404F20: MOTOPDMC(int, char**) (mainMOMODM.hpp:228)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 144 (112 direct, 32 indirect) bytes in 2 blocks are definitely lost in loss record 24 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40ADF4: optframe::MultiEvaluation::clone() const (MultiEvaluation.hpp:167)
+==31517==    by 0x4235B2: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::push_back(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, optframe::MultiEvaluation*) (MultiObjSearch.hpp:83)
+==31517==    by 0x4238C6: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::operator=(optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (MultiObjSearch.hpp:174)
+==31517==    by 0x41B0C3: GeneralParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (GPLS.hpp:167)
+==31517==    by 0x404F5D: MOTOPDMC(int, char**) (mainMOMODM.hpp:229)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 144 (112 direct, 32 indirect) bytes in 2 blocks are definitely lost in loss record 25 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40ADF4: optframe::MultiEvaluation::clone() const (MultiEvaluation.hpp:167)
+==31517==    by 0x4235B2: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::push_back(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, optframe::MultiEvaluation*) (MultiObjSearch.hpp:83)
+==31517==    by 0x4238C6: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::operator=(optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (MultiObjSearch.hpp:174)
+==31517==    by 0x41B0E5: GeneralParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (GPLS.hpp:168)
+==31517==    by 0x404F5D: MOTOPDMC(int, char**) (mainMOMODM.hpp:229)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 160 bytes in 2 blocks are definitely lost in loss record 26 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40D00F: MODM::MODMEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (Evaluator.h:255)
+==31517==    by 0x42354B: optframe::Evaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::evaluate(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (Evaluator.hpp:82)
+==31517==    by 0x41AC78: MOVNSLevels<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (MOVNSLevels.hpp:246)
+==31517==    by 0x404F20: MOTOPDMC(int, char**) (mainMOMODM.hpp:228)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 160 bytes in 2 blocks are definitely lost in loss record 27 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40DD05: MODM::MODMRobustnessEvaluator::evaluate(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, MODM::AdsMODM const&) (EvaluatorRobustness.h:281)
+==31517==    by 0x42354B: optframe::Evaluator<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::evaluate(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (Evaluator.hpp:82)
+==31517==    by 0x41AC78: MOVNSLevels<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (MOVNSLevels.hpp:246)
+==31517==    by 0x404F20: MOTOPDMC(int, char**) (mainMOMODM.hpp:228)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 464 (112 direct, 352 indirect) bytes in 2 blocks are definitely lost in loss record 38 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x41ACDE: MOVNSLevels<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (MOVNSLevels.hpp:251)
+==31517==    by 0x404F20: MOTOPDMC(int, char**) (mainMOMODM.hpp:228)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 648 bytes in 324 blocks are definitely lost in loss record 39 of 72
+==31517==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x56DF839: strdup (strdup.c:42)
+==31517==    by 0x404156: readUpperBound(std::string) (mainMOMODM.hpp:56)
+==31517==    by 0x4046E2: MOTOPDMC(int, char**) (mainMOMODM.hpp:116)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 936 (728 direct, 208 indirect) bytes in 13 blocks are definitely lost in loss record 45 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40ADF4: optframe::MultiEvaluation::clone() const (MultiEvaluation.hpp:167)
+==31517==    by 0x4235B2: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::push_back(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, optframe::MultiEvaluation*) (MultiObjSearch.hpp:83)
+==31517==    by 0x41B4D3: GeneralParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (GPLS.hpp:204)
+==31517==    by 0x404F5D: MOTOPDMC(int, char**) (mainMOMODM.hpp:229)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 1,224 (952 direct, 272 indirect) bytes in 17 blocks are definitely lost in loss record 48 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40ADF4: optframe::MultiEvaluation::clone() const (MultiEvaluation.hpp:167)
+==31517==    by 0x4235B2: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::push_back(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, optframe::MultiEvaluation*) (MultiObjSearch.hpp:83)
+==31517==    by 0x43C399: paretoManager2PPLS<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::addSolution(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, optframe::MultiEvaluation*) (GPLS.hpp:92)
+==31517==    by 0x43CFDC: optframe::MOBestImprovement<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::exec(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, optframe::MultiEvaluation&, optframe::paretoManager<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>&, double, double) (MOBestImprovement.hpp:100)
+==31517==    by 0x41B3F3: GeneralParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (GPLS.hpp:198)
+==31517==    by 0x404F5D: MOTOPDMC(int, char**) (mainMOMODM.hpp:229)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 1,728 (1,344 direct, 384 indirect) bytes in 24 blocks are definitely lost in loss record 49 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40ADF4: optframe::MultiEvaluation::clone() const (MultiEvaluation.hpp:167)
+==31517==    by 0x4235B2: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::push_back(optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*, optframe::MultiEvaluation*) (MultiObjSearch.hpp:83)
+==31517==    by 0x4238C6: optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::operator=(optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM> const&) (MultiObjSearch.hpp:174)
+==31517==    by 0x41B54B: GeneralParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (GPLS.hpp:212)
+==31517==    by 0x404F5D: MOTOPDMC(int, char**) (mainMOMODM.hpp:229)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 18,024 (24 direct, 18,000 indirect) bytes in 1 blocks are definitely lost in loss record 62 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40B91B: MODM::ProblemInstance::ProblemInstance(scannerpp::Scanner&, optframe::RandGen&) (ProblemInstance.h:50)
+==31517==    by 0x4049E8: MOTOPDMC(int, char**) (mainMOMODM.hpp:159)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 18,024 (24 direct, 18,000 indirect) bytes in 1 blocks are definitely lost in loss record 63 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x40B94A: MODM::ProblemInstance::ProblemInstance(scannerpp::Scanner&, optframe::RandGen&) (ProblemInstance.h:51)
+==31517==    by 0x4049E8: MOTOPDMC(int, char**) (mainMOMODM.hpp:159)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 135,324 (56 direct, 135,268 indirect) bytes in 1 blocks are definitely lost in loss record 67 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x41B6E3: GeneralParetoLocalSearch<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (GPLS.hpp:239)
+==31517==    by 0x404F5D: MOTOPDMC(int, char**) (mainMOMODM.hpp:229)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 375,144 (672 direct, 374,472 indirect) bytes in 14 blocks are definitely lost in loss record 69 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x422E8A: optframe::Solution<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::clone() const (Solution.hpp:147)
+==31517==    by 0x41A196: MOVNSLevels<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (MOVNSLevels.hpp:109)
+==31517==    by 0x404F20: MOTOPDMC(int, char**) (mainMOMODM.hpp:228)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== 2,685,624 (104 direct, 2,685,520 indirect) bytes in 1 blocks are definitely lost in loss record 72 of 72
+==31517==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31517==    by 0x43E9C1: optframe::GRInitialPopulation<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::generatePopulation(unsigned int) (InitialPopulation.h:116)
+==31517==    by 0x41A019: MOVNSLevels<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>::search(double, double, optframe::Pareto<std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >, MODM::AdsMODM>*) (MOVNSLevels.hpp:94)
+==31517==    by 0x404F20: MOTOPDMC(int, char**) (mainMOMODM.hpp:228)
+==31517==    by 0x405E30: main (mainMODM.cpp:32)
+==31517== 
+==31517== LEAK SUMMARY:
+==31517==    definitely lost: 5,666 bytes in 416 blocks
+==31517==    indirectly lost: 3,232,668 bytes in 36,737 blocks
+==31517==      possibly lost: 0 bytes in 0 blocks
+==31517==    still reachable: 0 bytes in 0 blocks
+==31517==         suppressed: 0 bytes in 0 blocks
+==31517== 
+==31517== For counts of detected and suppressed errors, rerun with: -v
+==31517== ERROR SUMMARY: 23 errors from 23 contexts (suppressed: 0 from 0)

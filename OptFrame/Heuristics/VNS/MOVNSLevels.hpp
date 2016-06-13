@@ -245,6 +245,7 @@ public:
 				Evaluator<R, ADS>* evtr = v_e[ev];
 				Evaluation& e1 = evtr->evaluate(*s);
 				vev.push_back(&e1);
+
 			}
 
 			MultiEvaluation* e = new MultiEvaluation(vev);

@@ -10,7 +10,8 @@ MODMScanner.o: ../OptFrame/Scanner++/Scanner.cpp
 
 -include $(SRC_MODM:%.cpp=%.d)
 
-CPPFLAGS = --std=c++11 -Ofast
+#CPPFLAGS = --std= c++11 -g
+CPPFLAGS = --std= c++11 -Ofast  
 CPPFLAGS += -MD -MP
 
 examples:

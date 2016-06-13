@@ -65,7 +65,7 @@ public:
 											orderProducts[rp] = rp;
 
 			//TODO remove comment
-			//std::random_shuffle(orderProducts.begin(), orderProducts.end());
+			std::random_shuffle(orderProducts.begin(), orderProducts.end());
 
 			for (int rp = 0; rp < nProducts; rp++)
 			{
@@ -83,7 +83,7 @@ public:
 				}
 
 				//TODO remove comment
-				//std::random_shuffle(order.begin(), order.end());
+				std::random_shuffle(order.begin(), order.end());
 
 				for (int rc = 0; rc < nClients; rc++)
 				{

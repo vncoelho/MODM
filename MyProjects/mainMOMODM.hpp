@@ -17,6 +17,7 @@
 #include "../OptFrame/MultiObjSearch.hpp"
 #include "../OptFrame/Heuristics/EvolutionaryAlgorithms/ES.hpp"
 #include "../OptFrame/Heuristics/MOLocalSearches/MOBestImprovement.hpp"
+#include "../OptFrame/Heuristics/MOLocalSearches/MORandomImprovement.hpp"
 #include "../OptFrame/Util/CheckCommand.hpp"
 #include <string>
 #include "MODM.h"
@@ -114,17 +115,18 @@ int MOTOPDMC(int argc, char **argv)
 
 	double upperBound = readUpperBound(instPureName);
 
-	filepath = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
+	filepath = "./MODM/Instances/S3-15/S3-10-15-1-s.txt";
+//	filepath = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
 //	filepath = "./MyProjects/MODM/Instances/S3-5/S3-5-5-1-s.txt";
 //	filepath = "./MyProjects/MODM/Instances/L-15/L-10-15-1-l.txt";
-	initial_population_size = 1;
+	initial_population_size = 100;
 	alphaNeighARProduct = 0.001;
 //	alphaBuilder = 0.2;
 //	time2PPLS = 60;
 //	alphaBuilder = 1;
 //	initial_population_size = 5;
 //	alphaNeighARProduct =0.05;
-//	argvNSNTries = 100;
+	argvNSNTries = 1;
 
 	cout << "filepath = " << filepath << endl;
 	cout << "instPureName = " << instPureName << endl;
@@ -195,11 +197,15 @@ int MOTOPDMC(int argc, char **argv)
 //	paretoManager<RepMODM, AdsMODM> addSolClass(mev);
 	MOBestImprovement<RepMODM, AdsMODM> mobi1(mev, nsseq_arProduct);
 	MOBestImprovement<RepMODM, AdsMODM> mobi2(mev, nsseq_add);
-	MOBestImprovement<RepMODM, AdsMODM> mobi3(mev, nsseq_swap);
+	MORandomImprovement<RepMODM, AdsMODM> moriSwap(mev, nsseq_swap,1000);
+	MORandomImprovement<RepMODM, AdsMODM> moriSwapInter(mev, nsseq_swapInter,1000);
 	vector<MOLocalSearch<RepMODM, AdsMODM>*> vMOLS;
 	vMOLS.push_back(&mobi1);
 	vMOLS.push_back(&mobi2);
-	vMOLS.push_back(&mobi3);
+	vMOLS.push_back(&moriSwapInter);
+	vMOLS.push_back(&moriSwap);
+
+
 
 
 	GeneralParetoLocalSearch<RepMODM, AdsMODM> generalPLS(mev, bip, initial_population_size, vMOLS);
@@ -220,10 +226,12 @@ int MOTOPDMC(int argc, char **argv)
 	for (int exec = 0; exec < 1; exec++)
 	{
 		pf = multiobjectvns.search(2, 0);
-		generalPLS.search(10, 0, pf);
+		pf = generalPLS.search(10, 0, pf);
 
-		pf = paretoSearch.search(10, 0, pf);
+//		pf = paretoSearch.search(60, 0, pf);
 	}
+
+//	pf->clear();
 
 	vector<MultiEvaluation*> vEval = pf->getParetoFront();
 	vector<Solution<RepMODM, AdsMODM>*> vSolPf = pf->getParetoSet();
@@ -242,7 +250,7 @@ int MOTOPDMC(int argc, char **argv)
 		const AdsMODM& ads = sol->getADS();
 		vector<double> solEvaluations;
 		double foProfit = vEval[i]->at(0).getObjFunction();
-		double foVolatility = vEval[i]->at(0).getObjFunction();
+		double foVolatility = vEval[i]->at(1).getObjFunction();
 		solEvaluations.push_back(foProfit);
 		solEvaluations.push_back(foVolatility);
 		paretoDoubleEval.push_back(solEvaluations);
