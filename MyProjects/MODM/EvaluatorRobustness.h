@@ -213,7 +213,8 @@ public:
 
 		fo = foRevenue - foBudget - foFixedCost;
 
-		double foInv = 0;
+		double foInv = foInvHR * (-100000) + foInvBud * (-100000) + foInvMin * (-20000) + foInvMaxOffersC * (-1000);
+
 
 		//calculating variable profit
 //		int nMonteCarlo = 10;

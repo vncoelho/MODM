@@ -15,6 +15,7 @@
 #include "../OptFrame/Heuristics/GPLS.hpp"
 #include "../OptFrame/MultiEvaluator.hpp"
 #include "../OptFrame/MultiObjSearch.hpp"
+#include "../OptFrame/InitialPareto.h"
 #include "../OptFrame/Heuristics/EvolutionaryAlgorithms/ES.hpp"
 #include "../OptFrame/Heuristics/MOLocalSearches/MOBestImprovement.hpp"
 #include "../OptFrame/Heuristics/MOLocalSearches/MORandomImprovement.hpp"
@@ -25,6 +26,15 @@
 using namespace std;
 using namespace optframe;
 using namespace MODM;
+
+double findMaxProfit(vector<vector<double> > vParetoEval)
+{
+	double maxProfit = -10000000;
+	for (int i = 0; i < vParetoEval.size(); i++)
+		if (vParetoEval[i][0] > maxProfit)
+			maxProfit = vParetoEval[i][0];
+	return maxProfit;
+}
 
 double readUpperBound(string fileToFind)
 {
@@ -87,7 +97,7 @@ int MOTOPDMC(int argc, char **argv)
 	RandGenMersenneTwister rg;
 	long seed = time(NULL);
 
-	seed = 1;
+//	seed = 10;
 
 	srand(seed);
 	rg.setSeed(seed);
@@ -96,7 +106,7 @@ int MOTOPDMC(int argc, char **argv)
 	const char* saida = argv[2];
 	const char* saidaGeral = argv[3];
 	int time2PPLS = atoi(argv[4]);
-	double alphaBuilder = atof(argv[5]);
+	double maxAlphaBuilder = atof(argv[5]);
 	double alphaNeighARProduct = atof(argv[6]);
 	int initial_population_size = atoi(argv[7]);
 	int argvNBatch = atoi(argv[8]);
@@ -115,13 +125,12 @@ int MOTOPDMC(int argc, char **argv)
 
 	double upperBound = readUpperBound(instPureName);
 
-	filepath = "./MODM/Instances/S3-15/S3-10-15-1-s.txt";
-//	filepath = "./MyProjects/MODM/Instances/S3-15/S3-10-15-1-s.txt";
-//	filepath = "./MyProjects/MODM/Instances/S3-5/S3-5-5-1-s.txt";
-//	filepath = "./MyProjects/MODM/Instances/L-15/L-10-15-1-l.txt";
-	initial_population_size = 100;
-	alphaNeighARProduct = 0.001;
-//	alphaBuilder = 0.2;
+//	filepath = "./MODM/Instances/S3-15/S3-10-15-1-s.txt";
+//	filepath = "./MODM/Instances/S3-5/S3-5-5-1-s.txt";
+//	filepath = "./MODM/Instances/L-15/L-10-15-1-l.txt";
+//	initial_population_size = 1000;
+	alphaNeighARProduct = 0.1;	//0.001;
+	maxAlphaBuilder = 0.8;
 //	time2PPLS = 60;
 //	alphaBuilder = 1;
 //	initial_population_size = 5;
@@ -134,7 +143,7 @@ int MOTOPDMC(int argc, char **argv)
 	cout << "output = " << output << endl;
 	cout << "outputGeral = " << outputGeral << endl;
 	cout << "time2PPLS = " << time2PPLS << endl;
-	cout << "alphaBuilder = " << alphaBuilder << endl;
+	cout << "maxAlphaBuilder = " << maxAlphaBuilder << endl;
 	cout << "alphaNeighARProduct = " << alphaNeighARProduct << endl;
 	cout << "initial population size = " << initial_population_size << endl;
 	cout << "argvNSNTries = " << argvNSNTries << endl;
@@ -185,9 +194,9 @@ int MOTOPDMC(int argc, char **argv)
 
 //	neighboors.push_back(&nsseq_swapInter);
 
-	GRInitialPopulation<RepMODM, AdsMODM> bip(grC, rg, alphaBuilder);
-
 	MultiEvaluator<RepMODM, AdsMODM> mev(v_e);
+	GRInitialPopulation<RepMODM, AdsMODM> bip(grC, rg, maxAlphaBuilder);
+	GRInitialPareto<RepMODM, AdsMODM> grIP(grC, rg, maxAlphaBuilder, mev);
 
 	MOVNSLevels<RepMODM, AdsMODM> multiobjectvns(v_e, bip, initial_population_size, neighboors, rg, 10, 10);
 
@@ -195,20 +204,28 @@ int MOTOPDMC(int argc, char **argv)
 	TwoPhaseParetoLocalSearch<RepMODM, AdsMODM> paretoSearch(mev, bip, initial_population_size, neighboors);
 
 //	paretoManager<RepMODM, AdsMODM> addSolClass(mev);
-	MOBestImprovement<RepMODM, AdsMODM> mobi1(mev, nsseq_arProduct);
-	MOBestImprovement<RepMODM, AdsMODM> mobi2(mev, nsseq_add);
-	MORandomImprovement<RepMODM, AdsMODM> moriSwap(mev, nsseq_swap,1000);
-	MORandomImprovement<RepMODM, AdsMODM> moriSwapInter(mev, nsseq_swapInter,1000);
+	MOBestImprovement<RepMODM, AdsMODM> mobiGNS(mev, nsseq_arProduct);
+	MOBestImprovement<RepMODM, AdsMODM> mobiADD(mev, nsseq_add);
+	MORandomImprovement<RepMODM, AdsMODM> moriSwap(mev, nsseq_swap, 1000);
+	MORandomImprovement<RepMODM, AdsMODM> moriSwapInter(mev, nsseq_swapInter, 1000);
 	vector<MOLocalSearch<RepMODM, AdsMODM>*> vMOLS;
-	vMOLS.push_back(&mobi1);
-	vMOLS.push_back(&mobi2);
-	vMOLS.push_back(&moriSwapInter);
-	vMOLS.push_back(&moriSwap);
+	bool NSOrder = true; // AR add or SWAPS
+	if (NSOrder)
+	{
+		vMOLS.push_back(&mobiGNS);
+		vMOLS.push_back(&mobiADD);
+		vMOLS.push_back(&moriSwapInter);
+		vMOLS.push_back(&moriSwap);
+	}
+	else
+	{
+		vMOLS.push_back(&moriSwapInter);
+		vMOLS.push_back(&moriSwap);
+		vMOLS.push_back(&mobiGNS);
+		vMOLS.push_back(&mobiADD);
+	}
 
-
-
-
-	GeneralParetoLocalSearch<RepMODM, AdsMODM> generalPLS(mev, bip, initial_population_size, vMOLS);
+	GeneralParetoLocalSearch<RepMODM, AdsMODM> generalPLS(mev, grIP, initial_population_size, vMOLS);
 
 	// Check Module
 	/*	CheckCommand<RepMODM, AdsMODM> cm(true);
@@ -221,42 +238,49 @@ int MOTOPDMC(int argc, char **argv)
 	 cm.run(5, 1);
 	 getchar();*/
 
-	Pareto<RepMODM, AdsMODM>* pf;
+	Pareto<RepMODM, AdsMODM> pf;
+	Pareto<RepMODM, AdsMODM> pfInitialPareto;
 
+	double searchTimeLimit = 1;
+	searchTimeLimit = time2PPLS;
 	for (int exec = 0; exec < 1; exec++)
 	{
-		pf = multiobjectvns.search(2, 0);
-		pf = generalPLS.search(10, 0, pf);
+		Timer tnow;
+//		multiobjectvns.search(2, 0);
+		pfInitialPareto = grIP.generatePareto(initial_population_size, searchTimeLimit);
+		cout << "Main Printing: \n Initial Pareto with: " << initial_population_size << " solutions has found: " << pfInitialPareto.size() << " non-DS with: " << tnow.now() << " seconds! \n" << endl;
 
+		if (searchTimeLimit - tnow.now() > 0)
+		{
+			pf = *generalPLS.search(searchTimeLimit - tnow.now());
+		}
+		else
+			pf = pfInitialPareto;
 //		pf = paretoSearch.search(60, 0, pf);
 	}
 
 //	pf->clear();
 
-	vector<MultiEvaluation*> vEval = pf->getParetoFront();
-	vector<Solution<RepMODM, AdsMODM>*> vSolPf = pf->getParetoSet();
-
-	int nObtainedParetoSol = vEval.size();
-	vector<vector<double> > paretoDoubleEval;
-	vector<vector<double> > paretoDoubleEvalMin;
-
 	cout << "MO optimization finished! Printing Pareto Front!" << endl;
+
+	MOMETRICS<RepMODM, AdsMODM> US(v_e);
+	vector<vector<double> > initialParetoEvaluations = US.getParetoEvaluations(pfInitialPareto, v_e.size());
+	vector<vector<double> > finalPareto = US.getParetoEvaluations(pf, v_e.size());
+	vector<vector<double> > PFCheck;
+
+	vector<Solution<RepMODM, AdsMODM>*> vSolPf = pf.getParetoSet();
+	int nObtainedParetoSol = vSolPf.size();
 	for (int i = 0; i < nObtainedParetoSol; i++)
 	{
-
 		Solution<RepMODM, AdsMODM>* sol = vSolPf[i];
 		const RepMODM& rep = sol->getR();
-
 		const AdsMODM& ads = sol->getADS();
 		vector<double> solEvaluations;
-		double foProfit = vEval[i]->at(0).getObjFunction();
-		double foVolatility = vEval[i]->at(1).getObjFunction();
+		double foProfit = finalPareto[i][0];
+		double foVolatility = finalPareto[i][1];
 		solEvaluations.push_back(foProfit);
 		solEvaluations.push_back(foVolatility);
-		paretoDoubleEval.push_back(solEvaluations);
-		solEvaluations[0] *= -1;
-		solEvaluations[1] *= -1;
-		paretoDoubleEvalMin.push_back(solEvaluations);
+		US.addSol(PFCheck, solEvaluations);
 
 		vector<int> nPerCat = evalRobustness.checkNClientsPerCategory(rep, ads);
 		cout << foProfit << "\t" << foVolatility << "\t";
@@ -268,8 +292,16 @@ int MOTOPDMC(int argc, char **argv)
 		cout << endl;
 	}
 
-	MOMETRICS<RepMODM, AdsMODM> US(v_e);
-	int nOF = 2;
+	bool errorOnParetoDominance = false;
+	if (finalPareto.size() != PFCheck.size())
+	{
+		errorOnParetoDominance = true;
+		cout << "ERROR ! PFCheck and finalPareto has different size! Some problem might had happen during the optimization..." << endl;
+		for (int p = 0; p < PFCheck.size(); p++)
+		{
+			cout << PFCheck[p][0] << "\t" << PFCheck[p][1] << endl;
+		}
+	}
 //	cout<<"ReadingPareto..."<<endl;
 //	vector<vector<double> > PF1 = US.readPF("./MyProjects/paretoCorsTesteS3-1", 291, nOF);
 //	vector<vector<double> > PF2 = US.readPF("./MyProjects/paretoCorsTesteS3-2", 262, nOF);
@@ -288,6 +320,7 @@ int MOTOPDMC(int argc, char **argv)
 //		refMin[p][1] *= -1;
 //	}
 
+	//Delta Metric and Hipervolume are working requires Minimization problems
 	vector<double> utopicSol;
 	utopicSol.push_back(-upperBound);
 	utopicSol.push_back(-1000);
@@ -298,26 +331,39 @@ int MOTOPDMC(int argc, char **argv)
 //	int card = US.cardinalite(paretoDoubleEval, ref);
 //	double sCToRef = US.setCoverage(paretoDoubleEval, ref);
 //	double sCFromRef = US.setCoverage(ref, paretoDoubleEval);
-	double hv = US.hipervolumeWithExecRequested(paretoDoubleEvalMin, objReferences);
 
-	double delta = US.deltaMetric(paretoDoubleEvalMin, utopicSol);
+	double maxProfit = findMaxProfit(finalPareto);
+	double hv = US.hipervolumeWithExecRequested(finalPareto, objReferences, false);
+	double delta = US.deltaMetric(finalPareto, utopicSol, false);
+	double hvInitial = US.hipervolumeWithExecRequested(initialParetoEvaluations, objReferences, false);
+	double deltaInitial = US.deltaMetric(initialParetoEvaluations, utopicSol, false);
+	int cardInitial = US.cardinalite(initialParetoEvaluations, finalPareto);
 
-	//Delta Metric and Hipervolume need to verify min
 //	cout << "Cardinalite = " << card << endl;
 //	cout << "Set Coverage to ref = " << sCToRef << endl;
 //	cout << "Set Coverage from ref  = " << sCFromRef << endl;
-	cout << "delta  = " << delta << endl;
 //	cout << "deltaRef  = " << US.deltaMetric(refMin, utopicSol) << endl;
-	cout << "hv  = " << hv << endl;
 //	cout << "ref  = " << US.hipervolumeWithExecRequested(refMin, objReferences) << endl;
+
+	cout << "maxProfit  = " << maxProfit << endl;
+	cout << "delta  = " << delta << endl;
+	cout << "hv  = " << hv << endl;
+	cout << "deltaInitial  = " << deltaInitial << endl;
+	cout << "hvInitial  = " << hvInitial << endl;
+	cout << "cardInitial  = " << cardInitial << endl;
+	cout << "errorOnParetoDominance  = " << errorOnParetoDominance << endl;
 
 	FILE* fGeral = fopen(outputGeral.c_str(), "a");
 
 	size_t pos = filepath.find("Instances/");
 	string instName = filepath.substr(pos);
 
-	int NSChangeAddOrder = 1;
-	fprintf(fGeral, "%s \t %d \t %.7f \t %.7f \t %d \t %.7f \t %.7f \t %d \t %d  \t %ld \n", instName.c_str(), initial_population_size, alphaBuilder, alphaNeighARProduct, nObtainedParetoSol, hv, delta, NSChangeAddOrder, argvNSNTries, seed);
+	int NSANPP = false;
+
+	fprintf(fGeral, "%s \t %d \t %.7f \t %.7f \t %d \t %d \t %d \t %ld \t", instName.c_str(), initial_population_size, maxAlphaBuilder, alphaNeighARProduct, NSOrder, NSANPP, argvNSNTries, seed);
+	fprintf(fGeral, "%d \t %.7f \t %.7f \t %.7f \t %.7f \t %d \t %.7f \t %d \n", nObtainedParetoSol, hv, delta, hvInitial, deltaInitial, cardInitial, maxProfit, errorOnParetoDominance);
+
+//	fprintf(fGeral, "%s \t %d \t %.7f \t %.7f \t %d \t %.7f \t %.7f \t %.7f \t %.7f \t %.7f \t %d \t %d  \t %ld \n", instName.c_str(), initial_population_size, maxAlphaBuilder, alphaNeighARProduct, nObtainedParetoSol, hv, delta, hvInitial, deltaInitial, cardInitial, maxProfit, NSChangeAddOrder, argvNSNTries, seed);
 //	fprintf(fGeral, "%s \t %d \t %.7f \t %.7f \t %d \t %d \t %.7f \t %.7f \t %.7f \t %.7f \t %ld \n", instName.c_str(), initial_population_size, alphaBuilder, alphaNeighARProduct, nObtainedParetoSol, card, sCToRef, sCFromRef, hv, delta, seed);
 
 	fclose(fGeral);

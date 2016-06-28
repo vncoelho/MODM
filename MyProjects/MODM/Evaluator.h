@@ -200,6 +200,7 @@ public:
 			}
 		}
 
+
 		//Verificar inviabilidades
 		if (foRevenue < ((1 + pMODM.getHurdleRate()) * (foBudget + foFixedCost)))
 		{

@@ -131,7 +131,7 @@ public:
 	{
 		return c;
 	}
-	int getHurdleRate()
+	double getHurdleRate()
 	{
 		return R;
 	}

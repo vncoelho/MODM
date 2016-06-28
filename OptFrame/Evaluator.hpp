@@ -40,7 +40,6 @@ using namespace scannerpp;
 namespace optframe
 {
 
-
 //! \english The Evaluator class is responsible for the attribution of objective values for each Solution \endenglish \portuguese A classe Evaluator é responsável pela atribuição de valores objetivo para cada Solution \endportuguese
 
 /*!
@@ -83,7 +82,8 @@ public:
 	}
 
 //protected:
-public: // because of MultiEvaluator... otherwise, make it 'friend'
+public:
+	// because of MultiEvaluator... otherwise, make it 'friend'
 
 	virtual Evaluation& evaluate(const R& r) = 0;
 
@@ -99,7 +99,8 @@ public:
 	}
 
 //protected:
-public: // because of MultiEvaluator... otherwise, make it 'friend'
+public:
+	// because of MultiEvaluator... otherwise, make it 'friend'
 	virtual void evaluate(Evaluation& e, const R& r, const ADS& ads)
 	{
 		Evaluation& e1 = evaluate(r, ads);
@@ -114,7 +115,7 @@ public:
 	Move<R, ADS>& applyMove(Evaluation& e, Move<R, ADS>& m, Solution<R, ADS>& s)
 	{
 		Move<R, ADS>* rev = m.apply(e, s);
-		if(!rev)
+		if (!rev)
 		{
 			cout << "Evaluator error(1)! Expected reverse move, but it is NULL! TODO: FIX" << endl;
 			exit(1);
@@ -128,7 +129,7 @@ public:
 	pair<Move<R, ADS>&, Evaluation&>& applyMove(Move<R, ADS>& m, Solution<R, ADS>& s)
 	{
 		Move<R, ADS>* rev = m.apply(s);
-		if(!rev)
+		if (!rev)
 		{
 			cout << "Evaluator error(2)! Expected reverse move, but it is NULL! TODO: FIX" << endl;
 			exit(1);
@@ -178,6 +179,8 @@ public:
 		}
 	}
 
+
+
 	// Movement cost based on complete evaluation
 	// USE ONLY FOR VALIDATION OF CODE! OTHERWISE, USE moveCost(e, m, s)
 	MoveCost& moveCost(Move<R, ADS>& m, Solution<R, ADS>& s)
@@ -212,7 +215,6 @@ public:
 
 		return *p;
 	}
-
 
 	// ============ betterThan ===========
 

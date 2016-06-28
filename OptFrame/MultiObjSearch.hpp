@@ -23,11 +23,12 @@
 
 #include <iostream>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
 #include "Solution.hpp"
-//#include "Population.hpp"
+#include "Population.hpp"
 #include "Evaluation.hpp"
 #include "Direction.hpp"
 
@@ -490,6 +491,7 @@ public:
 	MultiEvaluator<R, ADS>& multiEval;
 	ParetoDominance<R, ADS> dom;
 	ParetoDominanceWeak<R, ADS> domWeak;
+	Pareto<R, ADS> x_e;
 
 public:
 
@@ -500,8 +502,13 @@ public:
 
 	virtual ~paretoManager()
 	{
+
 	}
 
+	virtual Pareto<R, ADS>& getParetoInsideManager()
+	{
+		return x_e;
+	}
 //	MultiEvaluator<R, ADS>& getMultiEvaluator()
 //	{
 //		return multiEval;
@@ -519,8 +526,8 @@ public:
 
 	virtual bool addSolution(Solution<R, ADS>* candidate, MultiEvaluation* mev)
 	{
-//		cout<<"Something wrong has happen! \n It is inside addSolution candidate,mev! \n This should be reimplemented"<<endl;
-//		exit(1);
+		cout << "Something wrong has happen! \n It is inside addSolution candidate,mev! \n This should be reimplemented" << endl;
+		exit(1);
 //		return false;
 	}
 
@@ -555,10 +562,30 @@ public:
 			p.push_back(candidate, candidateMev);
 
 		//Check if it is also not deleted in the origin todo
-//		for (int eI = 0; eI < fitnessNewInd.size(); eI++)
-//			delete fitnessNewInd[eI];
+		//		for (int eI = 0; eI < fitnessNewInd.size(); eI++)
+		//			delete fitnessNewInd[eI];
 
 		return added;
+	}
+
+	virtual bool checkDominance(Pareto<R, ADS>& p, MultiEvaluation* candidateMev, vector<MoveCost*>& candidateMovCost)
+	{
+		MultiEvaluation* tempMev = new MultiEvaluation(*candidateMev);
+
+		bool checkedValue = checkDominance(p, tempMev);
+
+		return checkedValue;
+	}
+
+	virtual bool checkDominance(Pareto<R, ADS>& p, MultiEvaluation* candidateMev)
+	{
+		for (int ind = 0; ind < x_e.size(); ind++)
+		{
+			MultiEvaluation popIndFitness = x_e.getIndMultiEvaluation(ind);
+			if (domWeak.dominates(popIndFitness, *candidateMev))
+				return false;
+		}
+		return true;
 	}
 
 //	template<class T>
@@ -605,7 +632,7 @@ template<class R, class ADS = OPTFRAME_DEFAULT_ADS>
 class MOMETRICS
 {
 protected:
-	vector<Evaluator<R, ADS>*> v_e;
+//	vector<Direction*> v_d;
 	ParetoDominance<R, ADS>* pDom;
 	ParetoDominanceWeak<R, ADS>* pDomWeak;
 	Pareto<R, ADS> p;
@@ -672,20 +699,32 @@ protected:
 
 public:
 
-	MOMETRICS(vector<Evaluator<R, ADS>*> _v_e) :
-			v_e(_v_e)
+	MOMETRICS(vector<Direction*> _v_d)
 	{
-		pDom = new ParetoDominance<R, ADS>(v_e);
-		pDomWeak = new ParetoDominanceWeak<R, ADS>(v_e);
+		pDom = new ParetoDominance<R, ADS>(_v_d);
+		pDomWeak = new ParetoDominanceWeak<R, ADS>(_v_d);
 	}
 
-	MOMETRICS()
+	MOMETRICS(vector<Evaluator<R, ADS>*> _v_e)
 	{
-		cout << "Be careful, some methods of MOMETRICS might results in error! \n pDom and pDomWeak were not initialized." << endl;
+		pDom = new ParetoDominance<R, ADS>(_v_e);
+		pDomWeak = new ParetoDominanceWeak<R, ADS>(_v_e);
 	}
 
-	virtual ~MOMETRICS()
+	MOMETRICS(int nObj)
 	{
+		cout << "Be careful, some methods of MOMETRICS might results in error! \n Direction is being created only as Minimization! " << endl;
+		vector<Direction*> v_d;
+		for (int o = 0; o < nObj; o++)
+		{
+			Minimization* m = new Minimization;
+			v_d.push_back(m);
+		}
+
+		pDom = new ParetoDominance<R, ADS>(v_d);
+		pDomWeak = new ParetoDominanceWeak<R, ADS>(v_d);
+
+		//		cout << "Be careful, some methods of MOMETRICS might results in error! \n pDom and pDomWeak were not initialized." << endl;
 	}
 
 	File* createFile(string filename)
@@ -727,9 +766,43 @@ public:
 		return D;
 	}
 
+	void addSol(vector<vector<double> >& D, vector<double> ind)
+	{
+		p.addSolution(*pDom, *pDomWeak, D, ind);
+	}
+
 	vector<vector<double> > unionSets(vector<vector<double> > D1, vector<vector<double> > D2)
 	{
 		vector<vector<double> > ref = D1;
+
+		for (int ind = 0; ind < D2.size(); ind++)
+			p.addSolution(*pDom, *pDomWeak, ref, D2[ind]);
+
+		return ref;
+	}
+
+	vector<vector<double> > getParetoEvaluations(Pareto<R, ADS>& pf, int nEv)
+	{
+		vector<MultiEvaluation*> vEval = pf.getParetoFront();
+		int nObtainedParetoSol = vEval.size();
+
+		vector<vector<double> > paretoDoubleEval;
+
+		for (int i = 0; i < nObtainedParetoSol; i++)
+		{
+			int nObtainedParetoSol = vEval.size();
+			vector<double> solEvaluations;
+			for (int ev = 0; ev < nEv; ev++)
+				solEvaluations.push_back(vEval[i]->at(ev).getObjFunction());
+
+			paretoDoubleEval.push_back(solEvaluations);
+		}
+		return paretoDoubleEval;
+	}
+
+	vector<vector<double> > createParetoSet(vector<vector<double> > D2)
+	{
+		vector<vector<double> > ref;
 
 		for (int ind = 0; ind < D2.size(); ind++)
 			p.addSolution(*pDom, *pDomWeak, ref, D2[ind]);
@@ -782,13 +855,23 @@ public:
 		return sCover;
 	}
 
-	double deltaMetric(vector<vector<double> > pareto, vector<double> utopicEval)
+	//Delta Metric and Hipervolume are working requires Minimization problems
+	double deltaMetric(vector<vector<double> > pareto, vector<double> utopicEval, bool minimization)
 	{
+		int nSol = pareto.size();
+		int nObj = utopicEval.size();
+
+		if (minimization == false)
+		{
+			for (int i = 0; i < nSol; i++)
+				for (int ev = 0; ev < nObj; ev++)
+					pareto[i][ev] *= -1;
+		}
+
+		if (pareto.size() == 1)
+			return 1;
 
 		vector<double> vDist;
-
-		int nObj = utopicEval.size();
-		int nSol = pareto.size();
 		vector<double> minEval(nObj, 1000000);
 		double dMean = 0;
 		for (int nS = 0; nS < nSol; nS++)
@@ -889,47 +972,13 @@ public:
 		return ss;
 	}
 
-	vector<double> spacing2(vector<vector<vector<double> > > D)
+	vector<double> spacingMultiplePF(vector<vector<vector<double> > > D)
 	{
 		vector<double> spacings;
 		for (int frente = 0; frente < D.size(); frente++)
 		{
 			vector<vector<double> > a = D[frente];
-			double ss = 0;
-			vector<double> distMin;
-			int N = a.size();
-			int m = a[0].size();
-			for (int i = 0; i < a.size(); i++)
-			{
-				double di = 100000000;
-
-				for (int j = 0; j < a.size(); j++)
-				{
-					if (i != j)
-					{
-						double diMin = 0;
-						for (int eval = 0; eval < m; eval++)
-							diMin += abs(a[i][eval] - a[j][eval]);
-
-						if (diMin < di)
-							di = diMin;
-					}
-				}
-				distMin.push_back(di);
-			}
-
-			double dMean = 0;
-
-			for (int i = 0; i < N; i++)
-				dMean += distMin[i];
-
-			dMean = dMean / N;
-
-			for (int i = 0; i < N; i++)
-				ss += pow(distMin[i] - dMean, 2);
-
-			ss = ss / N;
-			ss = sqrt(ss);
+			double ss = spacing(a);
 			spacings.push_back(ss);
 		}
 		return spacings;
@@ -957,7 +1006,7 @@ public:
 		while (getline(&line, &len, fp) != -1)
 		{
 			// +1 below to allow room for null terminator.
-			result = (char*) realloc(result, strlen(result) + strlen(line) + 1);
+			result = (char*) realloc(result, ::strlen(result) + strlen(line) + 1);
 			// +1 below so we copy the final null terminator.
 			strncpy(result + strlen(result), line, strlen(line) + 1);
 			free(line);
@@ -973,10 +1022,19 @@ public:
 		return result;
 	}
 
-	double hipervolumeWithExecRequested(vector<vector<double> > v, vector<double> refPoints)
+	//Delta Metric and Hipervolume are working requires Minimization problems
+	double hipervolumeWithExecRequested(vector<vector<double> > pareto, vector<double> refPoints, bool minimization)
 	{
-		int nSol = v.size();
-		int nObj = v[0].size();
+		int nSol = pareto.size();
+		int nObj = pareto[0].size();
+
+		if (minimization == false)
+		{
+			for (int i = 0; i < nSol; i++)
+				for (int ev = 0; ev < nObj; ev++)
+					pareto[i][ev] *= -1;
+		}
+
 		string tempFile = "tempFileHipervolueFunc";
 		FILE* fTempHV = fopen(tempFile.c_str(), "w");
 
@@ -984,7 +1042,7 @@ public:
 		{
 			for (int o = 0; o < nObj; o++)
 			{
-				fprintf(fTempHV, "%.7f\t", v[s][o]);
+				fprintf(fTempHV, "%.7f\t", pareto[s][o]);
 			}
 			fprintf(fTempHV, "\n");
 		}
@@ -1000,6 +1058,17 @@ public:
 		return hvValue;
 	}
 
+	double hipervolumeWithExecRequested(string filename, vector<double> refPoints)
+	{
+		stringstream ss;
+		ss << "./hv\t -r \"";
+		for (int o = 0; o < refPoints.size(); o++)
+			ss << refPoints[o] << " ";
+		ss << "\" \t" << filename.c_str();
+		string hvValueString = execCommand(ss.str().c_str());
+		double hvValue = atof(hvValueString.c_str());
+		return hvValue;
+	}
 };
 
 template<class R, class ADS = OPTFRAME_DEFAULT_ADS, class DS = OPTFRAME_DEFAULT_DS>

@@ -132,6 +132,7 @@ public:
 			vd2[i] = v2[i]->evaluation();
 		}
 
+
 		return dominates(vd1, vd2);
 	}
 
