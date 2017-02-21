@@ -23,15 +23,15 @@
 
 #include <algorithm>
 
-#include "../MultiObjSearch.hpp"
-#include "../MOLocalSearch.hpp"
-#include "../Heuristics/MOLocalSearches/MOBestImprovement.hpp"
-#include "../Evaluator.hpp"
-#include "../Population.hpp"
-#include "../NSSeq.hpp"
-#include "../ParetoDominance.hpp"
-#include "../ParetoDominanceWeak.hpp"
-#include "../InitialPareto.h"
+#include "../../MultiObjSearch.hpp"
+#include "../../MOLocalSearch.hpp"
+#include "../../Heuristics/MOLocalSearches/MOBestImprovement.hpp"
+#include "../../Evaluator.hpp"
+#include "../../Population.hpp"
+#include "../../NSSeq.hpp"
+#include "../../ParetoDominance.hpp"
+#include "../../ParetoDominanceWeak.hpp"
+#include "../../InitialPareto.h"
 
 template<class R, class ADS = OPTFRAME_DEFAULT_ADS>
 struct gplsStructure

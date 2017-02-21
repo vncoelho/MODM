@@ -269,11 +269,6 @@ public:
 		fclose(f);
 	}
 
-	virtual bool betterThan(double a, double b)
-	{
-		// MAXIMIZATION
-		return (a > (b + EPSILON_MODM));
-	}
 
 	virtual bool isMinimization() const
 	{

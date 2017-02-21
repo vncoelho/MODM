@@ -12,7 +12,7 @@
 #include "../OptFrame/Heuristics/VNS/MOVNSLevels.hpp"
 #include "../OptFrame/Heuristics/VNS/MOVNSLevelsLocalSearch.hpp"
 #include "../OptFrame/Heuristics/2PPLS.hpp"
-#include "../OptFrame/Heuristics/GPLS.hpp"
+#include "../OptFrame/Heuristics/MOLocalSearches/GPLS.hpp"
 #include "../OptFrame/MultiEvaluator.hpp"
 #include "../OptFrame/MultiObjSearch.hpp"
 #include "../OptFrame/InitialPareto.h"
@@ -97,7 +97,7 @@ int MOTOPDMC(int argc, char **argv)
 	RandGenMersenneTwister rg;
 	long seed = time(NULL);
 
-//	seed = 10;
+	seed = 10;
 
 	srand(seed);
 	rg.setSeed(seed);
@@ -256,7 +256,7 @@ int MOTOPDMC(int argc, char **argv)
 		}
 		else
 			pf = pfInitialPareto;
-//		pf = paretoSearch.search(60, 0, pf);
+//		pf = *paretoSearch.search(60, 0, &pf);
 	}
 
 //	pf->clear();
